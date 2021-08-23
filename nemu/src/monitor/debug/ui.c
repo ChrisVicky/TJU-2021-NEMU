@@ -132,6 +132,7 @@ static int cmd_x(char* args){
 		int w = strtol(arg2,NULL,16);
 		for(i=0;i<t;i+=4){
 			printf("0x%x :	%x\n" ,w,swaddr_read(w,4));
+			w += 4;
 		}
 	}
 	return 0;
