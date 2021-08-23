@@ -40,7 +40,7 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
-static int cmd_reg(char *args);
+static int cmd_info(char *args);
 
 static struct {
 	char *name;
@@ -88,17 +88,20 @@ static int cmd_si(char* args){
 	cpu_exec(n);
 	return 0;
 }
-static int cmd_reg(char* args){
-	int n,i;
-	char *cpu_name = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
+static int cmd_info(char* args){
+	int i;
+	char *cpu_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 	char *temp_args = strtok(args, " ");
 	if(temp_args == NULL){
 		printf("invalid \n");
 		return 0;
-	}else if(temp_args == "r"){
-		for(i=0;i<8;i++)
-			printf("	%s 0x%X\n" , cpu_name[i], cpu.gpr[i]._32);	
+	}else if(strcmp("r",temp_args)==0){
+		for(i=0;i<8;i++){
+			printf("%s " ,cpu_name[i]);
+			printf("0x%x\n" ,cpu.gpr[i]._32);
+		}
 	}
+	return 0;
 }
 void ui_mainloop() {
 	while(1) {
