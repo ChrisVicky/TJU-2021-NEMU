@@ -48,8 +48,8 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 
 	/* TODO: Add more commands */
-	{ "si","Continue the execution for n step", cmd_si},
-	{"info", "Show all registers", cmd_info},
+	{ "si","Continue the execution for n steps", cmd_si},
+	{"info", "Show registers", cmd_info},
 	{"x", "Scan the cache", cmd_x},
 };
 
