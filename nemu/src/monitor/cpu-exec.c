@@ -69,6 +69,11 @@ void cpu_exec(volatile uint32_t n) {
 		Log_write("%s\n", asm_buf);
 		if(n_temp < MAX_INSTR_TO_PRINT) {
 			printf("%s\n", asm_buf);
+		}else if(n==n_temp){
+			printf("%s\n", asm_buf);
+		}else if(n==1){
+			printf("......\n");
+			printf("%s\n", asm_buf);		
 		}
 #endif
 
