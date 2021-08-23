@@ -90,6 +90,7 @@ static int cmd_si(char* args){
 }
 static int cmd_info(char* args){
 	int i;
+	bool flag = false;
 	char *cpu_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 	char *temp_args = strtok(args, " ");
 	if(temp_args == NULL){
@@ -97,10 +98,13 @@ static int cmd_info(char* args){
 		return 0;
 	}
 	char *temp_cmd = temp_args + strlen(temp_args) + 1;
+	if(temp_cmd >= args + strlen(args)){
+		flag = true;
+	}
 	if(strcmp("r",temp_args)==0){
 		printf("register	value\n");
 		for(i=0;i<8;i++){
-			if(strcmp(temp_cmd," ")==0 || strstr(temp_cmd, cpu_name[i]))
+			if(flag || strstr(temp_cmd, cpu_name[i]))
 				printf("%s		0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
 		}
 	}else{
