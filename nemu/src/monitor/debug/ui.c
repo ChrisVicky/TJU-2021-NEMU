@@ -26,21 +26,17 @@ char* rl_gets() {
 
 	return line_read;
 }
-
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
 }
-
 static int cmd_q(char *args) {
 	return -1;
 }
-
 static int cmd_help(char *args);
-
 static int cmd_si(char *args);
-
 static int cmd_info(char *args);
+static int cmd_x(char *args);
 
 static struct {
 	char *name;
@@ -54,6 +50,7 @@ static struct {
 	/* TODO: Add more commands */
 	{ "si","Continue the execution for n step", cmd_si},
 	{"info", "Show all registers", cmd_info},
+	{"x", "Scan the cache", cmd_x},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -100,12 +97,42 @@ static int cmd_info(char* args){
 	if(strcmp("r",temp_args)==0){
 		printf("register	value\n");
 		for(i=0;i<8;i++){
-			if(strcmp("",temp_cmd)==0||strstr(temp_cmd, cpu_name[i])){
+			if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, cpu_name[i])){
 				printf("%s		0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
 			}
 		}
+		if(strstr(temp_cmd, "eip")){
+			printf("eip		0x%x\n" ,cpu.eip);
+		}
 	}else{
-		printf("Unknown command argument %s\n" ,temp_args);
+		printf("Unknown command argument '%s'\n" ,temp_args);
+	}
+	return 0;
+}
+static int cmd_x(char* args){
+	char *arg1 = strtok(args, " ");
+	int t,i;
+	if(arg1==NULL){
+		printf("Invalid argument\n");
+		return 0;
+	}
+	char *temp_args = args + strlen(args) + 1;
+	if(strcmp("",temp_args)==0){
+		if(strstr(arg1,"0x")){
+			t = strtol(arg1,NULL,16);
+			printf("0x%x :	%x\n" ,t,swaddr_read(t,4));
+		}else{
+			printf("Unkown command argument '%s'\n" ,arg1);
+		}
+		return 0;
+	}
+	char *arg2 = strtok(temp_args, " ");
+	if(strstr(arg2, "0x")){
+		int t = strtol(arg1,NULL,16);
+		int w = strtol(arg2,NULL,16);
+		for(i=0;i<t;i+=4){
+			printf("0x%x :	%x" ,w,swaddr_read(w,4));
+		}
 	}
 	return 0;
 }
