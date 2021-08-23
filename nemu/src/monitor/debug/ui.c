@@ -102,7 +102,7 @@ static int cmd_info(char* args){
 		for(i=0;i<8;i++){
 			if(strstr(temp_cmd, cpu_name[i]))
 				printf("%s		0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
-			else if(strcmp("",temp_cmd)==0){
+			else if(temp_cmd==NULL){
 				printf(">>>AA%sAA<<<\n" , temp_cmd);
 			}
 		}
