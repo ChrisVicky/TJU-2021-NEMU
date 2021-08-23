@@ -131,7 +131,7 @@ static int cmd_x(char* args){
 		int t = strtol(arg1,NULL,16);
 		int w = strtol(arg2,NULL,16);
 		for(i=0;i<t;i+=4){
-			printf("0x%x :	%x" ,w,swaddr_read(w,4));
+			printf("0x%x :	%x\n" ,w,swaddr_read(w,4));
 		}
 	}
 	return 0;
