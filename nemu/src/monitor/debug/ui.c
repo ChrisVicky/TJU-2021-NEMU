@@ -38,14 +38,9 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
-static int cmd_si(char* args){
-	int n;
-	char * temp_args = strtok(args," ");
-	if(temp_args == NULL) n = 1;
-	else n = atoi(temp_args);
-	cpu_exec(n);
-	return 0;
-}
+static int cmd_si(char *args);
+
+static int cmd_reg(char *args);
 
 static struct {
 	char *name;
@@ -58,6 +53,7 @@ static struct {
 
 	/* TODO: Add more commands */
 	{ "si","Continue the execution for n step", cmd_si},
+	{"info", "Show all registers", cmd_info},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -84,7 +80,26 @@ static int cmd_help(char *args) {
 	}
 	return 0;
 }
-
+static int cmd_si(char* args){
+	int n;
+	char * temp_args = strtok(args," ");
+	if(temp_args == NULL) n = 1;
+	else n = atoi(temp_args);
+	cpu_exec(n);
+	return 0;
+}
+static int cmd_reg(char* args){
+	int n,i;
+	char *cpu_name = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
+	char *temp_args = strtok(args, " ");
+	if(temp_args == NULL){
+		printf("invalid \n");
+		return 0;
+	}else if(temp_args == "r"){
+		for(i=0;i<8;i++)
+			printf("	%s 0x%X\n" , cpu_name[i], cpu.gpr[i]._32);	
+	}
+}
 void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
