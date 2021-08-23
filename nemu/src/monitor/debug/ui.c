@@ -120,7 +120,7 @@ static int cmd_x(char* args){
 	if(strcmp("",temp_args)==0){
 		if(strstr(arg1,"0x")){
 			t = strtol(arg1,NULL,16);
-			printf("0x%x :	%x\n" ,t,swaddr_read(t,4));
+			printf("0x%x : %x\n" ,t,swaddr_read(t,4));
 		}else{
 			printf("Unkown command argument '%s'\n" ,arg1);
 		}
@@ -131,7 +131,7 @@ static int cmd_x(char* args){
 		int t = strtol(arg1,NULL,16);
 		int w = strtol(arg2,NULL,16);
 		for(i=0;i<t;i+=4){
-			printf("0x%x :	%x\n" ,w,swaddr_read(w,4));
+			printf("0x%x : %x\n" ,w,swaddr_read(w,4));
 			w += 4;
 		}
 	}
