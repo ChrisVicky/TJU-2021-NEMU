@@ -101,7 +101,7 @@ static int cmd_info(char* args){
 				printf("%s		0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
 			}
 		}
-		if(strstr(temp_cmd, "eip")){
+		if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, "eip")){
 			printf("eip		0x%x\n" ,cpu.eip);
 		}
 	}else{
