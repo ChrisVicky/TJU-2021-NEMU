@@ -96,9 +96,9 @@ static int cmd_info(char* args){
 		printf("invalid \n");
 		return 0;
 	}else if(strcmp("r",temp_args)==0){
+		printf("	register	value\n");
 		for(i=0;i<8;i++){
-			printf("%s " ,cpu_name[i]);
-			printf("0x%x\n" ,cpu.gpr[i]._32);
+			printf("	%s	0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
 		}
 	}
 	return 0;
