@@ -92,17 +92,21 @@ static int cmd_info(char* args){
 	int i;
 	char *cpu_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 	char *temp_args = strtok(args, " ");
+	char *temp_cmd = temp_args + strlen(temp_args) + 1;
 	if(temp_args == NULL){
-		printf("invalid \n");
-		return 0;
+		printf("Invalid argument \n");
 	}else if(strcmp("r",temp_args)==0){
-		printf("	register	value\n");
+		printf("register	value\n");
 		for(i=0;i<8;i++){
-			printf("	%s	0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
+			if(temp_cmd == NULL || strstr(temp_cmd, cpu_name[i]))
+				printf("%s	0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
 		}
+	}else{
+		printf("Unknown command argument %s\n" ,temp_args);
 	}
 	return 0;
 }
+
 void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
