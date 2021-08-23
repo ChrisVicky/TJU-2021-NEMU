@@ -21,12 +21,12 @@ typedef struct {
 			uint16_t _16;
 			uint8_t _8[2];
 		} gpr[8];
-
-     	/* Do NOT change the order of the GPRs' definitions. */
-
-		uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+   	  	/* Do NOT change the order of the GPRs' definitions. */
+		struct{
+			uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+		};
 	};
-     swaddr_t eip;
+	swaddr_t eip;
      
      union {
 		struct {
@@ -48,7 +48,7 @@ typedef struct {
 			uint16_t pad4;
 		};
 		uint32_t val;
-	} eflags;
+	}eflags;
 
 } CPU_state;
 
