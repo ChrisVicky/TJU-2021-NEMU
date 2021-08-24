@@ -116,18 +116,13 @@ static int cmd_info(char* args){
 }
 static bool is_number(char *arg){
 	int i;
-	bool flag = false;
 	char temp_arg = 'a';
 	char HEX[] = "abcdef0123456789";
-	char TEN[] = "0123456789";
-	if(arg[1]=='x' && arg[0]=='0'){
-		arg = arg + 2;
-		flag = true;
-	}
+	char REG[] = "eax, ecx, edx, ebx, esp, ebp, esi, edi, eip";
+	if(strstr(REG, arg)!=NULL) return true;
 	for(i=0;i<strlen(arg);i++){
 		temp_arg = arg[i];
-		if(flag && strchr(HEX, temp_arg)==NULL) return false;
-		else if(!flag && strchr(TEN, temp_arg)==NULL) return false;
+		if(strchr(HEX, temp_arg)==NULL) return false;
 	}
 	return true;
 }
@@ -154,7 +149,7 @@ static int cmd_x(char* arg){
 				break;
 			}
 			t[1] = strtol(args[1],NULL,16);
-			printf("0x%x : %x\n" ,t[1],swaddr_read(t[1],4));
+			printf("0x%x : 0x%x\n" ,t[1],swaddr_read(t[1],4));
 			break;
 		case 2:
 			if(is_number(args[1])){
