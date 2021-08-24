@@ -153,10 +153,10 @@ static int cmd_x(char* arg){
 		case 2:
 			if(is_number(args[1])){
 				if(is_number(args[2])){
-					t[1] = strtol(args[1],NULL,16);
+					t[1] = strtol(args[1],NULL,10);
 					t[2] = strtol(args[2],NULL,16);
 					int i;
-					for(i=0;i<t[1];i+=4){
+					for(i=0;i<t[1];i++){
 						printf("0x%x : 0x%x\n" ,t[2],swaddr_read(t[2],4));
 						t[2] += 4;
 					}
