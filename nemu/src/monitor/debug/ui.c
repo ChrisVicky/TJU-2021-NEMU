@@ -95,15 +95,14 @@ static int cmd_info(char* args){
 	}
 	char *temp_cmd = temp_args + strlen(temp_args) + 1;
 	if(strcmp("r",temp_args)==0){
-		printf("register	value\n");
 		for(i=0;i<8;i++){
 			if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, register_name[i])){
 				flag = true;
-				printf("%s		0x%x\n" ,register_name[i],cpu.gpr[i]._32);
+				printf("%s		0x%x		%d\n" ,register_name[i],cpu.gpr[i]._32, cpu.gpr[i]._32);
 			}
 		}
 		if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, "eip")){
-			printf("eip		0x%x\n" ,cpu.eip);
+			printf("eip		0x%x		%d\n" ,cpu.eip, cpu.eip);
 			flag = true;
 		}
 		if(flag == false){
@@ -155,10 +154,14 @@ static int cmd_x(char* arg){
 				if(is_number(args[2])){
 					t[1] = strtol(args[1],NULL,10);
 					t[2] = strtol(args[2],NULL,16);
-					int i;
-					for(i=0;i<t[1];i++){
-						printf("0x%x : 0x%x\n" ,t[2],swaddr_read(t[2],4));
-						t[2] += 4;
+					int i = 0,j;
+					while(i<t[1]){
+						printf("0x%x:" ,t[2]);
+						for(j=0;j<4;j++){
+							printf(" 0x%08x" ,swaddr_read(t[2],4));
+							t[2] += 4;
+							i++;
+						}
 					}
 				}else{
 					printf("Invalid argument '%s'\n" ,args[2]);
