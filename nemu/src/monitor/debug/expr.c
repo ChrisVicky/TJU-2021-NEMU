@@ -87,7 +87,7 @@ bool make_token(char *e) {
 
 				switch(rules[i].token_type) {
 					default: 
-						strcpy(tokens[nr_token++].str,substr_start);
+						strcpy(tokens[++nr_token].str,substr_start);
 						printf("DEFAULT\n");
 						//panic("please implement me");
 				}
@@ -102,7 +102,7 @@ bool make_token(char *e) {
 	}
 	for(i=0;i<nr_token;i++)
 	{
-		printf("<>%s<>" ,tokens[i].str);
+		printf("%s\n" ,tokens[i].str);
 	}
 	printf("\n");
 	return true; 
