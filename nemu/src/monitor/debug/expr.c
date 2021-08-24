@@ -100,7 +100,8 @@ bool make_token(char *e) {
 						strcpy(tokens[nr_token].str,substr_start);
 						break;
 					default: 
-						panic("please implement me");
+						printf("DEFAULT");
+						//panic("please implement me");
 				}
 				break;
 			}
