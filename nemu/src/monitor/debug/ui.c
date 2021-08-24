@@ -118,8 +118,6 @@ static bool is_number(char *arg){
 	int i;
 	char temp_arg = 'a';
 	char HEX[] = "abcdef0123456789";
-	char REG[] = "eax, ecx, edx, ebx, esp, ebp, esi, edi, eip";
-	if(strstr(REG, arg)!=NULL) return true;
 	for(i=0;i<strlen(arg);i++){
 		temp_arg = arg[i];
 		if(strchr(HEX, temp_arg)==NULL) return false;
@@ -162,19 +160,7 @@ static int cmd_x(char* arg){
 						t[2] += 4;
 					}
 				}else{
-					int i;
-					bool flag = false;
-					for(i=0;i<8;i++){
-						if(strcmp(register_name[i],args[2])==0){
-							flag = true;
-							printf("%s : 0x%x\n" ,register_name[i],swaddr_read(cpu.gpr[i]._32,4));
-						}
-					}
-					if(strcmp("eip",args[2])==0){
-						flag = true;
-						printf("eip : 0x%x\n" ,swaddr_read(cpu.eip,4));
-					}
-					if(flag==false) printf("Invalid argument '%s'\n" ,args[2]);
+					printf("Invalid argument '%s'\n" ,args[2]);
 				}
 			}else if(is_number(args[2])){
 				printf("Invalid argument '%s'\n" ,args[1]);
