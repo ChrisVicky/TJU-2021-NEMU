@@ -86,6 +86,8 @@ bool make_token(char *e) {
 				 */
 
 				switch(rules[i].token_type) {
+					case NOTYPE:
+						break;
 					default: 
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						printf("DEFAULT\n");
