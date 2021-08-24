@@ -7,6 +7,12 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	/* 	~0u : ~unsigned int 0 = 0xffff;
+	 *	取低地址的数据：如要取全部，应使得len = 4;
+		len = 1 : 右移 3 字节 取高 1 位
+		len = 2 : 右移 2 字节 取高 2 位
+		len = 4 : 右移 0 字节 取 4 位
+	 */
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {

@@ -115,31 +115,62 @@ static int cmd_info(char* args){
 	}
 	return 0;
 }
-static int cmd_x(char* args){
-	char *arg1 = strtok(args, " ");
-	int t,i;
-	if(arg1==NULL){
-		printf("Argument required (starting display address).\n");
-		return 0;
+static bool is_number(char *arg){
+	int i;
+	bool flag = false;
+	char *temp_arg = "";
+	char HEX[] = "abcdef0123456789";
+	char TEN[] = "0123456789";
+	if(arg[1]=='x' && arg[0]=='0'){
+		arg = arg + 2;
+		flag = true;
 	}
-	char *temp_args = args + strlen(args) + 1;
-	if(strcmp("",temp_args)==0){
-		if(strstr(arg1,"0x")){
-			t = strtol(arg1,NULL,16);
-			printf("0x%x : %x\n" ,t,swaddr_read(t,4));
-		}else{
-			printf("Unkown command argument '%s'\n" ,arg1);
-		}
-		return 0;
+	for(i=0;i<strlen(arg);i++){
+		*temp_arg = arg[i];
+		if(flag && strstr(HEX, temp_arg)==NULL) return false;
+		else if(!flag && strstr(TEN, temp_arg)==NULL) return false;
 	}
-	char *arg2 = strtok(temp_args, " ");
-	if(strstr(arg2, "0x")){
-		int t = strtol(arg1,NULL,16);
-		int w = strtol(arg2,NULL,16);
-		for(i=0;i<t;i+=4){
-			printf("0x%x : %x\n" ,w,swaddr_read(w,4));
-			w += 4;
-		}
+	return true;
+}
+static int cmd_x(char* arg){
+	char *temp_arg = arg;
+	int cnt = 0;
+	char *temp = strtok(temp_arg, " ");
+	char *args[5];
+	int t[5];
+	while(temp!=NULL){
+		if(cnt == 3) break;
+		temp_arg = temp + strlen(temp) + 1;
+		args[++cnt] = temp;
+		temp = strtok(temp_arg, " ");
+	}
+	switch(cnt){
+		case 0:
+			printf("Argument required (starting display address).\n");
+			return 0;
+			break;
+		case 1:
+			if(!is_number(args[1])){
+				printf("Unkown command argument '%s'\n" ,args[1]);
+				break;
+			}
+			t[1] = strtol(args[1],NULL,16);
+			printf("0x%x : %x\n" ,t[1],swaddr_read(t[1],4));
+			break;
+		case 2:
+			if(is_number(args[1]) && is_number(args[2])){
+				t[1] = strtol(args[1],NULL,16);
+				t[2] = strtol(args[2],NULL,16);
+				int i;
+				for(i=0;i<t[1];i+=4){
+					printf("0x%x : %x\n" ,t[2],swaddr_read(t[2],4));
+					t[2] += 4;
+				}
+			}
+			break;
+		default:
+			printf("Too many arguments\n");
+			break;
 	}
 	return 0;
 }
