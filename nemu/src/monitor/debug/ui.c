@@ -36,7 +36,8 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
-static int cmd_x(char *args);
+static int cmd_x(char *arg);
+static int cmd_p(char *args);
 
 static struct {
 	char *name;
@@ -51,6 +52,7 @@ static struct {
 	{ "si","Continue the execution for n steps", cmd_si},
 	{"info", "Show registers", cmd_info},
 	{"x", "Scan the cache", cmd_x},
+	{"p", "Expression", cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -179,6 +181,14 @@ static int cmd_x(char* arg){
 	}
 	return 0;
 }
+static int cmd_p(char *args)
+{
+	bool flag = make_token(args);
+	if(flag) printf("\nYES\n");
+	else printf("\nNO\n");
+	return 0;
+}
+
 
 void ui_mainloop() {
 	while(1) {

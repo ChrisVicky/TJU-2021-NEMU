@@ -63,7 +63,7 @@ typedef struct token {
 Token tokens[32];
 int nr_token;
 
-static bool make_token(char *e) {
+bool make_token(char *e) {
 	int position = 0;
 	int i;
 	regmatch_t pmatch;
@@ -102,7 +102,6 @@ static bool make_token(char *e) {
 					default: 
 						panic("please implement me");
 				}
-
 				break;
 			}
 		}
@@ -112,7 +111,11 @@ static bool make_token(char *e) {
 			return false;
 		}
 	}
-
+	for(i=0;i<nr_token;i++)
+	{
+		printf("%s " ,tokens[i].str);
+	}
+	printf("\n");
 	return true; 
 }
 
