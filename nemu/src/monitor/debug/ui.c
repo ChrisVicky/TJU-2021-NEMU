@@ -8,7 +8,7 @@
 #include <readline/history.h>
 
 void cpu_exec(uint32_t);
-
+const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
@@ -88,7 +88,6 @@ static int cmd_si(char* args){
 static int cmd_info(char* args){
 	int i;
 	bool flag = false;
-	char *cpu_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 	char *temp_args = strtok(args, " ");
 	if(temp_args == NULL){
 		printf("Argument required.\n");
@@ -98,9 +97,9 @@ static int cmd_info(char* args){
 	if(strcmp("r",temp_args)==0){
 		printf("register	value\n");
 		for(i=0;i<8;i++){
-			if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, cpu_name[i])){
+			if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, register_name[i])){
 				flag = true;
-				printf("%s		0x%x\n" ,cpu_name[i],cpu.gpr[i]._32);
+				printf("%s		0x%x\n" ,register_name[i],cpu.gpr[i]._32);
 			}
 		}
 		if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, "eip")){
@@ -158,14 +157,32 @@ static int cmd_x(char* arg){
 			printf("0x%x : %x\n" ,t[1],swaddr_read(t[1],4));
 			break;
 		case 2:
-			if(is_number(args[1]) && is_number(args[2])){
-				t[1] = strtol(args[1],NULL,16);
-				t[2] = strtol(args[2],NULL,16);
-				int i;
-				for(i=0;i<t[1];i+=4){
-					printf("0x%x : %x\n" ,t[2],swaddr_read(t[2],4));
-					t[2] += 4;
+			if(is_number(args[1])){
+				if(is_number(args[2])){
+					t[1] = strtol(args[1],NULL,16);
+					t[2] = strtol(args[2],NULL,16);
+					int i;
+					for(i=0;i<t[1];i+=4){
+						printf("0x%x : 0x%x\n" ,t[2],swaddr_read(t[2],4));
+						t[2] += 4;
+					}
+				}else{
+					int i;
+					bool flag = false;
+					for(i=0;i<8;i++){
+						if(strcmp(register_name[i],args[2])==0){
+							flag = true;
+							printf("%s : 0x%x\n" ,register_name[i],cpu.gpr[i]._32);
+						}
+					}
+					if(strcmp("eip",args[2])==0){
+						flag = true;
+						printf("eip : 0x%x\n" ,cpu.eip);
+					}
+					if(flag==false) printf("Invalid argument '%s'\n" ,args[2]);
 				}
+			}else if(is_number(args[2])){
+				printf("Invalid argument '%s'\n" ,args[1]);
 			}else{
 				printf("Invalid argument '%s' '%s'\n" ,args[1] ,args[2]);
 			}
