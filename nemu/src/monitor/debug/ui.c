@@ -118,6 +118,7 @@ static bool is_number(char *arg){
 	int i;
 	char temp_arg = 'a';
 	char HEX[] = "abcdef0123456789";
+	if(arg[0]=='0' && arg[1]=='x') arg = arg+2;
 	for(i=0;i<strlen(arg);i++){
 		temp_arg = arg[i];
 		if(strchr(HEX, temp_arg)==NULL) return false;
