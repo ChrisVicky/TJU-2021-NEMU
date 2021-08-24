@@ -118,7 +118,7 @@ static int cmd_info(char* args){
 static bool is_number(char *arg){
 	int i;
 	bool flag = false;
-	char *temp_arg = "";
+	char temp_arg = 'a';
 	char HEX[] = "abcdef0123456789";
 	char TEN[] = "0123456789";
 	if(arg[1]=='x' && arg[0]=='0'){
@@ -126,9 +126,9 @@ static bool is_number(char *arg){
 		flag = true;
 	}
 	for(i=0;i<strlen(arg);i++){
-		*temp_arg = arg[i];
-		if(flag && strstr(HEX, temp_arg)==NULL) return false;
-		else if(!flag && strstr(TEN, temp_arg)==NULL) return false;
+		temp_arg = arg[i];
+		if(flag && strchr(HEX, temp_arg)==NULL) return false;
+		else if(!flag && strchr(TEN, temp_arg)==NULL) return false;
 	}
 	return true;
 }
@@ -166,6 +166,8 @@ static int cmd_x(char* arg){
 					printf("0x%x : %x\n" ,t[2],swaddr_read(t[2],4));
 					t[2] += 4;
 				}
+			}else{
+				printf("Invalid argument '%s' '%s'\n" ,args[1] ,args[2]);
 			}
 			break;
 		default:
