@@ -102,7 +102,7 @@ bool make_token(char *e) {
 			return false;
 		}
 	}
-	for(i=0;i<nr_token;i++)
+	for(i=0;i<=nr_token;i++)
 	{
 		printf("%s" ,tokens[i].str);
 	}
