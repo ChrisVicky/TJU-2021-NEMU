@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUMBER, PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET
+	NOTYPE = 256, EQ = 0, HEX, TEN, PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET, REGISTER
 
 	/* TODO: Add more token types */
 
@@ -23,13 +23,15 @@ static struct rule {
 	 */
 	{" +",	NOTYPE},				// spaces		256
 	{"==", EQ},						// equal		0
-	{"[a-f0-9A-F]", NUMBER},		// number		1
-	{"\\+", PLUS},					// plus			2
-	{"\\-", MINUS},					// minus		3
-	{"\\*", TIMES},					// times		4
-	{"\\/", DIVIDE},				// divide		5
-	{"\\(", FR_BRACKET},			// for-bracket	6
-	{"\\)", BA_BRACKET}				// back-bracket	7
+	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			1
+	{"[0-9]+", TEN},					// TEN			2
+	{"\\+", PLUS},					// plus			3
+	{"\\-", MINUS},					// minus		4
+	{"\\*", TIMES},					// times		5
+	{"\\/", DIVIDE},				// divide		6
+	{"\\(", FR_BRACKET},			// for-bracket	7
+	{"\\)", BA_BRACKET},			// back-bracket	8
+	{"eax|ecx|edx|ebx|esp|ebp|esi|edi|eip", REGISTER} // register 9
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -84,7 +86,21 @@ static bool make_token(char *e) {
 				 */
 
 				switch(rules[i].token_type) {
-					default: panic("please implement me");
+					case EQ:
+						break;
+					case REGISTER:
+
+						break;
+					case HEX:
+						tokens[nr_token].type = HEX;
+						strcpy(tokens[nr_token].str,substr_start);
+						break;
+					case TEN:
+						tokens[nr_token].type = TEN;
+						strcpy(tokens[nr_token].str,substr_start);
+						break;
+					default: 
+						panic("please implement me");
 				}
 
 				break;
