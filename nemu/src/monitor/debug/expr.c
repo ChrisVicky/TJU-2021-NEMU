@@ -86,21 +86,9 @@ bool make_token(char *e) {
 				 */
 
 				switch(rules[i].token_type) {
-					case EQ:
-						break;
-					case REGISTER:
-
-						break;
-					case HEX:
-						tokens[nr_token].type = HEX;
-						strcpy(tokens[nr_token].str,substr_start);
-						break;
-					case TEN:
-						tokens[nr_token].type = TEN;
-						strcpy(tokens[nr_token].str,substr_start);
-						break;
 					default: 
-						printf("DEFAULT");
+						strcpy(tokens[nr_token++].str,substr_start);
+						printf("DEFAULT\n");
 						//panic("please implement me");
 				}
 				break;
