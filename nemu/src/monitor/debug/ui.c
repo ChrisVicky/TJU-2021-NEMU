@@ -162,6 +162,7 @@ static int cmd_x(char* arg){
 							t[2] += 4;
 							i++;
 						}
+						printf("\n");
 					}
 				}else{
 					printf("Invalid argument '%s'\n" ,args[2]);
