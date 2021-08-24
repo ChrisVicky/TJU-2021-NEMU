@@ -183,9 +183,12 @@ static int cmd_x(char* arg){
 }
 static int cmd_p(char *args)
 {
-	bool flag = make_token(args);
-	if(flag) printf("\nYES\n");
-	else printf("\nNO\n");
+	bool flag = false;
+	int status = expr(args, flag);
+	if(!flag){
+		printf("Miss Match");
+		return 0;
+	}
 	return 0;
 }
 

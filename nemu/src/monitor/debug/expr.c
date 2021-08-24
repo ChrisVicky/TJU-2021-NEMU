@@ -63,7 +63,7 @@ typedef struct token {
 Token tokens[32];
 int nr_token;
 
-bool make_token(char *e) {
+static bool make_token(char *e) {
 	int position = 0;
 	int i;
 	regmatch_t pmatch;
@@ -90,7 +90,7 @@ bool make_token(char *e) {
 						break;
 					default: 
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
-						printf("DEFAULT\n");
+						tokens[nr_token].type = rules[i].token_type;
 						//panic("please implement me");
 				}
 				break;
@@ -102,10 +102,6 @@ bool make_token(char *e) {
 			return false;
 		}
 	}
-	for(i=0;i<=nr_token;i++)
-	{
-		printf("%s\n" ,tokens[i].str);
-	}
 	return true; 
 }
 
@@ -114,8 +110,9 @@ uint32_t expr(char *e, bool *success) {
 		*success = false;
 		return 0;
 	}
-
 	/* TODO: Insert codes to evaluate the expression. */
+	/* IF success == true : tokens shall contain the expression. */
+	
 	panic("please implement me");
 	return 0;
 }
