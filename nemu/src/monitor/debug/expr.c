@@ -5,10 +5,12 @@
  */
 #include <sys/types.h>
 #include <regex.h>
-
+const char registers[] = "eaxecxedxebxespedpesiedieip";
 enum {
-	NOTYPE = 256, EQ = 0, HEX, TEN, PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET, REGISTER
-
+	NOTYPE = 256, EQ = 0, HEX, TEN, 
+	PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET, 
+	REGISTER,
+	ADDRESS
 	/* TODO: Add more token types */
 
 };
@@ -24,14 +26,14 @@ static struct rule {
 	{" +",	NOTYPE},				// spaces		256
 	{"==", EQ},						// equal		0
 	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			1
-	{"[0-9]+", TEN},					// TEN			2
+	{"[0-9]+", TEN},				// TEN			2
 	{"\\+", PLUS},					// plus			3
 	{"\\-", MINUS},					// minus		4
 	{"\\*", TIMES},					// times		5
 	{"\\/", DIVIDE},				// divide		6
 	{"\\(", FR_BRACKET},			// for-bracket	7
 	{"\\)", BA_BRACKET},			// back-bracket	8
-	{"eax|ecx|edx|ebx|esp|ebp|esi|edi|eip", REGISTER} // register 9
+	{"$[eax|ecx|edx|ebx|esp|ebp|esi|edi|eip]", REGISTER}, // register 9
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -85,7 +87,7 @@ static bool make_token(char *e) {
 				 * of tokens, some extra actions should be performed.
 				 */
 
-				switch(rules[i].token_type) {
+				switch(rules[i].token_type){
 					case NOTYPE:
 						break;
 					default: 
@@ -106,13 +108,16 @@ static bool make_token(char *e) {
 }
 
 uint32_t expr(char *e, bool *success) {
+	int i;
 	if(!make_token(e)) {
 		*success = false;
 		return 0;
 	}
 	/* TODO: Insert codes to evaluate the expression. */
 	/* IF success == true : tokens shall contain the expression. */
-	
+	for(i=0;i<nr_token;i++){
+		if(tokens[i].type==TIMES && (i==0 || tokens[i-1].type==))
+	}
 	panic("please implement me");
 	return 0;
 }
