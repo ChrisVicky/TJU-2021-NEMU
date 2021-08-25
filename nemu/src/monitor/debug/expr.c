@@ -146,7 +146,9 @@ static bool brackets(int q,int p){
 
 static int exe(int q,int p){
 	int data = 0;
-	if(q+1==p || q==p){
+	if(q>p){
+		Log("Error\n");
+	}else if(q+1==p || q==p){
 		int position;
 		char * temp;
 		switch(tokens[p].type){
