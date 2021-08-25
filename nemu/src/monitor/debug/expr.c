@@ -202,7 +202,7 @@ static int exe(int q,int p){
 					break;
 				}
 			}
-			if(op==0) Log("Wrong Expression\n");
+			if(op==0) Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
 			int val1 = exe(q,op-1);
 			int val2 = exe(op+1,p);
 			switch(tokens[op].type){
