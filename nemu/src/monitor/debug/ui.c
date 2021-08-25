@@ -181,13 +181,14 @@ static int cmd_x(char* arg){
 }
 static int cmd_p(char *args)
 {
-	bool flag = false;
+	bool flag = true;
 	int status = expr(args, &flag);
 	if(!flag){
 		printf("Miss Match");
 		printf("status=%d\n" , status);
 		return 0;
 	}
+	printf("DEC: %d	HEX: 0x%08x\n" ,status,status);
 	return 0;
 }
 

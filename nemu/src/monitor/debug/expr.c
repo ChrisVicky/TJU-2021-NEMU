@@ -223,7 +223,6 @@ uint32_t expr(char *e, bool *success) {
 	/* IF success == true : tokens shall contain the expression. */
 	for(i=1;i<=nr_token;i++) printf("%s\n" ,tokens[i].str);
 	int ans = exe(1,nr_token);
-	printf("%d\n" ,ans);
-	return 0;
+	return ans;
 }
 
