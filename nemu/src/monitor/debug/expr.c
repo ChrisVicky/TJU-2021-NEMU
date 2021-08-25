@@ -35,7 +35,7 @@ static struct rule {
 	{"\\/", DIVIDE},				// divide		6
 	{"\\(", FR_BRACKET},			// for-bracket	7
 	{"\\)", BA_BRACKET},			// back-bracket	8
-	{"\\$eax|ecx|edx|ebx|esp|ebp|esi|edi|eip", REGISTER}, // register 9
+	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", REGISTER}, // register 9
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -153,9 +153,6 @@ static int exe(int q,int p){
 			case REGISTER:
 				temp = strstr(registers,tokens[p].str);
 				position = (temp-registers)/3;
-
-				printf("temp=%s	registers=%s	tokens.str=%s\n" ,temp,registers, tokens[p].str);
-				printf("position=%d\n" ,position);
 				switch(position){
 					case 8:
 						data = cpu.eip;
@@ -175,16 +172,10 @@ static int exe(int q,int p){
 				panic("Error math %s\n" ,tokens[p].str);
 				break;
 		}
-
-		printf("$ q=%d p=%d	data=%d\n",q,p,data);
 		if(q<p){
 			switch(tokens[q].type){
 				case MINUS_SIGN:
-
-					printf("* q=%d p=%d	data=%d\n",q,p,data);
 					data = ~data + 1;
-
-					printf("* q=%d p=%d	data=%d\n",q,p,data);
 					break;
 				case ADDRESS_SIGN:
 					data = hwaddr_read(data,4);
@@ -237,14 +228,14 @@ static int exe(int q,int p){
 }
 
 uint32_t expr(char *e, bool *success) {
-	int i;
 	if(!make_token(e)) {
 		*success = false;
 		return 0;
 	}
-	/* TODO: Insert codes to evaluate the expression. */
-	/* IF success == true : tokens shall contain the expression. */
-	for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
+	/* 	TODO: Insert codes to evaluate the expression.
+		IF success == true : tokens shall contain the expression.
+		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
+	*/
 	int ans = exe(1,nr_token);
 	return ans;
 }
