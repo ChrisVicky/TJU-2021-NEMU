@@ -183,8 +183,7 @@ static int cmd_p(char *args)
 {
 	bool match_flag = true;
 	bool brackets_flag = true;
-	char * expressions = "";
-	int ans = expr(args, &match_flag, &brackets_flag, expressions);
+	int ans = expr(args, &match_flag, &brackets_flag);
 	if(!match_flag){
 		printf("Miss Match!\n");
 		return 0;
