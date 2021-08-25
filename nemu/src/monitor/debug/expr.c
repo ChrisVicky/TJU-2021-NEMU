@@ -239,7 +239,7 @@ static int exe(int q,int p){
 	return data;
 }
 
-uint32_t expr(char *e, bool *success) {
+uint32_t expr(char *e, bool *success, bool *brackets_flag) {
 	if(!make_token(e)) {
 		*success = false;
 		return 0;
@@ -248,8 +248,8 @@ uint32_t expr(char *e, bool *success) {
 		IF success == true : tokens shall contain the expression.
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
-	*success = check_brackets(1,nr_token);
-	if((*success)){
+	*brackets_flag = check_brackets(1,nr_token);
+	if((*brackets_flag)){
 		int ans = exe(1,nr_token);
 		return ans;
 	}else return 0;

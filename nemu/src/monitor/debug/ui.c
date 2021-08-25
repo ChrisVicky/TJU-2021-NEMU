@@ -181,11 +181,14 @@ static int cmd_x(char* arg){
 }
 static int cmd_p(char *args)
 {
-	bool flag = true;
-	int ans = expr(args, &flag);
-	if(!flag){
-		Log("Miss Match");
+	bool match_flag = true;
+	bool brackets_flag = true;
+	int ans = expr(args, &match_flag, &brackets_flag);
+	if(!match_flag){
+		printf("Miss Match!\n");
 		return 0;
+	}else if(!brackets_flag){
+		printf("Wrong Expression!\n");
 	}
 	printf("DEC: %d	HEX: 0x%08x\n" ,ans,ans);
 	return 0;
