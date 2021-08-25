@@ -4,6 +4,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <sys/types.h>
+#include <stdlib.h>
 #include <regex.h>
 const char registers[] = "eaxecxedxebxespedpesiedieip";
 enum {
@@ -113,11 +114,11 @@ static bool make_token(char *e) {
 	}
 	return true; 
 }
-/*
+
 static bool brackets(int q,int p){
 	int i;
 	int cnt=0;
-	for(i=q;i<p-1;i++){
+	for(i=q;i<p;i++){
 		if(tokens[i].type==FR_BRACKET) cnt++;
 		else if(tokens[i].type==BA_BRACKET) cnt--;
 		if(!cnt) return false;
@@ -126,19 +127,19 @@ static bool brackets(int q,int p){
 	else if(tokens[i].type==BA_BRACKET) cnt--;
 	if(cnt) return false;
 	return true;
+	panic("please implement me");
 }
-*/
-/*
-static int exp(int q,int p){
-	if(q>p){
 
-	}else if(q==p){
- 		int data;
+
+static int exe(int q,int p){
+	int data = 0;
+	if(q+1==p || q==p){
 		int position;
-		switch(tokens[q].type){
+		char * temp;
+		switch(tokens[p].type){
 			case REGISTER:
-				position = strstr(registers,tokens[q].str);
-				position /= 3;
+				temp = strstr(registers,tokens[q].str);
+				position = (temp-registers)/3;
 				switch(position){
 					case 8:
 						data = cpu.eip;
@@ -155,35 +156,63 @@ static int exp(int q,int p){
 				data = strtol(tokens[q].str,NULL,10);
 				break;
 			default:
-				panic("ERROR %s\n" ,tokens[q].str);
+				panic("Error math %s\n" ,tokens[q].str);
 				break;
 		}
-		return data;
+		if(q<p){
+			switch(tokens[q].type){
+				case MINUS_SIGN:
+					data = ~data + 1;
+					break;
+				case ADDRESS_SIGN:
+					data = hwaddr_read(data,4);
+					break;
+				default:
+					panic("Error math type %s\n" ,tokens[q].str);
+					break;		
+			}
+		}
 	}else{
 		bool flag = brackets(q,p);
 		if(flag){
 			q++,p--;
-			return exp(q,p);
+			return exe(q,p);
 		}else{
 			int i=q;
 			int cnt = 0;
-			int op;
-			for(i;i<p;i++){
+			int op=0;
+			for(;i<=p;i++){
 				if(tokens[i].type==FR_BRACKET) cnt++;
 				else if(tokens[i].type==BA_BRACKET) cnt--;
-				else if(tokens[i].type==TIMES||tokens[i].type==DIVIDE||tokens[i].type==PLUS||tokens[i].type==MINUS){
+				else if(!cnt&&(tokens[i].type==TIMES||tokens[i].type==DIVIDE||tokens[i].type==PLUS||tokens[i].type==MINUS)){
 					op = i;
 					break;
 				}
 			}
-			int val1 = exp(q,op-1);
-			int val2 = exp(op+1,p);
-
+			if(op==0) panic("Error\n");
+			int val1 = exe(q,op-1);
+			int val2 = exe(op+1,p);
+			switch(tokens[op].type){
+				case MINUS:
+					data = val1 - val2;
+					break;
+				case PLUS:
+					data = val1 + val2;
+					break;
+				case TIMES:
+					data = val1 * val2;
+					break;
+				case DIVIDE:
+					data = val1 / val2;
+					break;
+				default:
+					panic("Error math type %s\n" ,tokens[op].str);
+			}
 		}
 	}
-	return 0;
+	return data;
 }
-*/
+
 uint32_t expr(char *e, bool *success) {
 	int i;
 	if(!make_token(e)) {
@@ -193,7 +222,8 @@ uint32_t expr(char *e, bool *success) {
 	/* TODO: Insert codes to evaluate the expression. */
 	/* IF success == true : tokens shall contain the expression. */
 	for(i=1;i<=nr_token;i++) printf("%s\n" ,tokens[i].str);
-	panic("please implement me");
+	int ans = exe(1,nr_token);
+	printf("%d\n" ,ans);
 	return 0;
 }
 
