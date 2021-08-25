@@ -93,14 +93,14 @@ static bool make_token(char *e) {
 					case NOTYPE:
 						break;
 					case MINUS:
-						if(i==0 || tokens[i-1].type==PLUS||tokens[i-1].type==MINUS||tokens[i-1].type==TIMES||tokens[i-1].type==DIVIDE)
-							tokens[i].type = MINUS_SIGN;
+						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
+							rules[i].token_type = MINUS_SIGN;
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
 					case TIMES:
-						if(i==0 || tokens[i-1].type==PLUS||tokens[i-1].type==MINUS||tokens[i-1].type==TIMES||tokens[i-1].type==DIVIDE)
-							tokens[i].type = ADDRESS_SIGN;
+						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
+							rules[i].token_type = ADDRESS_SIGN;
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
