@@ -182,12 +182,12 @@ static int cmd_x(char* arg){
 static int cmd_p(char *args)
 {
 	bool flag = true;
-	int status = expr(args, &flag);
+	int ans = expr(args, &flag);
 	if(!flag){
-		panic("Miss Match");
+		Log("Miss Match");
 		return 0;
 	}
-	printf("DEC: %d	HEX: 0x%08x\n" ,status,status);
+	printf("DEC: %d	HEX: 0x%08x\n" ,ans,ans);
 	return 0;
 }
 

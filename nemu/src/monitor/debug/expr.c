@@ -142,6 +142,16 @@ static bool brackets(int q,int p){
 	return true;
 }
 
+static bool check_brackets(int q,int p){
+	int i;
+	int cnt=0;
+	for(i=q;i<=p;i++){
+		if(tokens[i].type==FR_BRACKET) cnt++;
+		else if(tokens[i].type==BA_BRACKET) cnt--;
+		if(cnt<0) return false;
+	}
+	return cnt ? false : true;
+}
 
 static int exe(int q,int p){
 	int data = 0;
@@ -238,8 +248,10 @@ uint32_t expr(char *e, bool *success) {
 		IF success == true : tokens shall contain the expression.
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
-
-	int ans = exe(1,nr_token);
-	return ans;
+	*success = check_brackets(1,nr_token);
+	if((*success)){
+		int ans = exe(1,nr_token);
+		return ans;
+	}else return 0;
 }
 
