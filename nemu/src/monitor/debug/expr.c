@@ -155,105 +155,100 @@ static bool check_brackets(int q,int p){
 
 static int exe(int q,int p){
 	int data = 0;
-	if(q>p){
-		panic("Error\n");
-	}else if(q+1==p || q==p){
-		int position;
-		char * temp;
-		switch(tokens[p].type){
-			case REGISTER:
-				temp = strstr(registers,tokens[p].str);
-				position = (temp-registers)/4;
-				switch(position){
-					case 8:
-						data = cpu.eip;
+	switch ((tokens[q].type))
+	{
+		case MINUS_SIGN:
+			data = exe(q+1,p);
+			data = ~data + 1;
+			return data;
+		case ADDRESS_SIGN:
+			data = exe(q+1,p);
+			data = swaddr_read(data, 4);
+			return data;
+		default:			
+			if(q>p){
+				panic("Error\n");
+			}else if(q+1==p || q==p){
+				int position;
+				char * temp;
+				switch(tokens[p].type){
+					case REGISTER:
+						temp = strstr(registers,tokens[p].str);
+						position = (temp-registers)/4;
+						switch(position){
+							case 8:
+								data = cpu.eip;
+								break;
+							default:
+								data = cpu.gpr[position]._32;
+								break;
+						}
+						break;
+					case HEX:
+						data = strtol(tokens[p].str,NULL,16);
+						break;
+					case TEN:
+						data = strtol(tokens[p].str,NULL,10);
 						break;
 					default:
-						data = cpu.gpr[position]._32;
+						Log("Error math %s\n",tokens[p].str);
 						break;
 				}
-				break;
-			case HEX:
-				data = strtol(tokens[p].str,NULL,16);
-				break;
-			case TEN:
-				data = strtol(tokens[p].str,NULL,10);
-				break;
-			default:
-				Log("Error math %s\n",tokens[p].str);
-				break;
-		}
-		if(q<p){
-			switch(tokens[q].type){
-				case MINUS_SIGN:
-					data = ~data + 1;
-					break;
-				case ADDRESS_SIGN:
-					data = swaddr_read(data,4);
-					break;
-				default:
-					panic("Error math type %s\n",tokens[q].str);
-					break;
-			}
-		}
-	}else{
-		bool flag = brackets(q,p);
-		if(flag){
-			q++,p--;
-			return exe(q,p);
-		}else{
-			int qq = q;
-			if(tokens[q].type==MINUS_SIGN || tokens[q].type==ADDRESS_SIGN){
-				q ++ ;
-			}
-			int i;
-			int cnt = 0;
-			int op=0;
-			for(i=q;i<=p;i++){
-				if(tokens[i].type==FR_BRACKET) cnt++;
-				else if(tokens[i].type==BA_BRACKET) cnt--;
-				else if(!cnt&&(tokens[i].type==TIMES||tokens[i].type==DIVIDE||tokens[i].type==PLUS||tokens[i].type==MINUS)){
-					op = i;
-					break;
+				if(q<p){
+					switch(tokens[q].type){
+						case MINUS_SIGN:
+							data = ~data + 1;
+							break;
+						case ADDRESS_SIGN:
+							data = swaddr_read(data,4);
+							break;
+						default:
+							panic("Error math type %s\n",tokens[q].str);
+							break;
+					}
+				}
+			}else{
+				bool flag = brackets(q,p);
+				if(flag){
+					q++,p--;
+					return exe(q,p);
+				}else{
+					int i;
+					int cnt = 0;
+					int op=0;
+					for(i=q;i<=p;i++){
+						if(tokens[i].type==FR_BRACKET) cnt++;
+						else if(tokens[i].type==BA_BRACKET) cnt--;
+						else if(!cnt&&(tokens[i].type==TIMES||tokens[i].type==DIVIDE||tokens[i].type==PLUS||tokens[i].type==MINUS)){
+							op = i;
+							break;
+						}
+					}
+					if(op==0) Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
+					int val1 = exe(q,op-1);
+					int val2 = exe(op+1,p);
+					switch(tokens[op].type){
+						case MINUS:
+							data = val1 - val2;
+							break;
+						case PLUS:
+							data = val1 + val2;
+							break;
+						case TIMES:
+							data = val1 * val2;
+							break;
+						case DIVIDE:
+							data = val1 / val2;
+							break;
+						default:
+							Log("Error math type %s\n" ,tokens[op].str);
+							break;
+					}
 				}
 			}
-			if(op==0) Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
-			int val1 = exe(q,op-1);
-			int val2 = exe(op+1,p);
-			switch(tokens[op].type){
-				case MINUS:
-					data = val1 - val2;
-					break;
-				case PLUS:
-					data = val1 + val2;
-					break;
-				case TIMES:
-					data = val1 * val2;
-					break;
-				case DIVIDE:
-					data = val1 / val2;
-					break;
-				default:
-					Log("Error math type %s\n" ,tokens[op].str);
-					break;
-			}
-			if(qq!=q){
-				switch(tokens[qq].type){
-					case MINUS_SIGN:
-						data = ~data + 1;
-						break;
-					case ADDRESS_SIGN:
-						data = swaddr_read(data,4);
-						break;
-					default:
-						Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
-						break;
-				}
-			}
-		}
+		printf("q=%d p=%d	data=%d\n" ,q,p,data);
+		return data;
 	}
-	printf("q=%d p=%d	data=%d\n" ,q,p,data);
-	return data;
 }
 
 uint32_t expr(char *e, bool *success, bool *brackets_flag) {
