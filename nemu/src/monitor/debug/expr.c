@@ -94,22 +94,24 @@ static bool make_token(char *e) {
 					case NOTYPE:
 						break;
 					case MINUS:
-						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
-						{
-							strncpy(tokens[++nr_token].str,substr_start,substr_len);
-							tokens[nr_token].type = MINUS_SIGN;
+						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+							tokens[++nr_token].type = MINUS_SIGN;
+						}else{
+							tokens[++nr_token].type = MINUS;
 						}
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						break;
 					case TIMES:
-						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
-						{
-							strncpy(tokens[++nr_token].str,substr_start,substr_len);
-							tokens[nr_token].type = ADDRESS_SIGN;
+						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+							tokens[++nr_token].type = ADDRESS_SIGN;
+						}else{
+							tokens[++nr_token].type = TIMES;
 						}
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						break;
 					default: 
-						strncpy(tokens[++nr_token].str,substr_start,substr_len);
-						tokens[nr_token].type = rules[i].token_type;
+						tokens[++nr_token].type = rules[i].token_type;
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						break;
 						//panic("please implement me");
 				}
