@@ -149,7 +149,7 @@ static int cmd_x(char* arg){
 				break;
 			}
 			t[1] = strtol(args[1],NULL,16);
-			printf("0x%x : 0x%x\n" ,t[1],swaddr_read(t[1],4));
+			printf("0x%x:	0x%08x\n" ,t[1],swaddr_read(t[1],4));
 			break;
 		case 2:
 			if(is_number(args[1])){
@@ -160,7 +160,7 @@ static int cmd_x(char* arg){
 					while(i<t[1]){
 						printf("0x%x:" ,t[2]);
 						for(j=0;j<4&&i<t[1];j++,i++,t[2]+=4){
-							printf(" 0x%08x" ,swaddr_read(t[2],4));
+							printf("	0x%08x" ,swaddr_read(t[2],4));
 						}
 						printf("\n");
 					}

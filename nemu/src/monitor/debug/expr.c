@@ -178,7 +178,7 @@ static int exe(int q,int p){
 					data = ~data + 1;
 					break;
 				case ADDRESS_SIGN:
-					data = hwaddr_read(data,4);
+					data = swaddr_read(data,4);
 					break;
 				default:
 					panic("Error math type %s\n" ,tokens[q].str);
