@@ -202,6 +202,10 @@ static int exe(int q,int p){
 			q++,p--;
 			return exe(q,p);
 		}else{
+			int qq = q;
+			if(tokens[q].type==MINUS_SIGN || tokens[q].type==ADDRESS_SIGN){
+				q ++ ;
+			}
 			int i;
 			int cnt = 0;
 			int op=0;
@@ -232,6 +236,19 @@ static int exe(int q,int p){
 				default:
 					Log("Error math type %s\n" ,tokens[op].str);
 					break;
+			}
+			if(qq!=q){
+				switch(tokens[qq].type){
+					case MINUS_SIGN:
+						data = ~data + 1;
+						break;
+					case ADDRESS_SIGN:
+						data = swaddr_read(data,4);
+						break;
+					default:
+						Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
+						break;
+				}
 			}
 		}
 	}
