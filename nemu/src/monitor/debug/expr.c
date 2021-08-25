@@ -152,7 +152,7 @@ static int exe(int q,int p){
 		switch(tokens[p].type){
 			case REGISTER:
 				temp = strstr(registers,tokens[p].str);
-				position = (temp-registers)/3;
+				position = (temp-registers)/4;
 				printf("position=%d\n" ,position);
 				switch(position){
 					case 8:
