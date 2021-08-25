@@ -140,14 +140,13 @@ static bool brackets(int q,int p){
 	else if(tokens[i].type==BA_BRACKET) cnt--;
 	if(cnt) return false;
 	return true;
-	panic("please implement me");
 }
 
 
 static int exe(int q,int p){
 	int data = 0;
 	if(q>p){
-		Log("Error\n");
+		panic("Error\n");
 	}else if(q+1==p || q==p){
 		int position;
 		char * temp;
@@ -239,6 +238,7 @@ uint32_t expr(char *e, bool *success) {
 		IF success == true : tokens shall contain the expression.
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
+
 	int ans = exe(1,nr_token);
 	return ans;
 }
