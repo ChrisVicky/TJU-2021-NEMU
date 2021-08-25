@@ -94,10 +94,10 @@ static bool make_token(char *e) {
 						break;
 					case MINUS:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
-						/*{
+						{
 							printf("tokens[%d].str = %s\n" ,nr_token,tokens[nr_token].str);
 							rules[i].token_type = MINUS_SIGN;
-						}*/
+						}
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
