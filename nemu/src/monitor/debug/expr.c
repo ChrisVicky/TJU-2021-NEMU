@@ -95,12 +95,15 @@ static bool make_token(char *e) {
 					case MINUS:
 						if(i==0 || tokens[i-1].type==PLUS||tokens[i-1].type==MINUS||tokens[i-1].type==TIMES||tokens[i-1].type==DIVIDE)
 							tokens[i].type = MINUS_SIGN;
+						break;
 					case TIMES:
 						if(i==0 || tokens[i-1].type==PLUS||tokens[i-1].type==MINUS||tokens[i-1].type==TIMES||tokens[i-1].type==DIVIDE)
 							tokens[i].type = ADDRESS_SIGN;
+						break;
 					default: 
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
+						break;
 						//panic("please implement me");
 				}
 				break;
