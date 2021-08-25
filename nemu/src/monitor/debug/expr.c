@@ -166,6 +166,8 @@ static int exe(int q,int p){
 				panic("Error math %s\n" ,tokens[q].str);
 				break;
 		}
+
+		printf("$ q=%d p=%d	data=%d\n",q,p,data);
 		if(q<p){
 			switch(tokens[q].type){
 				case MINUS_SIGN:
