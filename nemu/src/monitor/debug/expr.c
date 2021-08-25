@@ -153,6 +153,8 @@ static int exe(int q,int p){
 			case REGISTER:
 				temp = strstr(registers,tokens[p].str);
 				position = (temp-registers)/3;
+
+				printf("temp=%s	registers=%s	tokens.str=%s\n" ,temp,registers, tokens[p].str);
 				printf("position=%d\n" ,position);
 				switch(position){
 					case 8:
