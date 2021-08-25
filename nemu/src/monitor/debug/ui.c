@@ -100,11 +100,11 @@ static int cmd_info(char* args){
 		for(i=0;i<8;i++){
 			if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, register_name[i])){
 				flag = true;
-				printf("%s		0x%x		%d\n" ,register_name[i],cpu.gpr[i]._32, cpu.gpr[i]._32);
+				printf("%s		0x%08x		%d\n" ,register_name[i],cpu.gpr[i]._32, cpu.gpr[i]._32);
 			}
 		}
 		if(strcmp("",temp_cmd)==0 || strstr(temp_cmd, "eip")){
-			printf("eip		0x%x		%d\n" ,cpu.eip, cpu.eip);
+			printf("eip		0x%08x		%d\n" ,cpu.eip, cpu.eip);
 			flag = true;
 		}
 		if(flag == false){
@@ -149,7 +149,7 @@ static int cmd_x(char* arg){
 				break;
 			}
 			t[1] = strtol(args[1],NULL,16);
-			printf("0x%x:	0x%08x\n" ,t[1],swaddr_read(t[1],4));
+			printf("0x%08x:	0x%08x\n" ,t[1],swaddr_read(t[1],4));
 			break;
 		case 2:
 			if(is_number(args[1])){
@@ -158,7 +158,7 @@ static int cmd_x(char* arg){
 					t[2] = strtol(args[2],NULL,16);
 					int i = 0,j;
 					while(i<t[1]){
-						printf("0x%x:" ,t[2]);
+						printf("0x%08x:" ,t[2]);
 						for(j=0;j<4&&i<t[1];j++,i++,t[2]+=4){
 							printf("	0x%08x" ,swaddr_read(t[2],4));
 						}
