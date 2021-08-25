@@ -10,7 +10,8 @@ enum {
 	NOTYPE = 256, EQ = 0, HEX, TEN, 
 	PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET, 
 	REGISTER,
-	ADDRESS
+	ADDRESS_SIGN,
+	MINUS_SIGN
 	/* TODO: Add more token types */
 
 };
@@ -90,6 +91,12 @@ static bool make_token(char *e) {
 				switch(rules[i].token_type){
 					case NOTYPE:
 						break;
+					case MINUS:
+						if(i==0 || tokens[i-1].type==PLUS||tokens[i-1].type==MINUS||tokens[i-1].type==TIMES||tokens[i-1].type==DIVIDE)
+							tokens[i].type = MINUS_SIGN;
+					case TIMES:
+						if(i==0 || tokens[i-1].type==PLUS||tokens[i-1].type==MINUS||tokens[i-1].type==TIMES||tokens[i-1].type==DIVIDE)
+							tokens[i].type = ADDRESS_SIGN;
 					default: 
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
@@ -106,7 +113,77 @@ static bool make_token(char *e) {
 	}
 	return true; 
 }
+/*
+static bool brackets(int q,int p){
+	int i;
+	int cnt=0;
+	for(i=q;i<p-1;i++){
+		if(tokens[i].type==FR_BRACKET) cnt++;
+		else if(tokens[i].type==BA_BRACKET) cnt--;
+		if(!cnt) return false;
+	}
+	if(tokens[i].type==FR_BRACKET) cnt++;
+	else if(tokens[i].type==BA_BRACKET) cnt--;
+	if(cnt) return false;
+	return true;
+}
+*/
+/*
+static int exp(int q,int p){
+	if(q>p){
 
+	}else if(q==p){
+ 		int data;
+		int position;
+		switch(tokens[q].type){
+			case REGISTER:
+				position = strstr(registers,tokens[q].str);
+				position /= 3;
+				switch(position){
+					case 8:
+						data = cpu.eip;
+						break;
+					default:
+						data = cpu.gpr[position]._32;
+						break;
+				}
+				break;
+			case HEX:
+				data = strtol(tokens[q].str,NULL,16);
+				break;
+			case TEN:
+				data = strtol(tokens[q].str,NULL,10);
+				break;
+			default:
+				panic("ERROR %s\n" ,tokens[q].str);
+				break;
+		}
+		return data;
+	}else{
+		bool flag = brackets(q,p);
+		if(flag){
+			q++,p--;
+			return exp(q,p);
+		}else{
+			int i=q;
+			int cnt = 0;
+			int op;
+			for(i;i<p;i++){
+				if(tokens[i].type==FR_BRACKET) cnt++;
+				else if(tokens[i].type==BA_BRACKET) cnt--;
+				else if(tokens[i].type==TIMES||tokens[i].type==DIVIDE||tokens[i].type==PLUS||tokens[i].type==MINUS){
+					op = i;
+					break;
+				}
+			}
+			int val1 = exp(q,op-1);
+			int val2 = exp(op+1,p);
+
+		}
+	}
+	return 0;
+}
+*/
 uint32_t expr(char *e, bool *success) {
 	int i;
 	if(!make_token(e)) {
@@ -115,9 +192,7 @@ uint32_t expr(char *e, bool *success) {
 	}
 	/* TODO: Insert codes to evaluate the expression. */
 	/* IF success == true : tokens shall contain the expression. */
-	for(i=0;i<nr_token;i++){
-		//if(tokens[i].type==TIMES && (i==0 || tokens[i-1].type==))
-	}
+	for(i=1;i<=nr_token;i++) printf("%s\n" ,tokens[i].str);
 	panic("please implement me");
 	return 0;
 }

@@ -159,10 +159,8 @@ static int cmd_x(char* arg){
 					int i = 0,j;
 					while(i<t[1]){
 						printf("0x%x:" ,t[2]);
-						for(j=0;j<4&&i<t[1];j++){
+						for(j=0;j<4&&i<t[1];j++,i++,t[2]+=4){
 							printf(" 0x%08x" ,swaddr_read(t[2],4));
-							t[2] += 4;
-							i++;
 						}
 						printf("\n");
 					}
