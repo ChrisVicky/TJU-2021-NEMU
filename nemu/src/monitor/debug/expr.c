@@ -99,7 +99,7 @@ static bool make_token(char *e) {
 						nr_token++;
 						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
-						printf("str=%s	type=%d	str=%s	type=%d\n" ,tokens[nr_token].str, tokens[nr_token].type,tokens[nr_token-1].str,tokens[nr_token-1].type);
+						Log("str=%s	type=%d	str=%s	type=%d\n" ,tokens[nr_token].str, tokens[nr_token].type,tokens[nr_token-1].str,tokens[nr_token-1].type);
 						break;
 					case TIMES:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
