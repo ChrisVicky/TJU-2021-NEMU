@@ -73,9 +73,7 @@ static bool make_token(char *e) {
 	regmatch_t pmatch;
 	
 	nr_token = 0;
-	memset(tokens,0,sizeof(tokens));
-	for(i=0;i<32;i++) printf("%d " ,tokens[i].type);
-	printf("\n");
+//	memset(tokens,0,sizeof(tokens));
 
 	while(e[position] != '\0') {
 		/* Try all rules one by one. */
@@ -97,23 +95,20 @@ static bool make_token(char *e) {
 						break;
 					case MINUS:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
-							rules[i].token_type = MINUS_SIGN;
-						
-						nr_token++;
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
-						tokens[nr_token].type = rules[i].token_type;
-						Log("str=%s	type=%d	str=%s	type=%d\n" ,tokens[nr_token].str, tokens[nr_token].type,tokens[nr_token-1].str,tokens[nr_token-1].type);
+						{
+							strncpy(tokens[++nr_token].str,substr_start,substr_len);
+							tokens[nr_token].type = MINUS_SIGN;
+						}
 						break;
 					case TIMES:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
-							rules[i].token_type = ADDRESS_SIGN;
-						nr_token++;
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
-						tokens[nr_token].type = rules[i].token_type;
+						{
+							strncpy(tokens[++nr_token].str,substr_start,substr_len);
+							tokens[nr_token].type = ADDRESS_SIGN;
+						}
 						break;
 					default: 
-						nr_token++;
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
 						//panic("please implement me");
