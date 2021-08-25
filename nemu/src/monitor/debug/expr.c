@@ -98,15 +98,9 @@ static bool make_token(char *e) {
 							printf("tokens[%d].str = %s\n" ,nr_token,tokens[nr_token].str);
 							rules[i].token_type = MINUS_SIGN;
 						}
-						strncpy(tokens[++nr_token].str,substr_start,substr_len);
-						tokens[nr_token].type = rules[i].token_type;
-						break;
 					case TIMES:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
 							rules[i].token_type = ADDRESS_SIGN;
-						strncpy(tokens[++nr_token].str,substr_start,substr_len);
-						tokens[nr_token].type = rules[i].token_type;
-						break;
 					default: 
 						strncpy(tokens[++nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
@@ -194,10 +188,10 @@ static int exe(int q,int p){
 			q++,p--;
 			return exe(q,p);
 		}else{
-			int i=q;
+			int i;
 			int cnt = 0;
 			int op=0;
-			for(;i<=p;i++){
+			for(i=q;i<=p;i++){
 				if(tokens[i].type==FR_BRACKET) cnt++;
 				else if(tokens[i].type==BA_BRACKET) cnt--;
 				else if(!cnt&&(tokens[i].type==TIMES||tokens[i].type==DIVIDE||tokens[i].type==PLUS||tokens[i].type==MINUS)){
@@ -205,7 +199,7 @@ static int exe(int q,int p){
 					break;
 				}
 			}
-			if(op==0) panic("Error\n");
+			if(op==0) panic("Wrong Expression\n");
 			int val1 = exe(q,op-1);
 			int val2 = exe(op+1,p);
 			switch(tokens[op].type){
