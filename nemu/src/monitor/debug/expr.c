@@ -153,7 +153,6 @@ static int exe(int q,int p){
 			case REGISTER:
 				temp = strstr(registers,tokens[p].str);
 				position = (temp-registers)/4;
-				printf("position=%d\n" ,position);
 				switch(position){
 					case 8:
 						data = cpu.eip;
@@ -170,7 +169,7 @@ static int exe(int q,int p){
 				data = strtol(tokens[p].str,NULL,10);
 				break;
 			default:
-				panic("Error math %s\n" ,tokens[p].str);
+				Log("Error math %s\n",tokens[p].str);
 				break;
 		}
 		if(q<p){
@@ -182,8 +181,8 @@ static int exe(int q,int p){
 					data = swaddr_read(data,4);
 					break;
 				default:
-					panic("Error math type %s\n" ,tokens[q].str);
-					break;		
+					panic("Error math type %s\n",tokens[q].str);
+					break;
 			}
 		}
 	}else{
@@ -203,7 +202,7 @@ static int exe(int q,int p){
 					break;
 				}
 			}
-			if(op==0) panic("Wrong Expression\n");
+			if(op==0) Log("Wrong Expression\n");
 			int val1 = exe(q,op-1);
 			int val2 = exe(op+1,p);
 			switch(tokens[op].type){
@@ -220,7 +219,8 @@ static int exe(int q,int p){
 					data = val1 / val2;
 					break;
 				default:
-					panic("Error math type %s\n" ,tokens[op].str);
+					Log("Error math type %s\n" ,tokens[op].str);
+					break;
 			}
 		}
 	}

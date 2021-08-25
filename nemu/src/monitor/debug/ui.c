@@ -184,8 +184,7 @@ static int cmd_p(char *args)
 	bool flag = true;
 	int status = expr(args, &flag);
 	if(!flag){
-		printf("Miss Match");
-		printf("status=%d\n" , status);
+		panic("Miss Match");
 		return 0;
 	}
 	printf("DEC: %d	HEX: 0x%08x\n" ,status,status);
