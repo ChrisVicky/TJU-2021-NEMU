@@ -169,7 +169,7 @@ static int exe(int q,int p){
 		if(q<p){
 			switch(tokens[q].type){
 				case MINUS_SIGN:
-					data = ~data + 1;
+					data = -data;
 					break;
 				case ADDRESS_SIGN:
 					data = hwaddr_read(data,4);
