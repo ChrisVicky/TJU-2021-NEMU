@@ -176,7 +176,7 @@ static int exe(int q,int p){
 				case MINUS_SIGN:
 
 					printf("* q=%d p=%d	data=%d\n",q,p,data);
-					data = -data;
+					data = ~data + 1;
 
 					printf("* q=%d p=%d	data=%d\n",q,p,data);
 					break;
