@@ -74,6 +74,8 @@ static bool make_token(char *e) {
 	
 	nr_token = 0;
 	memset(tokens,0,sizeof(tokens));
+	for(i=0;i<32;i++) printf("%d " ,tokens[i].type);
+	printf("\n");
 
 	while(e[position] != '\0') {
 		/* Try all rules one by one. */
