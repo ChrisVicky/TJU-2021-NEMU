@@ -217,6 +217,7 @@ static int exe(int q,int p){
 			}
 		}
 	}
+	printf("q=%d p=%d	data=%d\n" ,q,p,data);
 	return data;
 }
 
