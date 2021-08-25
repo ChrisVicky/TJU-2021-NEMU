@@ -94,25 +94,26 @@ static bool make_token(char *e) {
 						break;
 					case MINUS:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
-						{
-							printf("tokens[%d].str = %s\n" ,nr_token,tokens[nr_token].str);
 							rules[i].token_type = MINUS_SIGN;
-						}
-						strncpy(tokens[++nr_token].str,substr_start,substr_len);
+						nr_token++;
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
 					case TIMES:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE)
 							rules[i].token_type = ADDRESS_SIGN;
-						strncpy(tokens[++nr_token].str,substr_start,substr_len);
+						nr_token++;
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
 					default: 
-						strncpy(tokens[++nr_token].str,substr_start,substr_len);
+						nr_token++;
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].type = rules[i].token_type;
 						break;
 						//panic("please implement me");
 				}
+				printf("%s	type=%d\n" ,tokens[nr_token].str, tokens[nr_token].type);
 				break;
 			}
 		}
