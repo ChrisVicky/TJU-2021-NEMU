@@ -145,7 +145,7 @@ static int exe(int q,int p){
 		char * temp;
 		switch(tokens[p].type){
 			case REGISTER:
-				temp = strstr(registers,tokens[q].str);
+				temp = strstr(registers,tokens[p].str);
 				position = (temp-registers)/3;
 				switch(position){
 					case 8:
@@ -157,13 +157,13 @@ static int exe(int q,int p){
 				}
 				break;
 			case HEX:
-				data = strtol(tokens[q].str,NULL,16);
+				data = strtol(tokens[p].str,NULL,16);
 				break;
 			case TEN:
-				data = strtol(tokens[q].str,NULL,10);
+				data = strtol(tokens[p].str,NULL,10);
 				break;
 			default:
-				panic("Error math %s\n" ,tokens[q].str);
+				panic("Error math %s\n" ,tokens[p].str);
 				break;
 		}
 
