@@ -116,7 +116,7 @@ uint32_t expr(char *e, bool *success) {
 	/* TODO: Insert codes to evaluate the expression. */
 	/* IF success == true : tokens shall contain the expression. */
 	for(i=0;i<nr_token;i++){
-		if(tokens[i].type==TIMES && (i==0 || tokens[i-1].type==))
+		//if(tokens[i].type==TIMES && (i==0 || tokens[i-1].type==))
 	}
 	panic("please implement me");
 	return 0;
