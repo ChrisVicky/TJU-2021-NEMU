@@ -35,7 +35,7 @@ static struct rule {
 	{"\\/", DIVIDE},				// divide		6
 	{"\\(", FR_BRACKET},			// for-bracket	7
 	{"\\)", BA_BRACKET},			// back-bracket	8
-	{"$[eax|ecx|edx|ebx|esp|ebp|esi|edi|eip]", REGISTER}, // register 9
+	{"\\$[eax|ecx|edx|ebx|esp|ebp|esi|edi|eip]", REGISTER}, // register 9
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
