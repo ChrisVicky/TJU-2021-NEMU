@@ -113,7 +113,7 @@ static bool make_token(char *e) {
 						break;
 						//panic("please implement me");
 				}
-				printf("%s	type=%d\n" ,tokens[nr_token].str, tokens[nr_token].type);
+				printf("str=%s	type=%d	str=%s	type=%d\n" ,tokens[nr_token].str, tokens[nr_token].type,tokens[nr_token-1].str,tokens[nr_token].type);
 				break;
 			}
 		}
