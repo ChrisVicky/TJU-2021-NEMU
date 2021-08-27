@@ -241,6 +241,7 @@ void ui_mainloop() {
 			if(last_cmd==NULL)
 				continue; 
 			cmd = last_cmd;
+			Log("T");
 		}
 		last_cmd = str;
 		Log("last_cmd = %s\n" ,last_cmd);
