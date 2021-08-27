@@ -215,13 +215,13 @@ static int cmd_w(char *args)
 		return 0;
 	}
 	WP *wp = new_wp();
+	Log("Expression: %s	Ans: %08x\n" ,args ,ans);
 	if(wp==NULL){
 		return -1;
 	}
 	Log("args: %s\n" ,args);
 	strcpy(wp->expressions, args);
 
-	Log("Expression: %s	Ans: %08x\n" ,args ,ans);
 	wp->old_value = ans;
 	printf("Watchpoint %d: %s\n" ,wp->NO ,wp->expressions);
 	printf("Crruent Value\nDEC: %d	HEX: %08x\n" ,ans ,ans);
