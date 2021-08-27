@@ -27,7 +27,7 @@ WP * new_wp(){
 		return NULL;
 	}
 	WP *temp = head;
-	while(temp->next) temp = temp->next;
+	while(temp->next!=NULL) temp = temp->next;
 	Log("Successfully Enter a new wp");
 	WP *ret = free_;
 	Log("2");
