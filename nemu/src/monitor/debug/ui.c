@@ -23,7 +23,6 @@ char* rl_gets() {
 	if (line_read && *line_read) {
 		add_history(line_read);
 	}
-
 	return line_read;
 }
 static int cmd_c(char *args) { cpu_exec(-1); return 0; }
@@ -216,11 +215,17 @@ static int cmd_d(char *args){
 
 void ui_mainloop() {
 	while(1) {
+		char *last_cmd = current_history()->line;
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
-		if(cmd == NULL) { continue; }
+		if(cmd == NULL) { 
+			if(last_cmd == NULL)
+				continue; 
+			str = last_cmd;
+			cmd = strtok(str, " ");
+		}
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
@@ -241,12 +246,9 @@ void ui_mainloop() {
 				break;
 			}
 		}
-
 		if(i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 	}
 }
-
-
 /*
 static bool is_number(char *arg){
 	int i;
