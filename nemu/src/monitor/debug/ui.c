@@ -34,6 +34,7 @@ static int cmd_info(char *args);
 static int cmd_x(char *arg);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
 	char *name;
@@ -50,6 +51,7 @@ static struct {
 	{ "x", "Scan the cache", cmd_x },
 	{ "p", "Expression", cmd_p },
 	{ "w", "Watch Points", cmd_w },
+	{ "d", "Delete Points", cmd_d},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -228,6 +230,16 @@ static int cmd_w(char *args)
 	printf("Crruent Value: DEC: %d	HEX: 0x%08x\n" ,ans ,ans);
 	return 0;
 }
+
+static int cmd_d(char *args){
+	if(args==NULL){
+		printf("\033[47;30Arguments required\n\033[0m");
+		return 0;
+	}
+	return 0;
+}
+
+
 
 void ui_mainloop() {
 	while(1) {
