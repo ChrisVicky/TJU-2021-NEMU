@@ -161,7 +161,7 @@ static int cmd_p(char *args)
 		Log("Expression Error");
 		return 0;
 	}
-	printf("NEW E: %s\n" ,args);
+	// printf("NEW E: %s\n" ,args);
 	printf("DEC: %d	HEX: 0x%08x\n" ,ans,ans);
 	return 0;
 }
