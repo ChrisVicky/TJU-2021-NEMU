@@ -185,7 +185,7 @@ static int exe(int q,int p, bool *flag){
 		default:			
 			if(q>p){
 				Log("Error\n");
-				flag = false;
+				*flag = false;
 				return 0;
 			}else if(q==p){
 				int position;
