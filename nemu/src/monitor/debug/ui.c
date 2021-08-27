@@ -125,67 +125,27 @@ static int cmd_info(char* args){
 	}
 	return 0;
 }
-static bool is_number(char *arg){
-	int i;
-	char temp_arg = 'a';
-	char HEX[] = "abcdef0123456789";
-	if(arg[0]=='0' && arg[1]=='x') arg = arg+2;
-	for(i=0;i<strlen(arg);i++){
-		temp_arg = arg[i];
-		if(strchr(HEX, temp_arg)==NULL) return false;
+static int cmd_x(char *args){
+	if(args==NULL){
+		printf("Arguments required\n");
+		return 0;
 	}
-	return true;
-}
-static int cmd_x(char* arg){
-	char *temp_arg = arg;
-	int cnt = 0;
-	char *temp = strtok(temp_arg, " ");
-	char *args[5];
-	int t[5];
-	while(temp!=NULL){
-		if(cnt == 3) break;
-		temp_arg = temp + strlen(temp) + 1;
-		args[++cnt] = temp;
-		temp = strtok(temp_arg, " ");
+	char *args1 = strtok(args, " ");
+	int t1 = strtol(args1, NULL, 10);
+	char *args2 = args1 + strlen(args1) + 1;
+	bool flag = true;
+	int t2 = expr(args2, &flag);
+	if(!flag){
+		printf("Wrong Expression %s\n" ,args2);
+		return 0;
 	}
-	switch(cnt){
-		case 0:
-			printf("Argument required (starting display address).\n");
-			return 0;
-			break;
-		case 1:
-			if(!is_number(args[1])){
-				printf("Unkown command argument '%s'\n" ,args[1]);
-				break;
-			}
-			t[1] = strtol(args[1],NULL,16);
-			printf("0x%08x:	0x%08x\n" ,t[1],swaddr_read(t[1],4));
-			break;
-		case 2:
-			if(is_number(args[1])){
-				if(is_number(args[2])){
-					t[1] = strtol(args[1],NULL,10);
-					t[2] = strtol(args[2],NULL,16);
-					int i = 0,j;
-					while(i<t[1]){
-						printf("0x%08x:" ,t[2]);
-						for(j=0;j<4&&i<t[1];j++,i++,t[2]+=4){
-							printf("	0x%08x" ,swaddr_read(t[2],4));
-						}
-						printf("\n");
-					}
-				}else{
-					printf("Invalid argument '%s'\n" ,args[2]);
-				}
-			}else if(is_number(args[2])){
-				printf("Invalid argument '%s'\n" ,args[1]);
-			}else{
-				printf("Invalid argument '%s' '%s'\n" ,args[1] ,args[2]);
-			}
-			break;
-		default:
-			printf("Too many arguments\n");
-			break;
+	int i=0, j;
+	while(i<t1){
+		printf("0x%08x: ", t2);
+		for(j=0;j<4&&i<t1; i++,j++,t2+=4){
+			printf("0x%08x ", swaddr_read(t2, 4));
+		}
+		printf("\n");
 	}
 	return 0;
 }
@@ -284,3 +244,71 @@ void ui_mainloop() {
 		if(i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 	}
 }
+
+
+/*
+static bool is_number(char *arg){
+	int i;
+	char temp_arg = 'a';
+	char HEX[] = "abcdef0123456789";
+	if(arg[0]=='0' && arg[1]=='x') arg = arg+2;
+	for(i=0;i<strlen(arg);i++){
+		temp_arg = arg[i];
+		if(strchr(HEX, temp_arg)==NULL) return false;
+	}
+	return true;
+}
+static int cmd_x_MORE(char* arg){
+	char *temp_arg = arg;
+	int cnt = 0;
+	char *temp = strtok(temp_arg, " ");
+	char *args[5];
+	int t[5];
+	while(temp!=NULL){
+		if(cnt == 3) break;
+		temp_arg = temp + strlen(temp) + 1;
+		args[++cnt] = temp;
+		temp = strtok(temp_arg, " ");
+	}
+	switch(cnt){
+		case 0:
+			printf("Argument required (starting display address).\n");
+			return 0;
+			break;
+		case 1:
+			if(!is_number(args[1])){
+				printf("Unkown command argument '%s'\n" ,args[1]);
+				break;
+			}
+			t[1] = strtol(args[1],NULL,16);
+			printf("0x%08x:	0x%08x\n" ,t[1],swaddr_read(t[1],4));
+			break;
+		case 2:
+			if(is_number(args[1])){
+				if(is_number(args[2])){
+					t[1] = strtol(args[1],NULL,10);
+					t[2] = strtol(args[2],NULL,16);
+					int i = 0,j;
+					while(i<t[1]){
+						printf("0x%08x:" ,t[2]);
+						for(j=0;j<4&&i<t[1];j++,i++,t[2]+=4){
+							printf("	0x%08x" ,swaddr_read(t[2],4));
+						}
+						printf("\n");
+					}
+				}else{
+					printf("Invalid argument '%s'\n" ,args[2]);
+				}
+			}else if(is_number(args[2])){
+				printf("Invalid argument '%s'\n" ,args[1]);
+			}else{
+				printf("Invalid argument '%s' '%s'\n" ,args[1] ,args[2]);
+			}
+			break;
+		default:
+			printf("Too many arguments\n");
+			break;
+	}
+	return 0;
+}
+*/
