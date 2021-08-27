@@ -216,13 +216,6 @@ static int cmd_d(char *args){
 void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
-		if(strcmp("",str)==0){
-			Log("NULL");
-			HIST_ENTRY *previous_line = previous_history();
-			if(previous_line==NULL) continue;
-			Log("Last Line: %s" ,previous_line->line);
-			str = previous_line->line;
-		}
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
