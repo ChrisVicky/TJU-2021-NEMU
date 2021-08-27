@@ -226,6 +226,7 @@ void ui_mainloop() {
 			str = previous_line->line;
 			cmd = strtok(str, " ");
 		}
+		printf("cmd: %s\n" ,cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
