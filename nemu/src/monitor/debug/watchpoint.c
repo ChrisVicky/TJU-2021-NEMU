@@ -4,7 +4,6 @@
 #define NR_WP 32
 
 static WP wp_pool[NR_WP];
-static WP *HEAD;
 static WP *head, *free_;
 
 void init_wp_pool()
@@ -18,8 +17,7 @@ void init_wp_pool()
 	}
 	wp_pool[NR_WP - 1].next = NULL;
 
-	head = HEAD;
-	//head->next = NULL;
+	head = NULL;
 	free_ = wp_pool;
 }
 
@@ -33,6 +31,14 @@ WP *new_wp()
 		return NULL;
 	}
 	WP *temp = head;
+	if(temp==NULL){
+		Log("TEMP==NULL");
+		WP *ret = free_;
+		free_ = free_->next;
+		ret->next = NULL;
+		head = ret;
+		return ret;
+	}
 	Log("TEMP!=NULL");
 	while (temp->next != NULL)
 		temp = temp->next;
@@ -50,9 +56,21 @@ WP *new_wp()
 void free_wp(WP *wp)
 {
 	WP *temp = head;
-	if (temp->next == NULL)
+	if (temp == NULL)
 	{
 		Log("Error: No watch points left to free out!");
+		return;
+	}
+	WP *f;
+	for(f=free_;f!=NULL;f=f->next){
+		if(f==wp){
+			Log("Watchpoint %d is not in the used list\n" ,f->NO);
+			return;
+		}
+	}
+	if(head==wp){
+		wp->next = free_;
+		free_ = wp;
 		return;
 	}
 	while (temp->next != wp)
