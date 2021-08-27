@@ -9,7 +9,12 @@ typedef struct watchpoint {
 
 	/* TODO: Add more members if necessary */
 	char * expressions;
+	int old_value;
+	bool enable;
 
 } WP;
 
+WP * new_wp();
+void free_wp(WP *wp);
+WP * get_head();
 #endif

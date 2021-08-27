@@ -26,18 +26,14 @@ char* rl_gets() {
 
 	return line_read;
 }
-static int cmd_c(char *args) {
-	cpu_exec(-1);
-	return 0;
-}
-static int cmd_q(char *args) {
-	return -1;
-}
+static int cmd_c(char *args) { cpu_exec(-1); return 0; }
+static int cmd_q(char *args) { return -1; }
 static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *arg);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
 
 static struct {
 	char *name;
@@ -49,10 +45,11 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 
 	/* TODO: Add more commands */
-	{ "si","Continue the execution for n steps", cmd_si},
-	{"info", "Show registers", cmd_info},
-	{"x", "Scan the cache", cmd_x},
-	{"p", "Expression", cmd_p},
+	{ "si","Continue the execution for n steps", cmd_si },
+	{ "info", "Show registers", cmd_info },
+	{ "x", "Scan the cache", cmd_x },
+	{ "p", "Expression", cmd_p },
+	{ "w", "Watch Points", cmd_w },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -109,6 +106,16 @@ static int cmd_info(char* args){
 		}
 		if(flag == false){
 			printf("Invalid register '%s'.\n" ,temp_cmd);
+		}
+	}else if(strcmp("w", temp_args)==0){
+		WP * head = get_head();
+		if(head==NULL){
+			printf("No watchpoints\n");
+		}
+		printf("Num	Enb	Expression\n");
+		while(head!=NULL){
+			printf("%d	%s	%s (%d)\n" ,head->NO ,head->enable?"Yes":"No" ,head->expressions ,head->old_value);
+			head = head->next;
 		}
 	}else{
 		printf("Undified info command '%s'.\n" ,temp_args);
@@ -184,13 +191,30 @@ static int cmd_p(char *args)
 	bool flag = true;
 	int ans = expr(args, &flag);
 	if(!flag){
-		Log("Miss Match or Wrong Expression\n");
+		Log("Expression Error");
 		return 0;
 	}
 	printf("DEC: %d	HEX: 0x%08x\n" ,ans,ans);
 	return 0;
 }
-
+static int cmd_w(char *args)
+{
+	bool flag = true;
+	int ans = expr(args, &flag);
+	if(!flag){
+		Log("Expression Error");
+		return 0;
+	}
+	WP *wp = new_wp();
+	if(wp==NULL){
+		return -1;
+	}
+	strncpy(wp->expressions, args, strlen(args));
+	wp->old_value = ans;
+	printf("Watchpoint %d: %s\n" ,wp->NO ,wp->expressions);
+	printf("Crruent Value\nDEC: %d	HEX: %08x\n" ,ans ,ans);
+	return 0;
+}
 
 void ui_mainloop() {
 	while(1) {

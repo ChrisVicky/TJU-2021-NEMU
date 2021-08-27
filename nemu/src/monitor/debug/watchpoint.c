@@ -10,6 +10,7 @@ void init_wp_pool() {
 	int i;
 	for(i = 0; i < NR_WP; i ++) {
 		wp_pool[i].NO = i;
+		wp_pool[i].enable = true;
 		wp_pool[i].next = &wp_pool[i + 1];
 	}
 	wp_pool[NR_WP - 1].next = NULL;
@@ -21,7 +22,10 @@ void init_wp_pool() {
 /* TODO: Implement the functionality of watchpoint */
 
 WP * new_wp(){
-	if(free_==NULL) assert(0);
+	if(free_==NULL){
+		Log("No New Watch Points available");
+		return NULL;
+	}
 	WP *temp = head;
 	while(temp->next) temp = temp->next;
 	WP *ret = free_;
@@ -33,9 +37,17 @@ WP * new_wp(){
 
 void free_wp(WP *wp){
 	WP *temp = head;
+	if(temp == NULL){
+		Log("Error no watch points available to free out!");
+		return ;
+	}
 	while(temp->next!=wp) temp = temp->next;
 	temp->next = wp->next;
-	wp->next = free_->next;
-	free_->next = wp;
+	wp->next = free_;
+	free_ = wp;
+}
+
+WP *get_head(){
+	return head;
 }
 
