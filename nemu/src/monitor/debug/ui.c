@@ -243,6 +243,7 @@ void ui_mainloop() {
 			cmd = last_cmd;
 		}
 		last_cmd = str;
+		Log("last_cmd = %s\n" ,last_cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
