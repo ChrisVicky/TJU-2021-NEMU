@@ -23,7 +23,7 @@ void init_wp_pool() {
 
 WP * new_wp(){
 	if(free_==NULL){
-		Log("No New Watch Points available");
+		Log("Error: No new watchpoints available");
 		return NULL;
 	}
 	WP *temp = head;
@@ -32,13 +32,14 @@ WP * new_wp(){
 	free_ = (*free_).next;
 	ret->next = NULL;
 	temp->next = ret;
+	Log("Successfully Enter a new wp");
 	return ret;
 }
 
 void free_wp(WP *wp){
 	WP *temp = head;
 	if(temp == NULL){
-		Log("Error no watch points available to free out!");
+		Log("Error: No watch points left to free out!");
 		return ;
 	}
 	while(temp->next!=wp) temp = temp->next;
