@@ -230,7 +230,7 @@ static int cmd_w(char *args)
 }
 
 void ui_mainloop() {
-	char last_cmd[] = "";
+	char *last_cmd = "";
 	while(1) {
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
@@ -242,7 +242,7 @@ void ui_mainloop() {
 				continue; 
 			cmd = last_cmd;
 		}
-		strcpy(last_cmd, str);
+		last_cmd = str;
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
