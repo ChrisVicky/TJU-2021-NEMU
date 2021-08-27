@@ -216,6 +216,9 @@ static int cmd_d(char *args){
 void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
+		if(strcmp("",str)==0){
+			Log("NULL");
+		}
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
