@@ -185,7 +185,7 @@ static int exe(int q,int p, bool *flag){
 			break;
 		default:			
 			if(q>p){
-				Log("Error\n");
+				Log("Error: Wrong Expression\n");
 				*flag = false;
 				return 0;
 			}else if(q==p){
@@ -233,7 +233,7 @@ static int exe(int q,int p, bool *flag){
 						}
 					}
 					if(op==0){
-						Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
+						Log("Wrong Expression:	q=%d	p=%d\n" ,q,p);
 						*flag = false;
 						return 0;
 					}
