@@ -282,7 +282,7 @@ static int exe(int q,int p, bool *flag){
 			}
 			break;
 	}
-	Log("q=%d p=%d	data=%d\n" ,q,p,data);
+	// Log("q=%d p=%d	data=%d\n" ,q,p,data);
 	return data;
 }
 
