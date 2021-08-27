@@ -203,7 +203,7 @@ static int exe(int q,int p, bool *flag){
 						break;
 					default:
 						Log("A NUMBER IS NEEDED, BUT %s IS WHAT WE GET.",tokens[p].str);
-						flag = false;
+						*flag = false;
 						return 0;
 				}
 			}else{
@@ -225,7 +225,7 @@ static int exe(int q,int p, bool *flag){
 					}
 					if(op==0){
 						Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
-						flag = false;
+						*flag = false;
 						return 0;
 					}
 					int val1 = exe(q,op-1, flag);
@@ -254,7 +254,7 @@ static int exe(int q,int p, bool *flag){
 							break;
 						default:
 							Log("Error math type string=%s	type=%d\n" ,tokens[op].str ,tokens[op].type);
-							flag = false;
+							*flag = false;
 							return 0;
 					}
 				}
@@ -274,6 +274,8 @@ uint32_t expr(char *e, bool *success) {
 		IF success == true : tokens shall contain the expression.
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
+	int i;
+	for(i=1;i<=nr_token;i++) printf("str=%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	int ans = exe(1,nr_token, success);
 	return ans;
 }
