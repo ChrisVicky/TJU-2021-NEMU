@@ -307,12 +307,10 @@ uint32_t expr(char *e, bool *success) {
 		int i;
 		for(i=1;i<=nr_token;i++) printf("str=%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	int cnt = 0;
-	for(i=1;i<=nr_token;i++)
-	{
+	for(i=1;i<=nr_token;i++){
 		int j;
-		for(j=0;j<strlen(tokens[i].str);j++)
-		{
-			e[cnt++] = 
+		for(j=0;j<strlen(tokens[i].str);j++){
+			e[cnt++] = tokens[i].str[j];
 		}
 	}
 	return ans;
