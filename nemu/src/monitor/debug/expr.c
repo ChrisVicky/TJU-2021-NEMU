@@ -10,10 +10,10 @@ const char registers[] = "$eax$ecx$edx$ebx$esp$edp$esi$edi$eip";
 enum {
 	NOTYPE = 256, EQ = 0, NEQ, AND, OR,
 	HEX, TEN, 
-	PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET,
+	PLUS, MINUS, TIMES, DIVIDE, 
 	OR_COMPUTE, AND_COMPUTE, XOR_COMPUTE,
-	REGISTER,
-	ADDRESS_SIGN, NEGATIVE_SIGN, REVERSE_SIGN, DENY_SIGN
+	ADDRESS_SIGN, NEGATIVE_SIGN, REVERSE_SIGN, DENY_SIGN, 
+	FR_BRACKET, BA_BRACKET,	REGISTER,
 	/* TODO: Add more token types */
 
 };
@@ -104,7 +104,8 @@ static bool make_token(char *e) {
 					case NOTYPE:
 						break;
 					case MINUS:
-						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+//						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+						if(nr_token==0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= PLUS)){
 							tokens[++nr_token].type = NEGATIVE_SIGN;
 						}else{
 							tokens[++nr_token].type = MINUS;
@@ -112,7 +113,8 @@ static bool make_token(char *e) {
 						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						break;
 					case TIMES:
-						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+//						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+						if(nr_token==0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= PLUS)){
 							tokens[++nr_token].type = ADDRESS_SIGN;
 						}else{
 							tokens[++nr_token].type = TIMES;

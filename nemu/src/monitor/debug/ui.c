@@ -182,7 +182,6 @@ static int cmd_x(char* arg){
 static int cmd_p(char *args)
 {
 	bool flag = true;
-	printf("p %s\n" ,args);
 	int ans = expr(args, &flag);
 	if(!flag){
 		printf("Miss Match or Wrong Expression\n");
