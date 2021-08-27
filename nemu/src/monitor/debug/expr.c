@@ -144,9 +144,16 @@ static bool make_token(char *e) {
 		}
 		if(tokens[nr_token].type==FR_BRACKET) cnt++;
 		else if(tokens[nr_token].type==BA_BRACKET) cnt--;
-		if(cnt<0) return false;
+		if(cnt<0){
+			Log("Error: Wrong Expression: Brackets");
+			return false;
+		}
 	}
-	return cnt == 0; // cnt==0 true; cnt>0 false;
+	if(cnt==0){
+		return true;
+	}
+	Log("Error: Wrong Expression: Brackets");
+	return false;
 }
 
 static bool brackets(int q,int p){
