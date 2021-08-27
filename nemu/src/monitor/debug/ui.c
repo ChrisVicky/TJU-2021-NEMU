@@ -206,6 +206,7 @@ static int cmd_w(char *args)
 		Log("Expression Error");
 		return 0;
 	}
+	Log("Expression : %s \n Ans : %d\n" ,args ,ans);
 	WP *wp = new_wp();
 	if(wp==NULL){
 		return -1;
