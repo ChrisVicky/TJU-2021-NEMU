@@ -306,8 +306,8 @@ uint32_t expr(char *e, bool *success) {
 	
 		int i;
 		for(i=1;i<=nr_token;i++) printf("str=%s	type=%d\n" ,tokens[i].str, tokens[i].type);
-	char *temp_a = "";
-	for(i=1;i<=nr_token;i++) strcat(temp_a, tokens[i].str);
+	//char *temp_a = "";
+	//for(i=1;i<=nr_token;i++) strcat(temp_a, tokens[i].str);
 	//e = temp_a;
 	return ans;
 }
