@@ -32,9 +32,9 @@ WP *new_wp()
 		return NULL;
 	}
 	WP *temp = head;
+	Log("TEMP!=NULL");
 	while (temp->next != NULL)
 		temp = temp->next;
-	Log("TEMP!=NULL");
 	Log("Successfully Enter a new wp");
 	WP *ret = free_;
 	Log("2");
