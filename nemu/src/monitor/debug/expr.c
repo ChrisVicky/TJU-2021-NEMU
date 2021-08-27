@@ -117,7 +117,7 @@ static bool make_token(char *e) {
 						}else{
 							tokens[++nr_token].type = MINUS;
 						}
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strcpy(tokens[nr_token].str,substr_start);
 						break;
 					case TIMES:
 //						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
@@ -126,11 +126,11 @@ static bool make_token(char *e) {
 						}else{
 							tokens[++nr_token].type = TIMES;
 						}
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strcpy(tokens[nr_token].str,substr_start);
 						break;
 					default: 
 						tokens[++nr_token].type = rules[i].token_type;
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strcpy(tokens[nr_token].str,substr_start);
 						break;
 						//panic("please implement me");
 				}
