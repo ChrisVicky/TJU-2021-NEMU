@@ -218,6 +218,7 @@ static int cmd_w(char *args)
 	if(wp==NULL){
 		return -1;
 	}
+	Log("args: %s\n" ,args);
 	strcpy(wp->expressions, args);
 
 	Log("Expression: %s	Ans: %08x\n" ,args ,ans);
