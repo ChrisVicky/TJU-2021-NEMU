@@ -242,7 +242,8 @@ void ui_mainloop() {
 				continue; 
 			cmd = last_cmd;
 			Log("T");
-		}else last_cmd = str;
+		}
+		last_cmd = str;
 		Log("last_cmd = %s\n" ,last_cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
