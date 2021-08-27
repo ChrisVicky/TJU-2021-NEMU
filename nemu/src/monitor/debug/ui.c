@@ -230,23 +230,12 @@ static int cmd_w(char *args)
 }
 
 void ui_mainloop() {
-	char last_cmd[32];
 	while(1) {
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
-		if(str==NULL) {
-			str = history_get(where_history())->line;
-			//Log("Error str=>>%s<<" ,str);
-		}
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
-		if(cmd == NULL) {
-			if(last_cmd==NULL)
-				continue; 
-//			cmd = last_cmd;
-			str = history_get(where_history())->line;
-		}else strcpy(last_cmd, str);
-		Log("cmd=>>%s<<" ,cmd);
+		if(cmd == NULL) { continue; }
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
