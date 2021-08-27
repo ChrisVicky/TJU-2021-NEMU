@@ -32,7 +32,7 @@ WP *new_wp()
 	}
 	WP *temp = head;
 	if(temp==NULL){
-		Log("TEMP==NULL");
+		// Log("TEMP==NULL");
 		WP *ret = free_;
 		free_ = free_->next;
 		ret->next = NULL;

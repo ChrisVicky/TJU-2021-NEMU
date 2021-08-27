@@ -95,7 +95,7 @@ void cpu_exec(volatile uint32_t n) {
 			printf("Old value: 0x%08x\n" ,head->old_value);
 			printf("New value: 0x%08x\n" ,value);
 			*/
-			printf("0x%08x ->" ,head->old_value);
+			printf("Value: 0x%08x ->" ,head->old_value);
 			printf(" 0x%08x\n" ,value);
 			head->old_value = value;
 			head = head->next;
