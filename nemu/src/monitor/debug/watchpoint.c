@@ -66,6 +66,7 @@ void free_wp(int number)
 			wp = wp_pool + i;
 		}
 	}
+	printf("Free watchpoint %d %s\n" ,number ,wp->expressions);
 	WP *temp = head;
 	if (temp == NULL)
 	{
@@ -82,6 +83,7 @@ void free_wp(int number)
 	if(head==wp){
 		wp->next = free_;
 		free_ = wp;
+		head = NULL;
 		return;
 	}
 	while (temp->next != wp)
