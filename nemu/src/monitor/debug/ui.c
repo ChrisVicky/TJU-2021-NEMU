@@ -235,6 +235,7 @@ void ui_mainloop() {
 		if(args >= str_end) {
 			args = NULL;
 		}
+		Log("args: %s" ,args);
 
 #ifdef HAS_DEVICE
 		extern void sdl_clear_event_queue(void);
