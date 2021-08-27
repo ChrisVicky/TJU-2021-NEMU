@@ -53,8 +53,19 @@ WP *new_wp()
 	return ret;
 }
 
-void free_wp(WP *wp)
+void free_wp(int number)
 {
+	int i;
+	static WP *wp = NULL;
+	if(number >= NR_WP){
+		printf("No watchpoint %d\n" ,number);
+		return ;
+	}
+	for(i=0;i<NR_WP;i++){
+		if(number==wp_pool[i].NO){
+			wp = wp_pool + i;
+		}
+	}
 	WP *temp = head;
 	if (temp == NULL)
 	{
