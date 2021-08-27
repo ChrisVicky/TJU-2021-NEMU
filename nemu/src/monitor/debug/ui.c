@@ -214,7 +214,7 @@ static int cmd_w(char *args)
 		Log("Expression Error");
 		return 0;
 	}
-	Log("Expression: %s	Ans: %08x\n" ,args ,ans);
+	Log("Expression: %s	Ans: 0x%08x\n" ,args ,ans);
 	WP *wp = new_wp();
 	if(wp==NULL){
 		return -1;
@@ -224,7 +224,7 @@ static int cmd_w(char *args)
 
 	wp->old_value = ans;
 	printf("Watchpoint %d: %s\n" ,wp->NO ,wp->expressions);
-	printf("Crruent Value\nDEC: %d	HEX: %08x\n" ,ans ,ans);
+	printf("Crruent Value\nDEC: %d	HEX: 0x%08x\n" ,ans ,ans);
 	return 0;
 }
 

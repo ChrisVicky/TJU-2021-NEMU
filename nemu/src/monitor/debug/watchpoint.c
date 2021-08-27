@@ -27,12 +27,12 @@ WP * new_wp(){
 		return NULL;
 	}
 	WP *temp = head;
+	Log("Successfully Enter a new wp");
 	while(temp->next) temp = temp->next;
 	WP *ret = free_;
 	free_ = (*free_).next;
 	ret->next = NULL;
 	temp->next = ret;
-	Log("Successfully Enter a new wp");
 	return ret;
 }
 
