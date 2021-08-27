@@ -114,7 +114,7 @@ static int cmd_info(char* args){
 		}
 		printf("Num	Enb	Expression\n");
 		while(head!=NULL){
-			printf("%d	%s	%s (%d)\n" ,head->NO ,head->enable?"Yes":"No" ,head->expressions ,head->old_value);
+			printf("%d	%s	%s (0x%08x)\n" ,head->NO ,head->enable?"Yes":"No" ,head->expressions ,head->old_value);
 			head = head->next;
 		}
 	}else{
@@ -224,7 +224,7 @@ static int cmd_w(char *args)
 
 	wp->old_value = ans;
 	printf("Watchpoint %d: %s\n" ,wp->NO ,wp->expressions);
-	printf("Crruent Value\nDEC: %d	HEX: 0x%08x\n" ,ans ,ans);
+	printf("Crruent Value: DEC: %d	HEX: 0x%08x\n" ,ans ,ans);
 	return 0;
 }
 

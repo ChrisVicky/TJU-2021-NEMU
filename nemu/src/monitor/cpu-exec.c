@@ -90,7 +90,7 @@ void cpu_exec(volatile uint32_t n) {
 			}
 			nemu_state = STOP;
 			printf("Hint Watchpoint %d at address %08x\n" ,head->NO ,cpu.eip);
-			printf("Expression: %s" ,head->expressions);
+			printf("Expression: %s\n" ,head->expressions);
 			printf("Old value: %08x\n" ,head->old_value);
 			printf("New value: %08x\n" ,value);
 			head->old_value = value;
