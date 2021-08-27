@@ -243,6 +243,7 @@ void ui_mainloop() {
 //			cmd = last_cmd;
 			cmd = history_get(where_history())->line;
 		}else strcpy(last_cmd, str);
+		Log("cmd=>>%s<<" ,cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
