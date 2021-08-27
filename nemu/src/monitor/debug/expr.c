@@ -301,12 +301,12 @@ uint32_t expr(char *e, bool *success) {
 	/* 	TODO: Insert codes to evaluate the expression.
 		IF success == true : tokens shall contain the expression.
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
+	*/
 		int i;
 		for(i=1;i<=nr_token;i++) printf("str=%s	type=%d\n" ,tokens[i].str, tokens[i].type);
-	*/
+
 	int ans = exe(1,nr_token, success);
 	char *temp_a = "";
-	int i;
 	for(i=1;i<=nr_token;i++) strcat(temp_a, tokens[i].str);
 	e = temp_a;
 	return ans;
