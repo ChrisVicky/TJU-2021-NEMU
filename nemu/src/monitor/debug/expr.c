@@ -30,7 +30,7 @@ static struct rule {
 	{"==", EQ},						// equal	
 	{"\\!=", NEQ},					// not equal
 	{"\\&&", AND},					// and
-	{"\\||", OR},					// or
+	{"\\|\\|", OR},					// or
 	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			
 	{"[0-9]+", TEN},				// TEN			
 	{"\\+", PLUS},					// plus			
