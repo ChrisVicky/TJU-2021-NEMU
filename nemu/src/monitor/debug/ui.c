@@ -236,7 +236,7 @@ void ui_mainloop() {
 		char *str_end = str + strlen(str);
 		if(str==NULL) {
 			str = history_get(where_history())->line;
-			Log("Error str=>>%s<<" ,str);
+			//Log("Error str=>>%s<<" ,str);
 		}
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
