@@ -234,6 +234,7 @@ static int cmd_w(char *args)
 static int cmd_d(char *args){
 	if(args==NULL){
 		printf("\033[47;30mArguments required\033[0m");
+		printf("\n");
 		return 0;
 	}
 	return 0;
