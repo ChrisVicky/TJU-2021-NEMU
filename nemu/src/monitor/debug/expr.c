@@ -8,11 +8,12 @@
 #include <regex.h>
 const char registers[] = "$eax$ecx$edx$ebx$esp$edp$esi$edi$eip";
 enum {
-	NOTYPE = 256, EQ = 0, HEX, TEN, 
-	PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET, 
+	NOTYPE = 256, EQ = 0, NEQ, AND, OR,
+	HEX, TEN, 
+	PLUS, MINUS, TIMES, DIVIDE, FR_BRACKET, BA_BRACKET,
+	OR_COMPUTE, AND_COMPUTE, XOR_COMPUTE,
 	REGISTER,
-	ADDRESS_SIGN,
-	MINUS_SIGN
+	ADDRESS_SIGN, NEGATIVE_SIGN, REVERSE_SIGN, DENY_SIGN
 	/* TODO: Add more token types */
 
 };
@@ -26,16 +27,24 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 	{" +",	NOTYPE},				// spaces		256
-	{"==", EQ},						// equal		0
-	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			1
-	{"[0-9]+", TEN},				// TEN			2
-	{"\\+", PLUS},					// plus			3
-	{"\\-", MINUS},					// minus		4
-	{"\\*", TIMES},					// times		5
-	{"\\/", DIVIDE},				// divide		6
-	{"\\(", FR_BRACKET},			// for-bracket	7
-	{"\\)", BA_BRACKET},			// back-bracket	8
+	{"==", EQ},						// equal	
+	{"\\!=", NEQ},					// not equal
+	{"\\&&", AND},					// and
+	{"\\||", OR},					// or
+	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			
+	{"[0-9]+", TEN},				// TEN			
+	{"\\+", PLUS},					// plus			
+	{"\\-", MINUS},					// minus		
+	{"\\*", TIMES},					// times		
+	{"\\/", DIVIDE},				// divide	
+	{"\\(", FR_BRACKET},			// for-bracket	
+	{"\\)", BA_BRACKET},			// back-bracket
+	{"\\|", OR_COMPUTE},			// 01 | 10 = 11
+	{"\\&", AND_COMPUTE},			// 01 & 10 = 00
+	{"\\^", XOR_COMPUTE},			// 10 ^ 01 = 11 		
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", REGISTER}, // register 9
+	{"\\~" ,REVERSE_SIGN},			// Reverse - byte while
+	{"\\!" ,DENY_SIGN},				// Logistic
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -70,6 +79,7 @@ int nr_token;
 static bool make_token(char *e) {
 	int position = 0;
 	int i;
+	int cnt = 0;
 	regmatch_t pmatch;
 	
 	nr_token = 0;
@@ -95,7 +105,7 @@ static bool make_token(char *e) {
 						break;
 					case MINUS:
 						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
-							tokens[++nr_token].type = MINUS_SIGN;
+							tokens[++nr_token].type = NEGATIVE_SIGN;
 						}else{
 							tokens[++nr_token].type = MINUS;
 						}
@@ -119,13 +129,15 @@ static bool make_token(char *e) {
 				break;
 			}
 		}
-
 		if(i == NR_REGEX) {
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
 		}
+		if(tokens[nr_token].type==FR_BRACKET) cnt++;
+		else if(tokens[nr_token].type==BA_BRACKET) cnt--;
+		if(cnt<0) return false;
 	}
-	return true; 
+	return cnt == 0; // cnt==0 true; cnt>0 false;
 }
 
 static bool brackets(int q,int p){
@@ -142,33 +154,32 @@ static bool brackets(int q,int p){
 	return true;
 }
 
-static bool check_brackets(int q,int p){
-	int i;
-	int cnt=0;
-	for(i=q;i<=p;i++){
-		if(tokens[i].type==FR_BRACKET) cnt++;
-		else if(tokens[i].type==BA_BRACKET) cnt--;
-		if(cnt<0) return false;
-	}
-	return cnt ? false : true;
-}
-
-static int exe(int q,int p){
+static int exe(int q,int p, bool *flag){
 	int data = 0;
 	switch ((tokens[q].type))
 	{
-		case MINUS_SIGN:
-			data = exe(q+1,p);
+		case NEGATIVE_SIGN:
+			data = exe(q+1,p, flag);
 			data = ~data + 1;
-			return data;
+			break;
 		case ADDRESS_SIGN:
-			data = exe(q+1,p);
+			data = exe(q+1,p, flag);
 			data = swaddr_read(data, 4);
-			return data;
+			break;
+		case REVERSE_SIGN:
+			data = exe(q+1,p, flag);
+			data = ~data;
+			break;
+		case DENY_SIGN:
+			data = exe(q+1,p, flag);
+			data = !data;
+			break;
 		default:			
 			if(q>p){
-				panic("Error\n");
-			}else if(q+1==p || q==p){
+				Log("Error\n");
+				flag = false;
+				return 0;
+			}else if(q==p){
 				int position;
 				char * temp;
 				switch(tokens[p].type){
@@ -191,27 +202,15 @@ static int exe(int q,int p){
 						data = strtol(tokens[p].str,NULL,10);
 						break;
 					default:
-						Log("Error math %s\n",tokens[p].str);
-						break;
-				}
-				if(q<p){
-					switch(tokens[q].type){
-						case MINUS_SIGN:
-							data = ~data + 1;
-							break;
-						case ADDRESS_SIGN:
-							data = swaddr_read(data,4);
-							break;
-						default:
-							panic("Error math type %s\n",tokens[q].str);
-							break;
-					}
+						Log("A NUMBER IS NEEDED, BUT %s IS WHAT WE GET.",tokens[p].str);
+						flag = false;
+						return 0;
 				}
 			}else{
-				bool flag = brackets(q,p);
-				if(flag){
+				bool bracket_flag = brackets(q,p);
+				if(bracket_flag){
 					q++,p--;
-					return exe(q,p);
+					return exe(q,p,flag);
 				}else{
 					int i;
 					int cnt = 0;
@@ -224,9 +223,13 @@ static int exe(int q,int p){
 							break;
 						}
 					}
-					if(op==0) Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
-					int val1 = exe(q,op-1);
-					int val2 = exe(op+1,p);
+					if(op==0){
+						Log("Wrong Expression\nq=%d	p=%d\n" ,q,p);
+						flag = false;
+						return 0;
+					}
+					int val1 = exe(q,op-1, flag);
+					int val2 = exe(op+1,p, flag);
 					switch(tokens[op].type){
 						case MINUS:
 							data = val1 - val2;
@@ -240,18 +243,29 @@ static int exe(int q,int p){
 						case DIVIDE:
 							data = val1 / val2;
 							break;
-						default:
-							Log("Error math type %s\n" ,tokens[op].str);
+						case OR_COMPUTE:
+							data = val1 | val2;
 							break;
+						case AND_COMPUTE:
+							data = val1 & val2;
+							break;
+						case XOR_COMPUTE:
+							data = val1 ^ val2;
+							break;
+						default:
+							Log("Error math type string=%s	type=%d\n" ,tokens[op].str ,tokens[op].type);
+							flag = false;
+							return 0;
 					}
 				}
 			}
-		printf("q=%d p=%d	data=%d\n" ,q,p,data);
-		return data;
+			break;
 	}
+	printf("q=%d p=%d	data=%d\n" ,q,p,data);
+	return data;
 }
 
-uint32_t expr(char *e, bool *success, bool *brackets_flag) {
+uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
 		return 0;
@@ -260,10 +274,7 @@ uint32_t expr(char *e, bool *success, bool *brackets_flag) {
 		IF success == true : tokens shall contain the expression.
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
-	*brackets_flag = check_brackets(1,nr_token);
-	if((*brackets_flag)){
-		int ans = exe(1,nr_token);
-		return ans;
-	}else return 0;
+	int ans = exe(1,nr_token, success);
+	return ans;
 }
 
