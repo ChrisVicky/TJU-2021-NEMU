@@ -184,7 +184,7 @@ static int cmd_p(char *args)
 	bool flag = true;
 	int ans = expr(args, &flag);
 	if(!flag){
-		printf("Miss Match or Wrong Expression\n");
+		Log("Miss Match or Wrong Expression\n");
 		return 0;
 	}
 	printf("DEC: %d	HEX: 0x%08x\n" ,ans,ans);
