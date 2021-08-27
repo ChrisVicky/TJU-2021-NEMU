@@ -189,6 +189,10 @@ static int cmd_x(char* arg){
 static int cmd_p(char *args)
 {
 	bool flag = true;
+	if(args==NULL){
+		printf("Arguments required\n");
+		return 0;
+	}
 	int ans = expr(args, &flag);
 	if(!flag){
 		Log("Expression Error");
@@ -201,6 +205,10 @@ static int cmd_p(char *args)
 static int cmd_w(char *args)
 {
 	bool flag = true;
+	if(args==NULL){
+		printf("Arguments required\n");
+		return 0;
+	}
 	int ans = expr(args, &flag);
 	if(!flag){
 		Log("Expression Error");
