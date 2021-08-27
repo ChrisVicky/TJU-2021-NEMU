@@ -222,12 +222,12 @@ void ui_mainloop() {
 		if(cmd == NULL) {
 			HIST_ENTRY *previous_line = previous_history();
 			if(previous_line==NULL) continue;
-		//	printf("Last Line: %s\n" ,previous_line->line);
+			printf("Last Line: %s\n" ,previous_line->line);
 			str = previous_line->line;
 			cmd = strtok(str, " ");
 			str_end = str + strlen(str);
 		}
-	//	printf("cmd: %s\n" ,cmd);
+		printf("cmd: %s\n" ,cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
