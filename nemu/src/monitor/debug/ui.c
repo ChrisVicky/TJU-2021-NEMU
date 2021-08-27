@@ -200,12 +200,13 @@ static int cmd_d(char *args){
 		printf("Arguments required\n");
 		return 0;
 	}
-	char *cmd = strtok(args, " ");
-	if(cmd!=NULL){
-		printf("Too many arguments\n");
+	
+	char *args1 = strtok(args, " ");
+	if(args1==NULL){
+		printf("Arguments required\n");
 		return 0;
 	}
-	int number = strtol(cmd, NULL, 10);
+	int number = strtol(args1, NULL, 10);
 	printf("delete watchpoint %d\n" ,number);
 	free_wp(number);
 	return 0;
