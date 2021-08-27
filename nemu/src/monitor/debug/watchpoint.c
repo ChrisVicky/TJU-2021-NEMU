@@ -19,7 +19,7 @@ void init_wp_pool()
 	wp_pool[NR_WP - 1].next = NULL;
 
 	head = HEAD;
-	head->next = NULL;
+	//head->next = NULL;
 	free_ = wp_pool;
 }
 
