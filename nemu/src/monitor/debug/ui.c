@@ -214,8 +214,8 @@ static int cmd_w(char *args)
 		Log("Expression Error");
 		return 0;
 	}
-	WP *wp = new_wp();
 	Log("Expression: %s	Ans: %08x\n" ,args ,ans);
+	WP *wp = new_wp();
 	if(wp==NULL){
 		return -1;
 	}
