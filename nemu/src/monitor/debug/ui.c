@@ -207,7 +207,7 @@ static int cmd_d(char *args){
 		return 0;
 	}
 	int number = strtol(args1, NULL, 10);
-	printf("delete watchpoint %d\n" ,number);
+	// printf("delete watchpoint %d\n" ,number);
 	free_wp(number);
 	return 0;
 }
