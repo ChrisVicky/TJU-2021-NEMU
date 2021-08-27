@@ -126,11 +126,11 @@ static bool make_token(char *e) {
 						}else{
 							tokens[++nr_token].type = TIMES;
 						}
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strncpy(tokens[nr_token].str,substr_start,strlen(substr_start));
 						break;
 					default: 
 						tokens[++nr_token].type = rules[i].token_type;
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strncpy(tokens[nr_token].str,substr_start,strlen(substr_start));
 						break;
 						//panic("please implement me");
 				}
