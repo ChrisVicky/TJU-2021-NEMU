@@ -221,8 +221,8 @@ void ui_mainloop() {
 		char *cmd = strtok(str, " ");
 		if(cmd == NULL) {
 			HIST_ENTRY *previous_line = previous_history();
+			if(previous_line==NULL) continue;
 			printf("Last Line: %s\n" ,previous_line->line);
-			
 			str = previous_line->line;
 			cmd = strtok(str, " ");
 		}
