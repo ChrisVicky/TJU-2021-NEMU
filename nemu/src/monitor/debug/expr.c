@@ -8,8 +8,9 @@
 #include <regex.h>
 const char registers[] = "$eax$ecx$edx$ebx$esp$edp$esi$edi$eip";
 enum {
-	NOTYPE = 256, EQ = 0, NEQ, AND, OR,
-	HEX, TEN, 
+	NOTYPE = 256, 
+	HEX = 0, TEN, 
+	EQ, NEQ, AND, OR,
 	PLUS, MINUS, TIMES, DIVIDE, 
 	OR_COMPUTE, AND_COMPUTE, XOR_COMPUTE,
 	ADDRESS_SIGN, NEGATIVE_SIGN, REVERSE_SIGN, DENY_SIGN, 
@@ -27,24 +28,29 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 	{" +",	NOTYPE},				// spaces		256
+	
+	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			0
+	{"[0-9]+", TEN},				// TEN		
+
 	{"==", EQ},						// equal	
 	{"\\!=", NEQ},					// not equal
 	{"\\&&", AND},					// and
-	{"\\|\\|", OR},					// or
-	{"0x[a-f|0-9|A-F]+", HEX},		// HEX			
-	{"[0-9]+", TEN},				// TEN			
+	{"\\|\\|", OR},					// or	
 	{"\\+", PLUS},					// plus			
 	{"\\-", MINUS},					// minus		
 	{"\\*", TIMES},					// times		
 	{"\\/", DIVIDE},				// divide	
-	{"\\(", FR_BRACKET},			// for-bracket	
-	{"\\)", BA_BRACKET},			// back-bracket
+
 	{"\\|", OR_COMPUTE},			// 01 | 10 = 11
 	{"\\&", AND_COMPUTE},			// 01 & 10 = 00
-	{"\\^", XOR_COMPUTE},			// 10 ^ 01 = 11 		
-	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", REGISTER}, // register 9
+	{"\\^", XOR_COMPUTE},			// 10 ^ 01 = 11 	
+
 	{"\\~" ,REVERSE_SIGN},			// Reverse - byte while
 	{"\\!" ,DENY_SIGN},				// Logistic
+
+	{"\\(", FR_BRACKET},			// for-bracket	
+	{"\\)", BA_BRACKET},			// back-bracket
+	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", REGISTER}, // register 
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -105,7 +111,7 @@ static bool make_token(char *e) {
 						break;
 					case MINUS:
 //						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
-						if(nr_token==0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= PLUS)){
+						if(nr_token==0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= EQ)){
 							tokens[++nr_token].type = NEGATIVE_SIGN;
 						}else{
 							tokens[++nr_token].type = MINUS;
@@ -114,7 +120,7 @@ static bool make_token(char *e) {
 						break;
 					case TIMES:
 //						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
-						if(nr_token==0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= PLUS)){
+						if(nr_token==0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= EQ)){
 							tokens[++nr_token].type = ADDRESS_SIGN;
 						}else{
 							tokens[++nr_token].type = TIMES;
@@ -132,7 +138,7 @@ static bool make_token(char *e) {
 			}
 		}
 		if(i == NR_REGEX) {
-			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+			Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
 		}
 		if(tokens[nr_token].type==FR_BRACKET) cnt++;
@@ -204,7 +210,7 @@ static int exe(int q,int p, bool *flag){
 						data = strtol(tokens[p].str,NULL,10);
 						break;
 					default:
-						Log("A NUMBER IS NEEDED, BUT %s IS WHAT WE GET.",tokens[p].str);
+						Log("A NUMBER OR REGISTER IS NEEDED, BUT %s IS WHAT WE GET.",tokens[p].str);
 						*flag = false;
 						return 0;
 				}
@@ -233,6 +239,18 @@ static int exe(int q,int p, bool *flag){
 					int val1 = exe(q,op-1, flag);
 					int val2 = exe(op+1,p, flag);
 					switch(tokens[op].type){
+						case EQ:
+							data = (val1==val2);
+							break;
+						case NEQ:
+							data = (val1 != val2);
+							break;
+						case AND:
+							data = (val1 && val2);
+							break;
+						case OR:
+							data = (val1 || val2);
+							break;
 						case MINUS:
 							data = val1 - val2;
 							break;
@@ -263,7 +281,7 @@ static int exe(int q,int p, bool *flag){
 			}
 			break;
 	}
-	printf("q=%d p=%d	data=%d\n" ,q,p,data);
+	Log("q=%d p=%d	data=%d\n" ,q,p,data);
 	return data;
 }
 
