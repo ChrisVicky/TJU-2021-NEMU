@@ -4,30 +4,37 @@
 #define NR_WP 32
 
 static WP wp_pool[NR_WP];
+static WP *HEAD;
 static WP *head, *free_;
 
-void init_wp_pool() {
+void init_wp_pool()
+{
 	int i;
-	for(i = 0; i < NR_WP; i ++) {
+	for (i = 0; i < NR_WP; i++)
+	{
 		wp_pool[i].NO = i;
 		wp_pool[i].enable = true;
 		wp_pool[i].next = &wp_pool[i + 1];
 	}
 	wp_pool[NR_WP - 1].next = NULL;
 
-	head = NULL;
+	head = HEAD;
 	free_ = wp_pool;
 }
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP * new_wp(){
-	if(free_==NULL){
+WP *new_wp()
+{
+	if (free_ == NULL)
+	{
 		Log("Error: No new watchpoints available");
 		return NULL;
 	}
 	WP *temp = head;
-	while(temp->next!=NULL) temp = temp->next;
+	while (temp->next != NULL)
+		temp = temp->next;
+	Log("TEMP!=NULL");
 	Log("Successfully Enter a new wp");
 	WP *ret = free_;
 	Log("2");
@@ -39,19 +46,22 @@ WP * new_wp(){
 	return ret;
 }
 
-void free_wp(WP *wp){
+void free_wp(WP *wp)
+{
 	WP *temp = head;
-	if(temp == NULL){
+	if (temp->next == NULL)
+	{
 		Log("Error: No watch points left to free out!");
-		return ;
+		return;
 	}
-	while(temp->next!=wp) temp = temp->next;
+	while (temp->next != wp)
+		temp = temp->next;
 	temp->next = wp->next;
 	wp->next = free_;
 	free_ = wp;
 }
 
-WP *get_head(){
+WP *get_head()
+{
 	return head;
 }
-
