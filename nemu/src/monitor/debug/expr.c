@@ -313,6 +313,7 @@ uint32_t expr(char *e, bool *success) {
 			e[cnt++] = tokens[i].str[j];
 		}
 	}
+	e[cnt] = '\0';
 	return ans;
 }
 
