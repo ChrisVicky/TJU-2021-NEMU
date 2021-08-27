@@ -215,16 +215,13 @@ static int cmd_d(char *args){
 
 void ui_mainloop() {
 	while(1) {
-		char *last_cmd = current_history()->line;
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
-		if(cmd == NULL) { 
-			if(last_cmd == NULL)
-				continue; 
-			str = last_cmd;
-			cmd = strtok(str, " ");
+		if(cmd == NULL) {
+			HIST_ENTRY *previous_line = previous_history();
+			printf("Last Line: %s\n" ,previous_line->line);
 		}
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
