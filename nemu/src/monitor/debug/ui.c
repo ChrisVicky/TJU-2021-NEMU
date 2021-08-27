@@ -222,6 +222,7 @@ void ui_mainloop() {
 		if(cmd == NULL) {
 			HIST_ENTRY *previous_line = previous_history();
 			printf("Last Line: %s\n" ,previous_line->line);
+			continue;
 		}
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
