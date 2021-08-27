@@ -240,10 +240,9 @@ void ui_mainloop() {
 		if(cmd == NULL) {
 			if(last_cmd==NULL)
 				continue; 
-			cmd = last_cmd;
-			Log("T");
+//			cmd = last_cmd;
+			cmd = history_get(where_history())->line;
 		}else strcpy(last_cmd, str);
-		Log("last_cmd = %s\n" ,last_cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
