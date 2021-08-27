@@ -177,17 +177,17 @@ static int cmd_w(char *args)
 		Log("Expression Error");
 		return 0;
 	}
-	Log("Expression: %s	Ans: 0x%08x\n" ,args ,ans);
+	// Log("Expression: %s	Ans: 0x%08x\n" ,args ,ans);
 	WP *wp = new_wp();
 	if(wp==NULL){
 		return -1;
 	}
-	Log("args: %s\n" ,args);
+	// Log("args: %s\n" ,args);
 	strcpy(wp->expressions, args);
 
 	wp->old_value = ans;
 	printf("Watchpoint %d: %s\n" ,wp->NO ,wp->expressions);
-	printf("Crruent Value: DEC: %d	HEX: 0x%08x\n" ,ans ,ans);
+	printf("Crruent Value: 0x%08x (%d)\n" ,ans ,ans);
 	return 0;
 }
 
