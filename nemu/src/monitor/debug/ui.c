@@ -206,12 +206,13 @@ static int cmd_w(char *args)
 		Log("Expression Error");
 		return 0;
 	}
-	Log("Expression : %s \n Ans : %d\n" ,args ,ans);
 	WP *wp = new_wp();
 	if(wp==NULL){
 		return -1;
 	}
 	strncpy(wp->expressions, args, strlen(args));
+
+	Log("Expression: %s	Ans: %08x\n" ,args ,ans);
 	wp->old_value = ans;
 	printf("Watchpoint %d: %s\n" ,wp->NO ,wp->expressions);
 	printf("Crruent Value\nDEC: %d	HEX: %08x\n" ,ans ,ans);
