@@ -234,14 +234,16 @@ void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
-
+		if(str==NULL) {
+			Log("Error str=>>%s<<" ,str);
+		}
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
 		if(cmd == NULL) {
 			if(last_cmd==NULL)
 				continue; 
 //			cmd = last_cmd;
-			cmd = history_get(where_history())->line;
+			str = history_get(where_history())->line;
 		}else strcpy(last_cmd, str);
 		Log("cmd=>>%s<<" ,cmd);
 		/* treat the remaining string as the arguments,
