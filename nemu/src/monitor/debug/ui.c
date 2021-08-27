@@ -227,6 +227,7 @@ void ui_mainloop() {
 			cmd = strtok(str, " ");
 			str_end = str + strlen(str);
 		}
+		Log("str_end: %s" ,str_end);
 		Log("cmd: %s" ,cmd);
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
