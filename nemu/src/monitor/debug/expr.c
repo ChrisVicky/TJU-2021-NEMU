@@ -125,6 +125,7 @@ int nr_token;
 
 static bool make_token(char *e)
 {
+	Log("e='%s'" ,e);
 	int position = 0;
 	int i;
 	int cnt = 0;
