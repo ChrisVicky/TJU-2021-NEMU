@@ -195,7 +195,8 @@ static bool make_token(char *e)
 		}
 		if (i == NR_REGEX)
 		{
-			Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+			// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+			printf("\33[1;34mno match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
 			return false;
 		}
 		if (tokens[nr_token].type == FR_BRACKET)
@@ -204,7 +205,7 @@ static bool make_token(char *e)
 			cnt--;
 		if (cnt < 0)
 		{
-			printf("\33[40;34mError: Wrong Expression: Brackets\33[0m\n");
+			printf("\33[1;34mError: Wrong Expression: Brackets\33[0m\n");
 			return false;
 		}
 	}
@@ -212,7 +213,7 @@ static bool make_token(char *e)
 	{
 		return true;
 	}
-	printf("\33[40;34mError: Wrong Expression: Brackets\33[0m\n");
+	printf("\33[1;34mError: Wrong Expression: Brackets\33[0m\n");
 	return false;
 }
 
@@ -282,7 +283,7 @@ static int exe(int q, int p, bool *flag)
 		if (q > p)
 		{
 			if(*flag==true)
-				printf("\33[1;36mError: Wrong Expression.\33[0m\n");
+				printf("\33[1;34mError: Wrong Expression.\33[0m\n");
 			*flag = false;
 			return 0;
 		}
@@ -312,7 +313,7 @@ static int exe(int q, int p, bool *flag)
 				data = strtol(tokens[p].str, NULL, 10);
 				break;
 			default:
-				printf("\33[40;34mA NUMBER OR REGISTER IS NEEDED, BUT %s IS WHAT WE GET.\33[0m\n", tokens[p].str);
+				printf("\33[1;34mA NUMBER OR REGISTER IS NEEDED, BUT %s IS WHAT WE GET.\33[0m\n", tokens[p].str);
 				*flag = false;
 				return 0;
 			}
@@ -333,7 +334,7 @@ static int exe(int q, int p, bool *flag)
 					char *temp_str = tokens[q].str;
 					int i;
 					for(i=q+1;i<=p;i++) strcat(temp_str, tokens[i].str);
-					printf("\33[40;34mWrong Expression: '%s'\33[0m\n", temp_str);
+					printf("\33[1;34mWrong Expression: '%s'\33[0m\n", temp_str);
 					*flag = false;
 					return 0;
 				}
@@ -396,7 +397,7 @@ static int exe(int q, int p, bool *flag)
 					data = val1 >= val2;
 					break;
 				default:
-					printf("\33[40;34mError math type string=%s	type=%d\33[0m\n", tokens[op].str, tokens[op].type);
+					printf("\33[1;34mError math type string=%s	type=%d\33[0m\n", tokens[op].str, tokens[op].type);
 					*flag = false;
 					return 0;
 				}
