@@ -79,7 +79,7 @@ static struct rule
 	
 	{"\\*", TIMES, 3},	 // times
 	{"\\/", DIVIDE, 3}, // divide
-	//{"\\%", MODE, 3},	 // mode
+	{"\\%", MODE, 3},	 // mode
 
 	{"\\~", REVERSE_SIGN, 2}, // Reverse - byte while
 	{"\\!", DENY_SIGN, 2},	   // Logistic
@@ -193,7 +193,7 @@ static bool make_token(char *e)
 				break;
 			}
 		}
-	Log("e='%s'" ,e);
+		Log("e='%s' i=%d" ,e ,i);
 		if (i == NR_REGEX)
 		{
 			// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
