@@ -125,7 +125,6 @@ int nr_token;
 
 static bool make_token(char *e)
 {
-	Log("e='%s'" ,e);
 	int position = 0;
 	int i;
 	int cnt = 0;
@@ -194,6 +193,7 @@ static bool make_token(char *e)
 				break;
 			}
 		}
+	Log("e='%s'" ,e);
 		if (i == NR_REGEX)
 		{
 			// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
