@@ -66,12 +66,12 @@ static struct rule
 	{"\\&\\&", AND, 11},	 // and
 	{"\\|\\|", OR, 12},	 // or
 	
-	//{"\\<" , SMALLER, 6}, //smaller
+	{"<" , SMALLER, 6}, //smaller
 	{"\\>" , BIGGER, 6},	// bigger
-	{"\\<\\=" , SMALLER_EQ, 6}, // smaller or equal
+	{"<\\=" , SMALLER_EQ, 6}, // smaller or equal
 	{"\\>\\=" , BIGGER_EQ, 6}, 	// bigger or qual
 
-	//{"\\<\\<" , LEFT, 5}, // left_move
+	{"<<" , LEFT, 5}, // left_move
 	{"\\>\\>" , RIGHT, 5}, // right_move
 
 	{"\\+", PLUS, 4},	 // plus
