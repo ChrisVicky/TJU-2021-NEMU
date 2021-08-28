@@ -212,7 +212,7 @@ static int cmd_w(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;37mArguments required\33[0m\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
