@@ -224,6 +224,7 @@ void ui_mainloop() {
 			if(previous_line==NULL) continue;
 			Log("Last Line: %s" ,previous_line->line);
 			str = previous_line->line;
+			add_history(str);
 			cmd = strtok(str, " ");
 			str_end = str + strlen(str);
 		}
