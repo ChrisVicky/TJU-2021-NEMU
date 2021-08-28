@@ -23,7 +23,10 @@ char* rl_gets() {
 	if (line_read && *line_read) {
 		add_history(line_read);
 	}else{
+		HIST_ENTRY *hist = previous_history();
+		line_read = hist->line;
 		printf("\033[40;37m NULL EMPTY\n\033[0m");
+		printf("\033[40;37m line_read(previous) %s\n\033[0m" ,line_read);	
 	}
 	return line_read;
 }
@@ -222,13 +225,7 @@ void ui_mainloop() {
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
 		if(cmd == NULL) {
-			HIST_ENTRY *previous_line = previous_history();
-			if(previous_line==NULL) continue;
-			Log("Last Line: %s" ,previous_line->line);
-			strcpy(str, previous_line->line);
-			add_history(str);
-			cmd = strtok(str, " ");
-			str_end = str + strlen(str);
+			continue;
 		}
 		Log("str: '%s'" ,str);
 		Log("str_end: '%s'" ,str_end);
