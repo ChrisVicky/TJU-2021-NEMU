@@ -32,12 +32,9 @@ char* rl_gets() {
 		// printf("\033[40;36m Now History: %d\n\033[0m" ,cnt);
 		line_read = history_get(cnt)->line;
 		if(line_read && *line_read) add_history(line_read);
-		/*printf("\033[40;35m New line_read: %s\n\033[0m" ,line_read);
-		HIST_ENTRY **list = history_list();
-		int i;
-		for(i=0;i<history_length;i++){
-			printf("\033[40;34m history_list[%d]: line: '%s' timestap: '%s' \n\033[0m" ,i ,list[i]->line, list[i]->timestamp);
-		}*/
+		printf("\033[40;35m New line_read: %s\n\033[0m" ,line_read);
+		
+		
 	}
 	return line_read;
 }
@@ -231,6 +228,11 @@ static int cmd_d(char *args){
 
 void ui_mainloop() {
 	while(1) {
+		int i;
+		HIST_ENTRY **list = history_list();
+		for(i=0;i<history_length;i++){
+			printf("\033[40;34m history_list[%d]: line: '%s' timestap: '%s' \n\033[0m" ,i ,list[i]->line, list[i]->timestamp);
+		}
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
@@ -255,7 +257,7 @@ void ui_mainloop() {
 		sdl_clear_event_queue();
 #endif
 
-		int i;
+		//int i;
 		for(i = 0; i < NR_CMD; i ++) {
 			if(strcmp(cmd, cmd_table[i].name) == 0) {
 				if(cmd_table[i].handler(args) < 0) { return; }
