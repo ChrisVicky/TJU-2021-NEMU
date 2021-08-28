@@ -30,7 +30,8 @@ char* rl_gets() {
 		printf("\033[40;37m line_read(previous) '%s'\n\033[0m" ,line_read);
 		*/
 		int cnt = where_history();
-		printf("\033[40;36m Now History: %d\n\033[0m" ,cnt);	
+		printf("\033[40;36m Now History: %d\n\033[0m" ,cnt);
+		line_read = history_get(cnt)->line;	
 	}
 	return line_read;
 }
