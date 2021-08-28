@@ -132,7 +132,7 @@ static bool make_token(char *e)
 
 	nr_token = 0;
 	memset(tokens,0,sizeof(tokens));
-
+	
 	while (e[position] != '\0')
 	{
 		int i;
