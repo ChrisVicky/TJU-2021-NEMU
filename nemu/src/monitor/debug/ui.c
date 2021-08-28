@@ -223,8 +223,7 @@ void ui_mainloop() {
 			HIST_ENTRY *previous_line = previous_history();
 			if(previous_line==NULL) continue;
 			Log("Last Line: %s" ,previous_line->line);
-			//str = previous_line->line;
-			strncpy(str, previous_line->line, strlen(previous_line->line));
+			strcpy(str, previous_line->line);
 			add_history(str);
 			cmd = strtok(str, " ");
 			str_end = str + strlen(str);
