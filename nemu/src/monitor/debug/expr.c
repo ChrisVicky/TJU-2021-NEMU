@@ -66,7 +66,7 @@ static struct rule
 	{"\\&\\&", AND, 11},	 // and
 	{"\\|\\|", OR, 12},	 // or
 	
-	{"\\<" , SMALLER, 6}, //smaller
+	//{"\\<" , SMALLER, 6}, //smaller
 	{"\\>" , BIGGER, 6},	// bigger
 	{"\\<\\=" , SMALLER_EQ, 6}, // smaller or equal
 	{"\\>\\=" , BIGGER_EQ, 6}, 	// bigger or qual
@@ -126,7 +126,6 @@ int nr_token;
 static bool make_token(char *e)
 {
 	int position = 0;
-	int i;
 	int cnt = 0;
 	regmatch_t pmatch;
 
@@ -135,6 +134,7 @@ static bool make_token(char *e)
 
 	while (e[position] != '\0')
 	{
+		int i;
 		/* Try all rules one by one. */
 		for (i = 0; i < NR_REGEX; i++)
 		{
