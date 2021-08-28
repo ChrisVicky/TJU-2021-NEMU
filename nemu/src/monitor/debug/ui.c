@@ -27,7 +27,8 @@ char* rl_gets() {
 		int cnt = where_history();
 		if(!cnt) return line_read;
 		printf("\033[40;36m Now History: %d\n\033[0m" ,cnt);
-		line_read = history_get(cnt)->line;
+		HIST_ENTRY **list = history_list();
+		line_read = list[cnt-1]->line;
 		// if(line_read && *line_read) add_history(line_read);
 		printf("\033[40;35m New line_read: %s\n\033[0m" ,line_read);
 		
