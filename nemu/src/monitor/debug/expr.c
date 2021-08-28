@@ -87,6 +87,7 @@ static struct rule
 	{"\\(", FR_BRACKET, 1},									// for-bracket
 	{"\\)", BA_BRACKET, 1},									// back-bracket
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", REGISTER, 1}, // register
+	{"\\$(EAX|ECX|EDX|EBX|ESP|EBP|ESI|EDI|EIP)", REGISTER, 1}, // register
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]))
@@ -193,7 +194,7 @@ static bool make_token(char *e)
 				break;
 			}
 		}
-		Log("e='%s' i=%d" ,e ,i);
+		// Log("e='%s' i=%d" ,e ,i);
 		if (i == NR_REGEX)
 		{
 			// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
