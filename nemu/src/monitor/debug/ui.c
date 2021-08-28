@@ -115,7 +115,7 @@ static int cmd_info(char *args)
 	char *temp_args = strtok(args, " ");
 	if (temp_args == NULL)
 	{
-		printf("Argument required.\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 	char *temp_cmd = temp_args + strlen(temp_args) + 1;
@@ -164,7 +164,7 @@ static int cmd_x(char *args)
 {
 	if (args == NULL)
 	{
-		printf("Arguments required\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 	char *args1 = strtok(args, " ");
@@ -194,13 +194,13 @@ static int cmd_p(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("Arguments required\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
 	if (!flag)
 	{
-		Log("Expression Error");
+		// Log("Expression Error");
 		return 0;
 	}
 	// printf("NEW E: %s\n" ,args);
@@ -212,7 +212,7 @@ static int cmd_w(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("Arguments required\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
@@ -244,7 +244,7 @@ static int cmd_d(char *args)
 		printf("\033[47;30mArguments required\033[0m");
 		printf("\n");
 		*/
-		printf("Arguments required\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 
@@ -252,7 +252,7 @@ static int cmd_d(char *args)
 	
 	if (args1 == NULL)
 	{
-		printf("Arguments required\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 	int number;
