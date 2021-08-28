@@ -93,7 +93,7 @@ static int cmd_help(char *args)
 				return 0;
 			}
 		}
-		printf("\033[1;35mUnknown command '%s'\33[0m\n", arg);
+		printf("\033[1;31mUnknown command '%s'\33[0m\n", arg);
 	}
 	return 0;
 }
@@ -115,7 +115,7 @@ static int cmd_info(char *args)
 	char *temp_args = strtok(args, " ");
 	if (temp_args == NULL)
 	{
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
 	char *temp_cmd = temp_args + strlen(temp_args) + 1;
@@ -164,7 +164,7 @@ static int cmd_x(char *args)
 {
 	if (args == NULL)
 	{
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
 	char *args1 = strtok(args, " ");
@@ -194,7 +194,7 @@ static int cmd_p(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
@@ -212,7 +212,7 @@ static int cmd_w(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
@@ -244,7 +244,7 @@ static int cmd_d(char *args)
 		printf("\033[47;30mArguments required\033[0m");
 		printf("\n");
 		*/
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
 
@@ -252,7 +252,7 @@ static int cmd_d(char *args)
 	
 	if (args1 == NULL)
 	{
-		printf("\33[1;35mArguments required\33[0m\n");
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
 	int number;
