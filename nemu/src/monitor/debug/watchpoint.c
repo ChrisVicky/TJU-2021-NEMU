@@ -27,7 +27,7 @@ WP *new_wp()
 {
 	if (free_ == NULL)
 	{
-		Log("Error: No new watchpoints available");
+		printf("\33[1;34mError: No new watchpoints available.\33[0m\n");
 		return NULL;
 	}
 	WP *temp = head;
@@ -48,17 +48,12 @@ WP *new_wp()
 	return ret;
 }
 
-void Response(char *ch)
-{
-	printf("\33[40;39m%s\33[0m" ,ch);
-}
-
 void free_wp(int number)
 {
 	int i;
 	static WP *wp = NULL;
 	if(number >= NR_WP){
-		Log("No watchpoint %d\n" ,number);
+		printf("\33[1;34mError: No watchpoint %d\33[0m\n" ,number);
 		return ;
 	}
 	for(i=0;i<NR_WP;i++){
@@ -70,13 +65,13 @@ void free_wp(int number)
 	WP *temp = head;
 	if (temp == NULL)
 	{
-		Log("Error: No watch points left to free");
+		printf("\33[1;34mError: No watch points left to free.\33[0m\n");
 		return;
 	}
 	WP *f;
 	for(f=free_;f!=NULL;f=f->next){
 		if(f==wp){
-			Log("Watchpoint %d is not used\n" ,f->NO);
+			printf("\33[1;34mError: Watchpoint %d is not used.\33[0m\n" ,f->NO);
 			return;
 		}
 	}
@@ -91,7 +86,7 @@ void free_wp(int number)
 		wp->next = free_;
 		free_ = wp;
 	}
-	printf("\33[40;39mFree watchpoint %d %s (0x%08x)\n\33[0m" ,number ,wp->expressions ,wp->old_value);
+	printf("Free watchpoint %d %s (0x%08x).\n" ,number ,wp->expressions ,wp->old_value);
 	return;
 }
 

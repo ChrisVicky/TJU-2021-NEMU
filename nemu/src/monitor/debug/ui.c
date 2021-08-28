@@ -93,7 +93,7 @@ static int cmd_help(char *args)
 				return 0;
 			}
 		}
-		printf("\033[1;31mUnknown command '%s'\33[0m\n", arg);
+		printf("\033[1;35mUnknown command '%s'\33[0m\n", arg);
 	}
 	return 0;
 }
@@ -144,7 +144,7 @@ static int cmd_info(char *args)
 		WP *head = get_head();
 		if (head == NULL)
 		{
-			printf("No watchpoints\n");
+			printf("\033[1;31mNo watchpoints.\33[0m\n");
 			return 0;
 		}
 		printf("Num	Enb	Expression\n");
