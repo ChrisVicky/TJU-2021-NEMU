@@ -416,8 +416,8 @@ uint32_t expr(char *e, bool *success)
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
 	int i;
+	for(i=1;i<=nr_token;i++) printf("\033[40;31mstr=%s	type=%d	priority=%d\033[0m\n" ,tokens[i].str, tokens[i].type, tokens[i].priority);
 	int ans = exe(1, nr_token, success);
-	//	for(i=1;i<=nr_token;i++) printf("str=%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	strcpy(e, tokens[1].str);
 	for (i = 2; i <= nr_token; i++)
 	{
