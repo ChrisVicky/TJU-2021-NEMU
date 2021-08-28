@@ -22,6 +22,8 @@ char* rl_gets() {
 
 	if (line_read && *line_read) {
 		add_history(line_read);
+	}else{
+		printf("\033[40;37m NULL EMPTY\n\033[0m");
 	}
 	return line_read;
 }
