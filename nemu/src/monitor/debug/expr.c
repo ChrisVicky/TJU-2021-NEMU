@@ -240,7 +240,7 @@ static bool brackets(int q, int p)
 
 static int getOp(int q, int p, bool *flag)
 {
-	int cnt = 0, priority = 20;
+	int cnt = 0, priority = -1;
 	int i, op=0;
 	for (i = q; i <= p; i++)
 	{
