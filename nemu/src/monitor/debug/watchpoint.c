@@ -53,7 +53,7 @@ void free_wp(int number)
 	int i;
 	static WP *wp = NULL;
 	if(number >= NR_WP){
-		printf("No watchpoint %d\n" ,number);
+		Log("No watchpoint %d\n" ,number);
 		return ;
 	}
 	for(i=0;i<NR_WP;i++){
@@ -61,24 +61,24 @@ void free_wp(int number)
 			wp = wp_pool + i;
 		}
 	}
-	printf("Free watchpoint %d %s\n" ,number ,wp->expressions);
+	Log("Free watchpoint %d %s (0x%08x)\n" ,number ,wp->expressions ,wp->old_value);
 	WP *temp = head;
 	if (temp == NULL)
 	{
-		Log("Error: No watch points left to free out!");
+		Log("Error: No watch points left to free");
 		return;
 	}
 	WP *f;
 	for(f=free_;f!=NULL;f=f->next){
 		if(f==wp){
-			Log("Watchpoint %d is not in the used list\n" ,f->NO);
+			Log("Watchpoint %d is not used\n" ,f->NO);
 			return;
 		}
 	}
 	if(head==wp){
+		head = head->next;
 		wp->next = free_;
 		free_ = wp;
-		head = head->next;
 		return;
 	}
 	while (temp->next != wp)
