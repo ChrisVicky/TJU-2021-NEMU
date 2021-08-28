@@ -93,7 +93,7 @@ static int cmd_help(char *args)
 				return 0;
 			}
 		}
-		printf("Unknown command '%s'\n", arg);
+		printf("\033[1;31mUnknown command '%s'\33[0m\n", arg);
 	}
 	return 0;
 }
@@ -136,7 +136,7 @@ static int cmd_info(char *args)
 		}
 		if (flag == false)
 		{
-			printf("Invalid register '%s'.\n", temp_cmd);
+			printf("\033[1;31mInvalid register '%s'\33[0m\n", temp_cmd);
 		}
 	}
 	else if (strcmp("w", temp_args) == 0)
@@ -156,7 +156,7 @@ static int cmd_info(char *args)
 	}
 	else
 	{
-		printf("Undified info command '%s'.\n", temp_args);
+		printf("\033[1;31mUndified info command '%s'\33[0m\n", temp_args);
 	}
 	return 0;
 }
@@ -174,7 +174,7 @@ static int cmd_x(char *args)
 	int t2 = expr(args2, &flag);
 	if (!flag)
 	{
-		printf("Wrong Expression %s\n", args2);
+		// printf("Wrong Expression %s\n", args2);
 		return 0;
 	}
 	int i = 0, j;
@@ -212,13 +212,13 @@ static int cmd_w(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;37mArguments required\33[0m\n");
+		printf("\33[1;35mArguments required\33[0m\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
 	if (!flag)
 	{
-		Log("Expression Error");
+		// Log("Expression Error");
 		return 0;
 	}
 	// Log("Expression: %s	Ans: 0x%08x\n" ,args ,ans);
@@ -258,7 +258,7 @@ static int cmd_d(char *args)
 	int number;
 	number = strtol(args1, NULL, 10);
 	if(!number && strcmp("0", args1)){
-		printf("\033[40;31mInvalid Argument '%s'\n\033[0m" ,args1);
+		printf("\033[1;31mInvalid Argument '%s'\033[0m\n" ,args1);
 		return 0;
 	}
 	free_wp(number);
@@ -314,7 +314,7 @@ void ui_mainloop()
 		}
 		if (i == NR_CMD)
 		{
-			printf("Unknown command '%s'\n", cmd);
+			printf("\033[1;31mUnknown command '%s'\033[0m\n", cmd);
 		}
 	}
 }
