@@ -281,7 +281,7 @@ static int exe(int q, int p, bool *flag)
 	default:
 		if (q > p)
 		{
-			printf("\33[40;34mError: Wrong Expression.\33[0m\n");
+			printf("\33[1;34mError: Wrong Expression.\33[0m\n");
 			*flag = false;
 			return 0;
 		}
