@@ -25,6 +25,7 @@ char* rl_gets() {
 	}
 	else{
 		int cnt = where_history();
+		if(!cnt) return line_read;
 		printf("\033[40;36m Now History: %d\n\033[0m" ,cnt);
 		line_read = history_get(cnt)->line;
 		// if(line_read && *line_read) add_history(line_read);
