@@ -256,12 +256,11 @@ static int cmd_d(char *args)
 	}
 	int number;
 	number = strtol(args1, NULL, 10);
-	if(!number && strcmp("0", args1)==0){
-		printf("Free watchpoint 0\n");
-		free_wp(number);
+	if(!number && strcmp("0", args1)){
+		printf("\033[40;31mInvalid Argument '%s'\n\033[0m" ,args1);
+		return 0;
 	}
-	// printf("delete watchpoint %d\n" ,number);
-	//free_wp(number);
+	free_wp(number);
 	return 0;
 }
 
