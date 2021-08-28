@@ -254,9 +254,14 @@ static int cmd_d(char *args)
 		printf("Arguments required\n");
 		return 0;
 	}
-	int number = strtol(args1, NULL, 10);
+	int number;
+	number = strtol(args1, NULL, 10);
+	if(!number && strcmp("0", args1)==0){
+		printf("Free watchpoint 0\n");
+		free_wp(number);
+	}
 	// printf("delete watchpoint %d\n" ,number);
-	free_wp(number);
+	//free_wp(number);
 	return 0;
 }
 
