@@ -82,9 +82,14 @@ void cpu_exec(volatile uint32_t n) {
 		/* TODO: check watchpoints here. */
 		WP * head = get_head();
 		while(head!=NULL){
+			if(head->enable==false){
+				head = head->next;
+				continue;
+			}
 			char *temp_e = (head)->expressions;
-			int value = expr(temp_e, NULL);
-			if(value == head->old_value || head->enable==false){
+			bool flag = true;
+			int value = expr(temp_e, &flag);
+			if(value == head->old_value){
 				head = head->next;
 				continue;
 			}

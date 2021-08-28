@@ -210,6 +210,11 @@ static int cmd_p(char *args)
 static int cmd_w(char *args)
 {
 	bool flag = true;
+	WP *wp = new_wp();
+	if (wp == NULL)
+	{
+		return 0;
+	}
 	if (args == NULL)
 	{
 		printf("\33[1;31mArguments required\33[0m\n");
@@ -222,14 +227,9 @@ static int cmd_w(char *args)
 		return 0;
 	}
 	// Log("Expression: %s	Ans: 0x%08x\n" ,args ,ans);
-	WP *wp = new_wp();
-	if (wp == NULL)
-	{
-		return -1;
-	}
+	
 	// Log("args: %s\n" ,args);
 	strcpy(wp->expressions, args);
-
 	wp->old_value = ans;
 	printf("Watchpoint %d: %s\n", wp->NO, wp->expressions);
 	printf("Crruent Value: 0x%08x (%d)\n", ans, ans);

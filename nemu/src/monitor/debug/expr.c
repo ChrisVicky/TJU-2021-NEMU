@@ -198,7 +198,7 @@ static bool make_token(char *e)
 		if (i == NR_REGEX)
 		{
 			// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
-			printf("\33[1;34mno match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
+			printf("\33[1;34mNo match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
 			return false;
 		}
 		if (tokens[nr_token].type == FR_BRACKET)
