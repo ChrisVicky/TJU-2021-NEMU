@@ -131,7 +131,7 @@ static bool make_token(char *e)
 	regmatch_t pmatch;
 
 	nr_token = 0;
-	//	memset(tokens,0,sizeof(tokens));
+	memset(tokens,0,sizeof(tokens));
 
 	while (e[position] != '\0')
 	{
