@@ -48,6 +48,11 @@ WP *new_wp()
 	return ret;
 }
 
+void Response(char *ch)
+{
+	printf("\33[40;31m%s\33[0m" ,ch);
+}
+
 void free_wp(int number)
 {
 	int i;
@@ -61,7 +66,7 @@ void free_wp(int number)
 			wp = wp_pool + i;
 		}
 	}
-	Log("Free watchpoint %d %s (0x%08x)\n" ,number ,wp->expressions ,wp->old_value);
+	printf("\33[40;31mFree watchpoint %d %s (0x%08x)\n\33[0m" ,number ,wp->expressions ,wp->old_value);
 	WP *temp = head;
 	if (temp == NULL)
 	{
