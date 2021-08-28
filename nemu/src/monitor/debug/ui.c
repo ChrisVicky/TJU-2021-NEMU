@@ -144,7 +144,7 @@ static int cmd_info(char *args)
 		WP *head = get_head();
 		if (head == NULL)
 		{
-			printf("\033[1;31mNo watchpoints.\33[0m\n");
+			printf("No watchpoints.\n");
 			return 0;
 		}
 		printf("Num	Enb	Expression\n");
