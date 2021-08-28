@@ -22,12 +22,13 @@ char* rl_gets() {
 
 	if (line_read && *line_read) {
 		add_history(line_read);
-	}else{
-		/*HIST_ENTRY *hist = current_history();
+	}
+	/*else{
+		HIST_ENTRY *hist = current_history();
 		line_read = hist->line;
 		printf("\033[40;37m NULL EMPTY\n\033[0m");
 		printf("\033[40;37m line_read(previous) '%s'\n\033[0m" ,line_read);
-		*/
+		
 		int cnt = where_history();
 		// printf("\033[40;36m Now History: %d\n\033[0m" ,cnt);
 		line_read = history_get(cnt)->line;
@@ -35,7 +36,8 @@ char* rl_gets() {
 		printf("\033[40;35m New line_read: %s\n\033[0m" ,line_read);
 		
 		
-	}
+	}*/
+
 	return line_read;
 }
 static int cmd_c(char *args) { cpu_exec(-1); return 0; }
