@@ -157,7 +157,7 @@ static bool make_token(char *e)
 				case NOTYPE:
 					break;
 				case MINUS:
-					//						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+					// if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
 					if (nr_token == 0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= EQ))
 					{
 						tokens[++nr_token].type = NEGATIVE_SIGN;
@@ -170,7 +170,7 @@ static bool make_token(char *e)
 					tokens[nr_token].priority = rules[i].priority;
 					break;
 				case TIMES:
-					//						if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
+					// if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
 					if (nr_token == 0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= EQ))
 					{
 						tokens[++nr_token].type = ADDRESS_SIGN;
@@ -204,7 +204,7 @@ static bool make_token(char *e)
 			cnt--;
 		if (cnt < 0)
 		{
-			Log("Error: Wrong Expression: Brackets");
+			printf("\33[40;34mError: Wrong Expression: Brackets\33[0m\n");
 			return false;
 		}
 	}
@@ -212,7 +212,7 @@ static bool make_token(char *e)
 	{
 		return true;
 	}
-	Log("Error: Wrong Expression: Brackets");
+	printf("\33[40;34mError: Wrong Expression: Brackets\33[0m\n");
 	return false;
 }
 
@@ -281,7 +281,7 @@ static int exe(int q, int p, bool *flag)
 	default:
 		if (q > p)
 		{
-			Log("Error: Wrong Expression\n");
+			printf("\33[40;34mError: Wrong Expression.\33[0m\n");
 			*flag = false;
 			return 0;
 		}
@@ -311,7 +311,7 @@ static int exe(int q, int p, bool *flag)
 				data = strtol(tokens[p].str, NULL, 10);
 				break;
 			default:
-				Log("A NUMBER OR REGISTER IS NEEDED, BUT %s IS WHAT WE GET.", tokens[p].str);
+				printf("\33[40;34mA NUMBER OR REGISTER IS NEEDED, BUT %s IS WHAT WE GET.\33[0m\n", tokens[p].str);
 				*flag = false;
 				return 0;
 			}
@@ -329,7 +329,10 @@ static int exe(int q, int p, bool *flag)
 				int op = getOp(q,p,flag);
 				if (op == 0)
 				{
-					Log("Wrong Expression:	q=%d	p=%d\n", q, p);
+					char *temp_str = tokens[q].str;
+					int i;
+					for(i=q+1;i<=p;i++) strcat(temp_str, tokens[i].str);
+					printf("\33[40;34mWrong Expression: '%s'\33[0m\n", temp_str);
 					*flag = false;
 					return 0;
 				}
@@ -392,7 +395,7 @@ static int exe(int q, int p, bool *flag)
 					data = val1 >= val2;
 					break;
 				default:
-					Log("Error math type string=%s	type=%d\n", tokens[op].str, tokens[op].type);
+					printf("\33[40;34mError math type string=%s	type=%d\33[0m\n", tokens[op].str, tokens[op].type);
 					*flag = false;
 					return 0;
 				}
@@ -416,7 +419,7 @@ uint32_t expr(char *e, bool *success)
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
 	int i;
-	for(i=1;i<=nr_token;i++) printf("\033[40;31mstr=%s	type=%d	priority=%d\033[0m\n" ,tokens[i].str, tokens[i].type, tokens[i].priority);
+	// for(i=1;i<=nr_token;i++) printf("\033[40;31mstr=%s	type=%d	priority=%d\033[0m\n" ,tokens[i].str, tokens[i].type, tokens[i].priority);
 	int ans = exe(1, nr_token, success);
 	strcpy(e, tokens[1].str);
 	for (i = 2; i <= nr_token; i++)
