@@ -36,7 +36,7 @@ char* rl_gets() {
 		HIST_ENTRY **list = history_list();
 		int i;
 		for(i=0;i<history_length;i++){
-			printf("\033[40;34m history_list[%d]: line: %s timestap: %s \033[0m" ,i ,list[i]->line, list[i]->timestamp);
+			printf("\033[40;34m history_list[%d]: line: '%s' timestap: '%s' \n\033[0m" ,i ,list[i]->line, list[i]->timestamp);
 		}
 	}
 	return line_read;
