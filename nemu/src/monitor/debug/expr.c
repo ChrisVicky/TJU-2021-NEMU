@@ -71,7 +71,7 @@ static struct rule
 	{"\\<\\=" , SMALLER_EQ, 6}, // smaller or equal
 	{"\\>\\=" , BIGGER_EQ, 6}, 	// bigger or qual
 
-	{"\\<\\<" , LEFT, 5}, // left_move
+	//{"\\<\\<" , LEFT, 5}, // left_move
 	{"\\>\\>" , RIGHT, 5}, // right_move
 
 	{"\\+", PLUS, 4},	 // plus
