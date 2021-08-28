@@ -249,6 +249,7 @@ static int cmd_d(char *args)
 	}
 
 	char *args1 = strtok(args, " ");
+	
 	if (args1 == NULL)
 	{
 		printf("Arguments required\n");
