@@ -39,16 +39,11 @@ WP *new_wp()
 		head = ret;
 		return ret;
 	}
-	Log("TEMP!=NULL");
 	while (temp->next != NULL)
 		temp = temp->next;
-	Log("Successfully Enter a new wp");
 	WP *ret = free_;
-	Log("2");
 	free_ = (*free_).next;
-	Log("3");
 	ret->next = NULL;
-	Log("4");
 	temp->next = ret;
 	return ret;
 }
@@ -83,7 +78,7 @@ void free_wp(int number)
 	if(head==wp){
 		wp->next = free_;
 		free_ = wp;
-		head = NULL;
+		head = head->next;
 		return;
 	}
 	while (temp->next != wp)
