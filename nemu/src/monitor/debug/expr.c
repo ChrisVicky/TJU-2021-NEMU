@@ -58,12 +58,12 @@ static struct rule
 	{"0x[a-f|0-9|A-F]+", HEX, 0}, // HEX			0
 	{"[0-9]+", TEN, 0},		   // TEN
 
-	{"==", EQ, 7},		 // equal
-	{"\\!=", NEQ, 7},	 // not equal
+	{"\\=\\=", EQ, 7},		 // equal
+	{"\\!\\=", NEQ, 7},	 // not equal
 	{"\\&", AND_COMPUTE, 8}, // 01 & 10 = 00
 	{"\\^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
 	{"\\|", OR_COMPUTE, 10},  // 01 | 10 = 11
-	{"\\&&", AND, 11},	 // and
+	{"\\&\\&", AND, 11},	 // and
 	{"\\|\\|", OR, 12},	 // or
 	
 	{"\\<" , SMALLER, 6}, //smaller
@@ -79,7 +79,7 @@ static struct rule
 	
 	{"\\*", TIMES, 3},	 // times
 	{"\\/", DIVIDE, 3}, // divide
-	{"\\%", MODE, 3},	 // mode
+	//{"\\%", MODE, 3},	 // mode
 
 	{"\\~", REVERSE_SIGN, 2}, // Reverse - byte while
 	{"\\!", DENY_SIGN, 2},	   // Logistic
