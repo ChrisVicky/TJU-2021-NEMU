@@ -208,7 +208,7 @@ static int cmd_p(char *args)
 		return 0;
 	}
 	// printf("NEW E: %s\n" ,args);
-	printf("\033[1;37mDEC: \033[0m\33[40;33m%d	\033[0m\033[1;37mHEX: \033[0m\33[40;33m0x%08x\\33[0mn", ans, ans);
+	printf("\033[1;37mDEC: \033[0m\33[40;33m%d	\033[0m\033[1;37mHEX: \033[0m\33[40;33m0x%08x\33[0m\n", ans, ans);
 	return 0;
 }
 static int cmd_w(char *args)
