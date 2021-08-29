@@ -80,7 +80,7 @@ static int cmd_help(char *args)
 		/* no argument given */
 		for (i = 0; i < NR_CMD; i++)
 		{
-			printf("\33[1;37m%s\33	-	%s\n", cmd_table[i].name, cmd_table[i].description);
+			printf("\33[1;37m%s\33[0m - %s\n", cmd_table[i].name, cmd_table[i].description);
 		}
 	}
 	else
@@ -89,7 +89,7 @@ static int cmd_help(char *args)
 		{
 			if (strcmp(arg, cmd_table[i].name) == 0)
 			{
-				printf("\33[1;37m%s\33[0m	-	%s\n", cmd_table[i].name, cmd_table[i].description);
+				printf("\33[1;37m%s\33[0m - %s\n", cmd_table[i].name, cmd_table[i].description);
 				return 0;
 			}
 		}
