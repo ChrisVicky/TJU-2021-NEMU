@@ -58,8 +58,8 @@ static struct rule
 	{"0x[a-f|0-9|A-F]+", HEX, 0}, // HEX			0
 	{"[0-9]+", TEN, 0},		   // TEN
 
-	{"\\=\\=", EQ, 7},		 // equal
-	{"\\!\\=", NEQ, 7},	 // not equal
+	{"==", EQ, 7},		 // equal
+	{"!=", NEQ, 7},	 // not equal
 	{"\\&", AND_COMPUTE, 8}, // 01 & 10 = 00
 	{"\\^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
 	{"\\|", OR_COMPUTE, 10},  // 01 | 10 = 11
