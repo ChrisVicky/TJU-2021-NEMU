@@ -97,8 +97,8 @@ void cpu_exec(volatile uint32_t n) {
 			printf("\033[1;36mHint Watchpoint %d at address 0x%08x, \033[0m" ,head->NO ,cpu.eip);
 			printf("\033[1;36mexpr = %s\033[0m\n" ,head->expressions);
 			
-			printf("\033[1;37mOld value = \033[0m\33[40;33m0x%08x\33[0m\n" ,head->old_value);
-			printf("\033[1;37mNew value = \033[0m\33[40;33m0x%08x\33[0m\n" ,value);
+			printf("\033[1;37mOld value = \033[0m0x%08x\n" ,head->old_value);
+			printf("\033[1;37mNew value = \033[0m0x%08x\n" ,value);
 			
 			//printf("Value: 0x%08x ->" ,head->old_value);
 			//printf(" 0x%08x\n\n" ,value);

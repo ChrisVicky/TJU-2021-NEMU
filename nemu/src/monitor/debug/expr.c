@@ -288,7 +288,7 @@ static int exe(int q, int p, bool *flag)
 		if (q > p)
 		{
 			if(*flag==true)
-				printf("\33[1;34mError: Wrong Expression.\33[0m\n");
+				printf("\33[1;34mError: Wrong Expression\33[0m\n");
 			*flag = false;
 			return 0;
 		}
@@ -318,7 +318,7 @@ static int exe(int q, int p, bool *flag)
 				data = strtol(tokens[p].str, NULL, 10);
 				break;
 			default:
-				printf("\33[1;34mA NUMBER OR REGISTER IS NEEDED, BUT %s IS WHAT WE GET.\33[0m\n", tokens[p].str);
+				printf("\33[1;34mA NUMBER or REGISTER is needed, BUT %s is what we get\33[0m\n", tokens[p].str);
 				*flag = false;
 				return 0;
 			}
