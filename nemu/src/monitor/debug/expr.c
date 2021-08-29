@@ -65,7 +65,6 @@ static struct rule
 	{"\\|", OR_COMPUTE, 10},  // 01 | 10 = 11
 	{"\\&\\&", AND, 11},	 // and
 	{"\\|\\|", OR, 12},	 // or
-	
 	{"<" , SMALLER, 6}, //smaller
 	{"\\>" , BIGGER, 6},	// bigger
 	{"<\\=" , SMALLER_EQ, 6}, // smaller or equal
@@ -144,7 +143,7 @@ static bool make_token(char *e)
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				// Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
 				position += substr_len;
 
