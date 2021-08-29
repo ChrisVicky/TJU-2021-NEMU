@@ -71,7 +71,7 @@ void free_wp(int number)
 	WP *f;
 	for(f=free_;f!=NULL;f=f->next){
 		if(f==wp){
-			printf("\33[1;34mError: Watchpoint %d is not used.\33[0m\n" ,f->NO);
+			printf("\33[1;34mError: Watchpoint \33[0m\33[1;36m%d \33[0m\33[1;34mis not used.\33[0m\n" ,f->NO);
 			return;
 		}
 	}
@@ -86,7 +86,7 @@ void free_wp(int number)
 		wp->next = free_;
 		free_ = wp;
 	}
-	printf("\33[1;37mFree watchpoint\33[0m \33[1;36m%d\33[0m \33[40;36m%s\33[0m \33[40;33m(0x%08x).\33[0m\n" ,number ,wp->expressions ,wp->old_value);
+	printf("\33[1;37mFree watchpoint\33[0m \33[1;36m%d\33[0m : \33[40;36m%s\33[0m \33[40;33m(0x%08x).\33[0m\n" ,number ,wp->expressions ,wp->old_value);
 	return;
 }
 
