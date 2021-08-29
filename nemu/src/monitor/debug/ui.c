@@ -60,12 +60,12 @@ static struct
 	{"c", "Continue the execution of the program", cmd_c},
 	{"q", "Exit NEMU", cmd_q},
 	/* TODO: Add more commands */
-	{"si", "Continue the execution for n steps", cmd_si},
-	{"info", "Show registers", cmd_info},
-	{"x", "Scan the cache", cmd_x},
-	{"p", "Expression", cmd_p},
-	{"w", "Watch Points", cmd_w},
-	{"d", "Delete Points", cmd_d},
+	{"si", "Excute 'n' steps (defalt: n = 1)", cmd_si},
+	{"info", "Show Registers('r') or Watchpoints('w')", cmd_info},
+	{"x", "Scan cache", cmd_x},
+	{"p", "Compute an expression", cmd_p},
+	{"w", "Make watchpoints", cmd_w},
+	{"d", "Delete points", cmd_d},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -89,7 +89,7 @@ static int cmd_help(char *args)
 		{
 			if (strcmp(arg, cmd_table[i].name) == 0)
 			{
-				printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+				printf("\33[1;37m%s	-	%s\33[0m\n", cmd_table[i].name, cmd_table[i].description);
 				return 0;
 			}
 		}
