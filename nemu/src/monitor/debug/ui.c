@@ -126,12 +126,12 @@ static int cmd_info(char *args)
 			if (strcmp("", temp_cmd) == 0 || strstr(temp_cmd, register_name[i]))
 			{
 				flag = true;
-				printf("%s		0x%08x		%d\n", register_name[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
+				printf("\33[40;33m%s		0x%08x		%d\33[0m\n", register_name[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
 			}
 		}
 		if (strcmp("", temp_cmd) == 0 || strstr(temp_cmd, "eip"))
 		{
-			printf("eip		0x%08x		%d\n", cpu.eip, cpu.eip);
+			printf("\33[40;33meip		0x%08x		%d\33[0m\n", cpu.eip, cpu.eip);
 			flag = true;
 		}
 		if (flag == false)
@@ -144,13 +144,13 @@ static int cmd_info(char *args)
 		WP *head = get_head();
 		if (head == NULL)
 		{
-			printf("No watchpoints.\n");
+			printf("\33[1;31mNo watchpoints.\33[0m\n");
 			return 0;
 		}
-		printf("Num	Enb	Expression\n");
+		printf("\33[1;31mNum	Enb	Expression\33[0m\n");
 		while (head != NULL)
 		{
-			printf("%d	%s	%s (0x%08x)\n", head->NO, head->enable ? "Yes" : "No", head->expressions, head->old_value);
+			printf("\33[40;33m%d	%s	%s (0x%08x)\33[0m\n", head->NO, head->enable ? "Yes" : "No", head->expressions, head->old_value);
 			head = head->next;
 		}
 	}
@@ -184,10 +184,10 @@ static int cmd_x(char *args)
 	int i = 0, j;
 	while (i < t1)
 	{
-		printf("0x%08x: ", t2);
+		printf("\33[1;37m0x%08x: \33[0m", t2);
 		for (j = 0; j < 4 && i < t1; i++, j++, t2 += 4)
 		{
-			printf("0x%08x ", swaddr_read(t2, 4));
+			printf("\33[40;33m0x%08x \33[0m", swaddr_read(t2, 4));
 		}
 		printf("\n");
 	}
@@ -208,7 +208,7 @@ static int cmd_p(char *args)
 		return 0;
 	}
 	// printf("NEW E: %s\n" ,args);
-	printf("DEC: %d	HEX: 0x%08x\n", ans, ans);
+	printf("\033[1;37mDEC: \033[0m\33[40;33m%d	\033[0m\033[1;37mHEX: \033[0m\33[40;33m0x%08x\\33[0mn", ans, ans);
 	return 0;
 }
 static int cmd_w(char *args)
@@ -235,8 +235,8 @@ static int cmd_w(char *args)
 	}
 	strcpy(wp->expressions, args);
 	wp->old_value = ans;
-	printf("Watchpoint %d: %s\n", wp->NO, wp->expressions);
-	printf("Crruent Value: 0x%08x (%d)\n", ans, ans);
+	printf("\033[1;37mWatchpoint \033[0m\33[40;33m%d: %s\33[0m\n", wp->NO, wp->expressions);
+	printf("\033[1;37mCrruent Value: \033[0m\33[40;33m0x%08x (%d)\33[0m\n", ans, ans);
 	return 0;
 }
 
