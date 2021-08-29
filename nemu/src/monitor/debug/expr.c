@@ -63,7 +63,7 @@ static struct rule
 	{"&&", AND, 11},	 // and
 	{"\\|\\|", OR, 12},	 // or
 	{"&", AND_COMPUTE, 8}, // 01 & 10 = 00
-	{"^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
+	{"\\^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
 	{"\\|", OR_COMPUTE, 10},  // 01 | 10 = 11
 	{"<<" , LEFT, 5}, // left_move
 	{">>" , RIGHT, 5}, // right_move
