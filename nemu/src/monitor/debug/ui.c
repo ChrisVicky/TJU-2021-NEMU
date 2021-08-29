@@ -147,10 +147,10 @@ static int cmd_info(char *args)
 			printf("\33[1;37mNo watchpoints.\33[0m\n");
 			return 0;
 		}
-		printf("\33[1;36mNum	Enb	Expression\33[0m\n");
+		printf("\33[1;37mNum	Enb	Expression\33[0m\n");
 		while (head != NULL)
 		{
-			printf("\33[40;33m%d	%s	%s (0x%08x)\33[0m\n", head->NO, head->enable ? "Yes" : "No", head->expressions, head->old_value);
+			printf("\33[40;37m%d	%s	\33[0m\33[40;36m%s (0x%08x)\33[0m\n", head->NO, head->enable ? "Yes" : "No", head->expressions, head->old_value);
 			head = head->next;
 		}
 	}
@@ -235,7 +235,7 @@ static int cmd_w(char *args)
 	}
 	strcpy(wp->expressions, args);
 	wp->old_value = ans;
-	printf("\033[1;37mWatchpoint \033[0m\33[1;36m%d : \33[0m\33[40;36m%s\33[0m\n", wp->NO, wp->expressions);
+	printf("\033[1;37mWatchpoint \033[0m\33[1;36m%d\33[0m : \33[40;36m%s\33[0m\n", wp->NO, wp->expressions);
 	printf("\033[1;37mCrruent Value: \033[0m\33[40;33m0x%08x (%d)\33[0m\n", ans, ans);
 	return 0;
 }
