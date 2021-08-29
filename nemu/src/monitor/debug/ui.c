@@ -150,7 +150,7 @@ static int cmd_info(char *args)
 		printf("\33[1;37mNum	Enb	Expression\33[0m\n");
 		while (head != NULL)
 		{
-			printf("\33[40;37m%d	\33[0m%s	\33[40;36m%s (0x%08x)\33[0m\n", head->NO, head->enable ? "\33[1;32mYes\33[0m" : "\33[1;31mNo\33[0m", head->expressions, head->old_value);
+			printf("\33[40;37m%d	\33[0m%s	\33[40;36m%s \33[0m\33[40;33m(0x%08x)\33[0m\n", head->NO, head->enable ? "\33[1;32mYes\33[0m" : "\33[1;31mNo\33[0m", head->expressions, head->old_value);
 			head = head->next;
 		}
 	}
