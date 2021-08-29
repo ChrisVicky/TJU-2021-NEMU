@@ -126,12 +126,12 @@ static int cmd_info(char *args)
 			if (strcmp("", temp_cmd) == 0 || strstr(temp_cmd, register_name[i]))
 			{
 				flag = true;
-				printf("\33[40;33m%s		0x%08x		%d\33[0m\n", register_name[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
+				printf("\33[1;37m%s		\33[0m\33[40;37m0x%08x		%d\33[0m\n", register_name[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
 			}
 		}
 		if (strcmp("", temp_cmd) == 0 || strstr(temp_cmd, "eip"))
 		{
-			printf("\33[40;33meip		0x%08x		%d\33[0m\n", cpu.eip, cpu.eip);
+			printf("\33[1;37meip		\33[0m\33[40;33m0x%08x		%d\33[0m\n", cpu.eip, cpu.eip);
 			flag = true;
 		}
 		if (flag == false)
@@ -144,10 +144,10 @@ static int cmd_info(char *args)
 		WP *head = get_head();
 		if (head == NULL)
 		{
-			printf("\33[1;31mNo watchpoints.\33[0m\n");
+			printf("\33[1;37mNo watchpoints.\33[0m\n");
 			return 0;
 		}
-		printf("\33[1;31mNum	Enb	Expression\33[0m\n");
+		printf("\33[1;36mNum	Enb	Expression\33[0m\n");
 		while (head != NULL)
 		{
 			printf("\33[40;33m%d	%s	%s (0x%08x)\33[0m\n", head->NO, head->enable ? "Yes" : "No", head->expressions, head->old_value);

@@ -86,7 +86,7 @@ void free_wp(int number)
 		wp->next = free_;
 		free_ = wp;
 	}
-	printf("Free watchpoint %d %s (0x%08x).\n" ,number ,wp->expressions ,wp->old_value);
+	printf("\33[1;37mFree watchpoint %d %s (0x%08x).\33[0m\n" ,number ,wp->expressions ,wp->old_value);
 	return;
 }
 
