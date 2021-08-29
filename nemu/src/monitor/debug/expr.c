@@ -60,18 +60,18 @@ static struct rule
 
 	{"==", EQ, 7},		 // equal
 	{"!=", NEQ, 7},	 // not equal
-	{"\\&", AND_COMPUTE, 8}, // 01 & 10 = 00
-	{"\\^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
-	{"\\|", OR_COMPUTE, 10},  // 01 | 10 = 11
-	{"\\&\\&", AND, 11},	 // and
-	{"\\|\\|", OR, 12},	 // or
-	{"<" , SMALLER, 6}, //smaller
-	{"\\>" , BIGGER, 6},	// bigger
-	{"<\\=" , SMALLER_EQ, 6}, // smaller or equal
-	{"\\>\\=" , BIGGER_EQ, 6}, 	// bigger or qual
-
+	{"&&", AND, 11},	 // and
+	{"||", OR, 12},	 // or
+	{"&", AND_COMPUTE, 8}, // 01 & 10 = 00
+	{"^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
+	{"|", OR_COMPUTE, 10},  // 01 | 10 = 11
 	{"<<" , LEFT, 5}, // left_move
-	{"\\>\\>" , RIGHT, 5}, // right_move
+	{">>" , RIGHT, 5}, // right_move
+	{"<=" , SMALLER_EQ, 6}, // smaller or equal
+	{">=" , BIGGER_EQ, 6}, 	// bigger or qual
+
+	{"<" , SMALLER, 6}, //smaller
+	{">" , BIGGER, 6},	// bigger
 
 	{"\\+", PLUS, 4},	 // plus
 	{"\\-", MINUS, 4},	 // minus
@@ -123,6 +123,10 @@ typedef struct token
 Token tokens[32];
 int nr_token;
 
+static bool is_sign(Token t){
+	return (t.type<=MODE && t.type>=EQ);
+}
+
 static bool make_token(char *e)
 {
 	int position = 0;
@@ -158,7 +162,7 @@ static bool make_token(char *e)
 					break;
 				case MINUS:
 					// if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
-					if (nr_token == 0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= EQ))
+					if (nr_token == 0 || is_sign(tokens[nr_token]))
 					{
 						tokens[++nr_token].type = NEGATIVE_SIGN;
 					}
@@ -171,7 +175,7 @@ static bool make_token(char *e)
 					break;
 				case TIMES:
 					// if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
-					if (nr_token == 0 || (tokens[nr_token].type <= DENY_SIGN && tokens[nr_token].type >= EQ))
+					if (nr_token == 0 || is_sign(tokens[nr_token]))
 					{
 						tokens[++nr_token].type = ADDRESS_SIGN;
 					}
@@ -250,7 +254,7 @@ static int getOp(int q, int p, bool *flag)
 			cnt++;
 		else if (tokens[i].type == BA_BRACKET)
 			cnt--;
-		else if (!cnt && (tokens[i].type>=AND_COMPUTE&&tokens[i].type<=MODE&&tokens[i].priority>=priority))
+		else if (!cnt && (is_sign(tokens[i])&&tokens[i].priority>=priority))
 		{
 			op = i;
 			priority = tokens[i].priority;
