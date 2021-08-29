@@ -126,12 +126,12 @@ static int cmd_info(char *args)
 			if (strcmp("", temp_cmd) == 0 || strstr(temp_cmd, register_name[i]))
 			{
 				flag = true;
-				printf("\33[1;37m%s		\33[1m\33[40;33m0x%08x		%d\33[0m\n", register_name[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
+				printf("\33[1;37m%s		\33[0m\33[40;33m0x%08x		%d\33[0m\n", register_name[i], cpu.gpr[i]._32, cpu.gpr[i]._32);
 			}
 		}
 		if (strcmp("", temp_cmd) == 0 || strstr(temp_cmd, "eip"))
 		{
-			printf("\33[1;37meip		\33[1m\33[40;33m0x%08x		%d\33[0m\n", cpu.eip, cpu.eip);
+			printf("\33[1;37meip		\33[0m\33[40;33m0x%08x		%d\33[0m\n", cpu.eip, cpu.eip);
 			flag = true;
 		}
 		if (flag == false)
