@@ -187,7 +187,7 @@ static int cmd_x(char *args)
 		printf("\33[1;37m0x%08x: \33[0m", t2);
 		for (j = 0; j < 4 && i < t1; i++, j++, t2 += 4)
 		{
-			printf("\33[40;33m0x%08x \33[0m", swaddr_read(t2, 4));
+			printf("0x%08x ", swaddr_read(t2, 4));
 		}
 		printf("\n");
 	}
