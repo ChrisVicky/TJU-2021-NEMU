@@ -303,6 +303,7 @@ static int exe(int q, int p, bool *flag)
 			data = strtol(tokens[p].str, NULL, 10);
 			break;
 		default:
+			Log("q=%d	p=%d" ,q,p);
 			printf("\33[1;34mA NUMBER or REGISTER is needed, BUT %s is what we get\33[0m\n", tokens[p].str);
 			*flag = false;
 			return 0;
