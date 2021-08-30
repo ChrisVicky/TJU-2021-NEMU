@@ -10,17 +10,22 @@ const char registers[] = "$eax$ecx$edx$ebx$esp$edp$esi$edi$eip";
 enum
 {
 	NOTYPE = 256,
-	HEX = 0, TEN, 
-	
-//18
-	EQ, 
+	HEX = 0,
+	TEN,
+
+	//18
+	ADDRESS_SIGN,
+	NEGATIVE_SIGN,
+	REVERSE_SIGN,
+	DENY_SIGN,
+	EQ,
 	NEQ,
-	AND_COMPUTE, 
-	XOR_COMPUTE, 
-	OR_COMPUTE, 
-	AND, 
+	AND_COMPUTE,
+	XOR_COMPUTE,
+	OR_COMPUTE,
+	AND,
 	OR,
-	SMALLER, 
+	SMALLER,
 	BIGGER,
 	SMALLER_EQ,
 	BIGGER_EQ,
@@ -31,11 +36,7 @@ enum
 	TIMES,
 	DIVIDE,
 	MODE,
-	
-	ADDRESS_SIGN,
-	NEGATIVE_SIGN,
-	REVERSE_SIGN,
-	DENY_SIGN,
+
 	FR_BRACKET,
 	BA_BRACKET,
 	REGISTER,
@@ -56,35 +57,35 @@ static struct rule
 	{" +", NOTYPE, 0}, // spaces		256
 
 	{"0x[a-f|0-9|A-F]+", HEX, 0}, // HEX			0
-	{"[0-9]+", TEN, 0},		   // TEN
+	{"[0-9]+", TEN, 0},			  // TEN
 
-	{"==", EQ, 7},		 // equal
-	{"!=", NEQ, 7},	 // not equal
-	{"&&", AND, 11},	 // and
-	{"\\|\\|", OR, 12},	 // or
-	{"&", AND_COMPUTE, 8}, // 01 & 10 = 00
+	{"==", EQ, 7},			 // equal
+	{"!=", NEQ, 7},			 // not equal
+	{"&&", AND, 11},		 // and
+	{"\\|\\|", OR, 12},		 // or
+	{"&", AND_COMPUTE, 8},	 // 01 & 10 = 00
 	{"\\^", XOR_COMPUTE, 9}, // 10 ^ 01 = 11
-	{"\\|", OR_COMPUTE, 10},  // 01 | 10 = 11
-	{"<<" , LEFT, 5}, // left_move
-	{">>" , RIGHT, 5}, // right_move
-	{"<=" , SMALLER_EQ, 6}, // smaller or equal
-	{">=" , BIGGER_EQ, 6}, 	// bigger or qual
+	{"\\|", OR_COMPUTE, 10}, // 01 | 10 = 11
+	{"<<", LEFT, 5},		 // left_move
+	{">>", RIGHT, 5},		 // right_move
+	{"<=", SMALLER_EQ, 6},	 // smaller or equal
+	{">=", BIGGER_EQ, 6},	 // bigger or qual
 
-	{"<" , SMALLER, 6}, //smaller
-	{">" , BIGGER, 6},	// bigger
+	{"<", SMALLER, 6}, //smaller
+	{">", BIGGER, 6},  // bigger
 
-	{"\\+", PLUS, 4},	 // plus
-	{"\\-", MINUS, 4},	 // minus
-	
-	{"\\*", TIMES, 3},	 // times
+	{"\\+", PLUS, 4},  // plus
+	{"\\-", MINUS, 4}, // minus
+
+	{"\\*", TIMES, 3},	// times
 	{"\\/", DIVIDE, 3}, // divide
-	{"\\%", MODE, 3},	 // mode
+	{"\\%", MODE, 3},	// mode
 
 	{"\\~", REVERSE_SIGN, 2}, // Reverse - byte while
-	{"\\!", DENY_SIGN, 2},	   // Logistic
+	{"\\!", DENY_SIGN, 2},	  // Logistic
 
-	{"\\(", FR_BRACKET, 1},									// for-bracket
-	{"\\)", BA_BRACKET, 1},									// back-bracket
+	{"\\(", FR_BRACKET, 1},									   // for-bracket
+	{"\\)", BA_BRACKET, 1},									   // back-bracket
 	{"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)", REGISTER, 1}, // register
 	{"\\$(EAX|ECX|EDX|EBX|ESP|EBP|ESI|EDI|EIP)", REGISTER, 1}, // register
 };
@@ -123,8 +124,14 @@ typedef struct token
 Token tokens[32];
 int nr_token;
 
-static bool is_sign(Token t){
-	return (t.type<=MODE && t.type>=EQ);
+static bool is_sign(Token t)
+{
+	return (t.type <= MODE && t.type >= EQ);
+}
+
+static bool is_Single_sign(Token t)
+{
+	return (t.type <= DENY_SIGN && t.type >= ADDRESS_SIGN);
 }
 
 static bool make_token(char *e)
@@ -134,8 +141,8 @@ static bool make_token(char *e)
 	regmatch_t pmatch;
 
 	nr_token = 0;
-	memset(tokens,0,sizeof(tokens));
-	
+	memset(tokens, 0, sizeof(tokens));
+
 	while (e[position] != '\0')
 	{
 		int i;
@@ -165,26 +172,28 @@ static bool make_token(char *e)
 					if (nr_token == 0 || is_sign(tokens[nr_token]))
 					{
 						tokens[++nr_token].type = NEGATIVE_SIGN;
+						tokens[nr_token].priority = 2;
 					}
 					else
 					{
 						tokens[++nr_token].type = MINUS;
+						tokens[nr_token].priority = rules[i].priority;
 					}
 					strncpy(tokens[nr_token].str, substr_start, substr_len);
-					tokens[nr_token].priority = rules[i].priority;
 					break;
 				case TIMES:
 					// if(nr_token==0 || tokens[nr_token].type==PLUS||tokens[nr_token].type==MINUS||tokens[nr_token].type==TIMES||tokens[nr_token].type==DIVIDE){
 					if (nr_token == 0 || is_sign(tokens[nr_token]))
 					{
 						tokens[++nr_token].type = ADDRESS_SIGN;
+						tokens[nr_token].priority = 2;
 					}
 					else
 					{
 						tokens[++nr_token].type = TIMES;
+						tokens[nr_token].priority = rules[i].priority;
 					}
 					strncpy(tokens[nr_token].str, substr_start, substr_len);
-					tokens[nr_token].priority = rules[i].priority;
 					break;
 				default:
 					tokens[++nr_token].type = rules[i].token_type;
@@ -247,14 +256,14 @@ static bool brackets(int q, int p)
 static int getOp(int q, int p, bool *flag)
 {
 	int cnt = 0, priority = -1;
-	int i, op=0;
+	int i, op = 0;
 	for (i = q; i <= p; i++)
 	{
 		if (tokens[i].type == FR_BRACKET)
 			cnt++;
 		else if (tokens[i].type == BA_BRACKET)
 			cnt--;
-		else if (!cnt && (is_sign(tokens[i])&&tokens[i].priority>=priority))
+		else if (!cnt && (is_sign(tokens[i]) && tokens[i].priority >= priority))
 		{
 			op = i;
 			priority = tokens[i].priority;
@@ -266,9 +275,11 @@ static int getOp(int q, int p, bool *flag)
 static int exe(int q, int p, bool *flag)
 {
 	int data = 0;
-	switch ((tokens[q].type))
+	int i;
+	int cnt = 0;
+	switch (is_Single_sign(tokens[q]))
 	{
-	case NEGATIVE_SIGN: // "-"
+	/*case NEGATIVE_SIGN: // "-"
 		data = exe(q + 1, p, flag);
 		data = ~data + 1;
 		break;
@@ -284,10 +295,46 @@ static int exe(int q, int p, bool *flag)
 		data = exe(q + 1, p, flag);
 		data = !data;
 		break;
+	*/
+	case true:
+		for (i = q; i <= p; i++)
+		{
+			if (tokens[i].type == FR_BRACKET)
+				cnt++;
+			else if (tokens[i].type == BA_BRACKET)
+				cnt--;
+			if (cnt == 0 && is_sign(tokens[i]))
+			{
+				break;
+			}
+		}
+		data = exe(q + 1, i - 1, flag);
+		int val2 = exe(i + 1, p, flag);
+		switch (tokens[q].type)
+		{
+		case NEGATIVE_SIGN: // "-"
+			data = ~data + 1;
+			break;
+		case ADDRESS_SIGN: // "*"
+			data = swaddr_read(data, 4);
+			break;
+		case REVERSE_SIGN: // "~"
+			data = ~data;
+			break;
+		case DENY_SIGN: // "!"
+			data = !data;
+			break;
+		default:
+			if (*flag == true)
+				printf("\33[1;34mError: Wrong Expression\33[0m\n");
+			*flag = false;
+			return 0;
+		}
+		return data + val2;
 	default:
 		if (q > p)
 		{
-			if(*flag==true)
+			if (*flag == true)
 				printf("\33[1;34mError: Wrong Expression\33[0m\n");
 			*flag = false;
 			return 0;
@@ -333,12 +380,13 @@ static int exe(int q, int p, bool *flag)
 			}
 			else
 			{
-				int op = getOp(q,p,flag);
+				int op = getOp(q, p, flag);
 				if (op == 0)
 				{
 					char *temp_str = tokens[q].str;
 					int i;
-					for(i=q+1;i<=p;i++) strcat(temp_str, tokens[i].str);
+					for (i = q + 1; i <= p; i++)
+						strcat(temp_str, tokens[i].str);
 					printf("\33[1;34mWrong Expression: '%s'\33[0m\n", temp_str);
 					*flag = false;
 					return 0;
