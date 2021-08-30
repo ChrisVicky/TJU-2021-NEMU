@@ -336,16 +336,16 @@ static int exe(int q, int p, bool *flag)
 			switch (tokens[op].type)
 			{
 			case NEGATIVE_SIGN: // "-"
-				data = ~val1 + 1;
+				data = ~val2 + 1;
 				break;
 			case ADDRESS_SIGN: // "*"
-				data = swaddr_read(val1, 4);
+				data = swaddr_read(val2, 4);
 				break;
 			case REVERSE_SIGN: // "~"
-				data = ~val1;
+				data = ~val2;
 				break;
 			case DENY_SIGN: // "!"
-				data = !val1;
+				data = !val2;
 				break;
 			case EQ:
 				data = (val1 == val2);
