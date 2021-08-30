@@ -309,7 +309,9 @@ static int exe(int q, int p, bool *flag)
 			}
 		}
 		data = exe(q + 1, i - 1, flag);
-		int val2 = exe(i + 1, p, flag);
+		int val2 = 0;
+		if(i<p+1)
+			val2 = exe(i + 1, p, flag);
 		switch (tokens[q].type)
 		{
 		case NEGATIVE_SIGN: // "-"
