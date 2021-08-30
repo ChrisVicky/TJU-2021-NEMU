@@ -258,7 +258,7 @@ static int getOp(int q, int p, bool *flag)
 			cnt++;
 		else if (tokens[i].type == BA_BRACKET)
 			cnt--;
-		else if (!cnt && (is_sign(tokens[i]) && tokens[i].priority >= priority))
+		else if (!cnt && (is_sign(tokens[i]) && tokens[i].priority > priority))
 		{
 			op = i;
 			priority = tokens[i].priority;
