@@ -329,6 +329,7 @@ static int exe(int q, int p, bool *flag)
 				*flag = false;
 				return 0;
 			}
+			Log("q=%d	p=%d	op=%d" ,q,p,op);
 			int val1 = 0;
 			if(op>q) val1 = exe(q, op - 1, flag);
 			int val2 = exe(op + 1, p, flag);
