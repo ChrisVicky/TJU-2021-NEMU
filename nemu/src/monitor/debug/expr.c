@@ -129,11 +129,6 @@ static bool is_sign(Token t)
 	return (t.type <= MODE && t.type >= EQ);
 }
 
-static bool is_Single_sign(Token t)
-{
-	return (t.type <= DENY_SIGN && t.type >= ADDRESS_SIGN);
-}
-
 static bool make_token(char *e)
 {
 	int position = 0;
@@ -275,190 +270,142 @@ static int getOp(int q, int p, bool *flag)
 static int exe(int q, int p, bool *flag)
 {
 	int data = 0;
-	int i;
-	int cnt = 0;
-	switch (is_Single_sign(tokens[q]))
+	if (q > p)
 	{
-	/*case NEGATIVE_SIGN: // "-"
-		data = exe(q + 1, p, flag);
-		data = ~data + 1;
-		break;
-	case ADDRESS_SIGN: // "*"
-		data = exe(q + 1, p, flag);
-		data = swaddr_read(data, 4);
-		break;
-	case REVERSE_SIGN: // "~"
-		data = exe(q + 1, p, flag);
-		data = ~data;
-		break;
-	case DENY_SIGN:		// "!"
-		data = exe(q + 1, p, flag);
-		data = !data;
-		break;
-	*/
-	case true:
-		for (i = q; i <= p; i++)
+		if (*flag == true)
+			printf("\33[1;34mError: Wrong Expression\33[0m\n");
+		*flag = false;
+		return 0;
+	}
+	else if (q == p)
+	{
+		int position;
+		char *temp;
+		switch (tokens[p].type)
 		{
-			if (tokens[i].type == FR_BRACKET)
-				cnt++;
-			else if (tokens[i].type == BA_BRACKET)
-				cnt--;
-			if (cnt == 0 && is_sign(tokens[i]))
+		case REGISTER:
+			temp = strstr(registers, tokens[p].str);
+			position = (temp - registers) / 4;
+			switch (position)
 			{
-				break;
-			}
-		}
-		data = exe(q + 1, i - 1, flag);
-		int val2 = 0;
-		if(i<p+1)
-			val2 = exe(i + 1, p, flag);
-		switch (tokens[q].type)
-		{
-		case NEGATIVE_SIGN: // "-"
-			data = ~data + 1;
-			break;
-		case ADDRESS_SIGN: // "*"
-			data = swaddr_read(data, 4);
-			break;
-		case REVERSE_SIGN: // "~"
-			data = ~data;
-			break;
-		case DENY_SIGN: // "!"
-			data = !data;
-			break;
-		default:
-			if (*flag == true)
-				printf("\33[1;34mError: Wrong Expression\33[0m\n");
-			*flag = false;
-			return 0;
-		}
-		return data + val2;
-	default:
-		if (q > p)
-		{
-			if (*flag == true)
-				printf("\33[1;34mError: Wrong Expression\33[0m\n");
-			*flag = false;
-			return 0;
-		}
-		else if (q == p)
-		{
-			int position;
-			char *temp;
-			switch (tokens[p].type)
-			{
-			case REGISTER:
-				temp = strstr(registers, tokens[p].str);
-				position = (temp - registers) / 4;
-				switch (position)
-				{
-				case 8:
-					data = cpu.eip;
-					break;
-				default:
-					data = cpu.gpr[position]._32;
-					break;
-				}
-				break;
-			case HEX:
-				data = strtol(tokens[p].str, NULL, 16);
-				break;
-			case TEN:
-				data = strtol(tokens[p].str, NULL, 10);
+			case 8:
+				data = cpu.eip;
 				break;
 			default:
-				printf("\33[1;34mA NUMBER or REGISTER is needed, BUT %s is what we get\33[0m\n", tokens[p].str);
+				data = cpu.gpr[position]._32;
+				break;
+			}
+			break;
+		case HEX:
+			data = strtol(tokens[p].str, NULL, 16);
+			break;
+		case TEN:
+			data = strtol(tokens[p].str, NULL, 10);
+			break;
+		default:
+			printf("\33[1;34mA NUMBER or REGISTER is needed, BUT %s is what we get\33[0m\n", tokens[p].str);
+			*flag = false;
+			return 0;
+		}
+	}
+	else
+	{
+		bool bracket_flag = brackets(q, p);
+		if (bracket_flag)
+		{
+			q++, p--;
+			return exe(q, p, flag);
+		}
+		else
+		{
+			int op = getOp(q, p, flag);
+			if (op == 0)
+			{
+				char *temp_str = tokens[q].str;
+				int i;
+				for (i = q + 1; i <= p; i++)
+					strcat(temp_str, tokens[i].str);
+				printf("\33[1;34mWrong Expression: '%s'\33[0m\n", temp_str);
+				*flag = false;
+				return 0;
+			}
+			int val1 = 0;
+			if(op>q) val1 = exe(q, op - 1, flag);
+			int val2 = exe(op + 1, p, flag);
+			switch (tokens[op].type)
+			{
+			case NEGATIVE_SIGN: // "-"
+				data = ~val1 + 1;
+				break;
+			case ADDRESS_SIGN: // "*"
+				data = swaddr_read(val1, 4);
+				break;
+			case REVERSE_SIGN: // "~"
+				data = ~val1;
+				break;
+			case DENY_SIGN: // "!"
+				data = !val1;
+				break;
+			case EQ:
+				data = (val1 == val2);
+				break;
+			case NEQ:
+				data = (val1 != val2);
+				break;
+			case AND:
+				data = (val1 && val2);
+				break;
+			case OR:
+				data = (val1 || val2);
+				break;
+			case MINUS:
+				data = val1 - val2;
+				break;
+			case PLUS:
+				data = val1 + val2;
+				break;
+			case TIMES:
+				data = val1 * val2;
+				break;
+			case DIVIDE:
+				data = val1 / val2;
+				break;
+			case OR_COMPUTE:
+				data = val1 | val2;
+				break;
+			case AND_COMPUTE:
+				data = val1 & val2;
+				break;
+			case XOR_COMPUTE:
+				data = val1 ^ val2;
+				break;
+			case MODE:
+				data = val1 % val2;
+				break;
+			case LEFT:
+				data = val1 << val2;
+				break;
+			case RIGHT:
+				data = val1 >> val2;
+				break;
+			case BIGGER:
+				data = val1 > val2;
+				break;
+			case SMALLER:
+				data = val1 < val2;
+				break;
+			case BIGGER_EQ:
+				data = val1 <= val2;
+				break;
+			case SMALLER_EQ:
+				data = val1 >= val2;
+				break;
+			default:
+				printf("\33[1;34mError math type string=%s	type=%d\33[0m\n", tokens[op].str, tokens[op].type);
 				*flag = false;
 				return 0;
 			}
 		}
-		else
-		{
-			bool bracket_flag = brackets(q, p);
-			if (bracket_flag)
-			{
-				q++, p--;
-				return exe(q, p, flag);
-			}
-			else
-			{
-				int op = getOp(q, p, flag);
-				if (op == 0)
-				{
-					char *temp_str = tokens[q].str;
-					int i;
-					for (i = q + 1; i <= p; i++)
-						strcat(temp_str, tokens[i].str);
-					printf("\33[1;34mWrong Expression: '%s'\33[0m\n", temp_str);
-					*flag = false;
-					return 0;
-				}
-				int val1 = exe(q, op - 1, flag);
-				int val2 = exe(op + 1, p, flag);
-				switch (tokens[op].type)
-				{
-				case EQ:
-					data = (val1 == val2);
-					break;
-				case NEQ:
-					data = (val1 != val2);
-					break;
-				case AND:
-					data = (val1 && val2);
-					break;
-				case OR:
-					data = (val1 || val2);
-					break;
-				case MINUS:
-					data = val1 - val2;
-					break;
-				case PLUS:
-					data = val1 + val2;
-					break;
-				case TIMES:
-					data = val1 * val2;
-					break;
-				case DIVIDE:
-					data = val1 / val2;
-					break;
-				case OR_COMPUTE:
-					data = val1 | val2;
-					break;
-				case AND_COMPUTE:
-					data = val1 & val2;
-					break;
-				case XOR_COMPUTE:
-					data = val1 ^ val2;
-					break;
-				case MODE:
-					data = val1 % val2;
-					break;
-				case LEFT:
-					data = val1 << val2;
-					break;
-				case RIGHT:
-					data = val1 >> val2;
-					break;
-				case BIGGER:
-					data = val1 > val2;
-					break;
-				case SMALLER:
-					data = val1 < val2;
-					break;
-				case BIGGER_EQ:
-					data = val1 <= val2;
-					break;
-				case SMALLER_EQ:
-					data = val1 >= val2;
-					break;
-				default:
-					printf("\33[1;34mError math type string=%s	type=%d\33[0m\n", tokens[op].str, tokens[op].type);
-					*flag = false;
-					return 0;
-				}
-			}
-		}
-		break;
 	}
 	// Log("q=%d p=%d	data=%d\n" ,q,p,data);
 	return data;
