@@ -303,7 +303,7 @@ static int exe(int q, int p, bool *flag)
 			data = strtol(tokens[p].str, NULL, 10);
 			break;
 		default:
-			Log("q=%d	p=%d" ,q,p);
+			//Log("q=%d	p=%d" ,q,p);
 			printf("\33[1;34mA NUMBER or REGISTER is needed, BUT %s is what we get\33[0m\n", tokens[p].str);
 			*flag = false;
 			return 0;
@@ -425,7 +425,7 @@ uint32_t expr(char *e, bool *success)
 		for(i=1;i<=nr_token;i++) printf("%s	type=%d\n" ,tokens[i].str, tokens[i].type);
 	*/
 	int i;
-	for(i=1;i<=nr_token;i++) printf("\033[40;31mstr=%s	type=%d	priority=%d\033[0m\n" ,tokens[i].str, tokens[i].type, tokens[i].priority);
+	//for(i=1;i<=nr_token;i++) printf("\033[40;31mstr=%s	type=%d	priority=%d\033[0m\n" ,tokens[i].str, tokens[i].type, tokens[i].priority);
 	int ans = exe(1, nr_token, success);
 	strcpy(e, tokens[1].str);
 	for (i = 2; i <= nr_token; i++)
