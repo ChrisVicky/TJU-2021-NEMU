@@ -1,10 +1,9 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
 
-#define NR_WP 32
 
-static WP wp_pool[NR_WP];
 static WP *head, *free_;
+static WP wp_pool[NR_WP];
 
 void init_wp_pool()
 {
@@ -27,7 +26,7 @@ WP *new_wp()
 {
 	if (free_ == NULL)
 	{
-		printf("\33[1;34mError: No new watchpoints available.\33[0m\n");
+		printf("\33[1;34mError: No new watchpoints available\33[0m\n");
 		return NULL;
 	}
 	WP *temp = head;
@@ -48,20 +47,8 @@ WP *new_wp()
 	return ret;
 }
 
-void free_wp(int number)
+void free_wp(WP * wp)
 {
-	int i;
-	static WP *wp = NULL;
-	if(number >= NR_WP){
-		printf("\33[1;34mError: No watchpoint %d\33[0m\n" ,number);
-		return ;
-	}
-	for(i=0;i<NR_WP;i++){
-		if(number==wp_pool[i].NO){
-			wp = wp_pool + i;
-		}
-	}
-	
 	WP *temp = head;
 	if (temp == NULL)
 	{
@@ -86,11 +73,20 @@ void free_wp(int number)
 		wp->next = free_;
 		free_ = wp;
 	}
-	printf("\33[1;37mFree watchpoint\33[0m \33[1;36m%d\33[0m : \33[40;36m%s\33[0m (0x%08x)\n" ,number ,wp->expressions ,wp->old_value);
+	printf("\33[1;37mFree watchpoint\33[0m \33[1;36m%d\33[0m : \33[40;36m%s\33[0m (0x%08x)\n" ,wp->NO ,wp->expressions ,wp->old_value);
 	return;
 }
 
 WP *get_head()
 {
 	return head;
+}
+
+void delete_wp(int number){
+	if(number >= 32){
+		printf("\33[1;34mError: No watchpoint %d\33[0m\n" ,number);
+		return;
+	}
+	free_wp(&wp_pool[number]);
+	return;
 }

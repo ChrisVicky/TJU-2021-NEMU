@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#define NR_WP 32
+
 typedef struct watchpoint {
 	int NO;
 	struct watchpoint *next;
@@ -13,8 +15,7 @@ typedef struct watchpoint {
 	bool enable;
 
 } WP;
-
 WP * new_wp();
-void free_wp(int number);
+void delete_wp(int number);
 WP * get_head();
 #endif

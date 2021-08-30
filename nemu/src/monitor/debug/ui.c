@@ -265,7 +265,7 @@ static int cmd_d(char *args)
 		printf("\033[1;31mInvalid Argument '%s'\033[0m\n" ,args1);
 		return 0;
 	}
-	free_wp(number);
+	delete_wp(number);
 	return 0;
 }
 
