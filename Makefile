@@ -67,6 +67,7 @@ entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
 
 run: $(nemu_BIN) $(USERPROG) entry
+	$(call count_lines)
 	$(call git_commit, "run")
 	$(nemu_BIN) $(USERPROG)
 
