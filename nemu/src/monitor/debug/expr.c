@@ -267,7 +267,7 @@ static int getOp(int q, int p, bool *flag)
 	return op;
 }
 
-static int exe(int q, int p, bool *flag)
+static uint32_t exe(int q, int p, bool *flag)
 {
 	int data = 0;
 	if (q > p)
