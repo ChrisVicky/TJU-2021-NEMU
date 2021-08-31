@@ -56,6 +56,13 @@ clean: clean-cpp
 USERPROG := obj/testcase/mov
 ENTRY := $(USERPROG)
 
+define count_lines
+	@sh count_lines.sh
+endef
+
+count:
+	$(call count_lines)
+
 entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
 
