@@ -84,7 +84,7 @@ WP *get_head()
 
 void delete_wp(int number){
 	if(number >= 32){
-		printf("\33[1;34mError: No watchpoint %d\33[0m\n" ,number);
+		printf("\33[1;34mError: No watchpoint \33[0m\33[1;36m%d\33[0m\n" ,number);
 		return;
 	}
 	free_wp(&wp_pool[number]);
