@@ -181,6 +181,9 @@ static int cmd_x(char *args)
 		return 0;
 	}
 	int i = 0, j;
+	if(t1==0){
+		printf("Invalid Argument %s \n" ,args1);
+	}
 	while (i < t1)
 	{
 		printf("\33[1;37m0x%08x: \33[0m", t2);
