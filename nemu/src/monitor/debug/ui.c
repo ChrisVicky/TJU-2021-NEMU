@@ -167,9 +167,7 @@ static int cmd_x(char *args)
 		return 0;
 	}
 	char *args1 = strtok(args, " ");
-	//int t1 = strtol(args1, NULL, 10);
-	int t1=0;
-	sscanf(args1, "%d", &t1);
+	int t1 = strtol(args1, NULL, 10);
 	char *args2 = args1 + strlen(args1) + 1;
 	if(strlen(args2)==0){
 		printf("\33[1;31mArguments required\33[0m\n");
