@@ -102,7 +102,7 @@ void cpu_exec(volatile uint32_t n) {
 			
 			//printf("Value: 0x%08x ->" ,head->old_value);
 			//printf(" 0x%08x\n\n" ,value);
-			head->old_value = value;
+			// head->old_value = value;
 			head = head->next;
 		}
 
