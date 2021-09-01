@@ -182,7 +182,7 @@ static int cmd_x(char *args)
 	}
 	int i = 0, j;
 	if(t1==0){
-		printf("Invalid Argument %s \n" ,args1);
+		printf("\33[1;31mInvalid Argument '%s' \33[0m\n" ,args1);
 	}
 	while (i < t1)
 	{
