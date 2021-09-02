@@ -2,11 +2,14 @@
 
 #define instr call
 
-static void do_execute(){
-    print_asm(str(instr) " %x", cpu.eip + 1 + DATA_BYTE);
+static void do_execute() {
+    cpu.esp -= 4;
+    swaddr_write(cpu.esp, 4, cpu.eip + op_src->size);
+    
+
 }
 
-make_helper()
-
+make_instr_helper(si)
+make_instr_helper(rm)
 
 #include "cpu/exec/template-end.h"
