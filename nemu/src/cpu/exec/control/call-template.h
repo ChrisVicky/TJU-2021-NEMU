@@ -4,7 +4,6 @@
 
 #if DATA_BYTE == 4
 make_helper(concat(call_si_, SUFFIX)) {
-    Log("SI");
     int len = concat(decode_si_, SUFFIX) (eip + 1);
     cpu.esp -= 4;
     swaddr_write(cpu.esp, 4, cpu.eip + len + 1);
