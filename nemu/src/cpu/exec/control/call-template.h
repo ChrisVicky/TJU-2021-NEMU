@@ -9,7 +9,7 @@ make_helper(concat(call_si_, SUFFIX)) {
     swaddr_write(cpu.esp, 4, cpu.eip + len + 1);
     
     cpu.eip = cpu.eip + op_src->val;
-    print_asm(str(instr) " *%x", cpu.eip + len + 1);
+    print_asm(str(instr) " %x", cpu.eip + len + 1);
     return len + 1;
 }
 #endif
@@ -25,7 +25,7 @@ make_helper(concat(call_rm_, SUFFIX)) {
     cpu.esp -= 4;
     swaddr_write(cpu.esp, 4, cpu.eip + len + 1);
     cpu.eip = op_src->val - (len + 1);
-    print_asm(str(instr) " *%s", op_src->str);
+    print_asm(str(instr) " %s", op_src->str);
     return len + 1;
 }
 

@@ -8,7 +8,9 @@ static void do_execute() {
     print_asm_template1();
 }
 
-// make_instr_helper(m)
+#if DATA_BYTE ==2 || DATA_BYTE == 4
+make_instr_helper(m)
 make_instr_helper(r)
+#endif
 
 #include "cpu/exec/template-end.h"
