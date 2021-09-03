@@ -137,7 +137,7 @@ make_helper(concat(decode_r_, SUFFIX)) {
 }
 
 make_helper(concat(decode_m_, SUFFIX)) {
-	return decode_rm_internal(eip, op_src, op_src2);
+	return decode_rm_internal(eip, op_src, op_src2);		/* op_src2 not use here */
 }
 
 #if DATA_BYTE == 2 || DATA_BYTE == 4
