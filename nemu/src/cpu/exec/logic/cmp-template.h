@@ -5,11 +5,7 @@
 static void do_execute() {
     DATA_TYPE_S result = op_dest->val - op_src->val;
     update_eflags_pf_zf_sf(result);
-    if((op_dest->val > 0 && op_src->val < 0 && result < 0) || (op_dest->val < 0 && op_src->val > 0 && result > 0)){
-        cpu.eflags.OF = 1;
-    }else{
-        cpu.eflags.OF = 0;
-    }
+    update_eflags_cf_of(result, op_dest->val, op_src->val);
     print_asm_template2();
 }
 
