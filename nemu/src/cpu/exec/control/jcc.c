@@ -182,7 +182,6 @@
 #undef DATA_BYTE
 #undef instr
 
-
 #define instr jna
 #define DATA_BYTE 1
 #include "jcc-template.h"
@@ -197,3 +196,254 @@
 #undef DATA_BYTE
 #undef instr
 
+#define instr jnae
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnb
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnbe
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnc
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jne
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jng
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnge
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnl
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnle
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jno
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnp
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jns
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jnz
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jo
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jp
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jpe
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr jpo
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
+
+#define instr js
+#define DATA_BYTE 1
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 2
+#include "jcc-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "jcc-template.h"
+#undef DATA_BYTE
+#undef instr
