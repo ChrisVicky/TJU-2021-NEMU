@@ -1,31 +1,34 @@
 #include "cpu/exec/template-start.h"
-#if DATA_BYTE == 1
+#ifndef __IS_H__
+#define __IS_H__
 bool is_je() { return cpu.eflags.ZF == 1; }
+
 #endif
-
-#if DATA_BYTE == 4 || DATA_BYTE == 1
-static void do_execute() {
-    if(concat(is_, instr)()){
-        cpu.eip += op_src->val;
-    }
-    print_asm(str(instr) " %x", cpu.eip + 1 + DATA_BYTE);
-}
-make_instr_helper(si)
-
-#elif DATA_BYTE == 2
-make_helper(concat(instr, _si_w)){
-    int len = decode_si_l(eip + 1);
-    if(concat(is_, instr)()){
-        cpu.eip += op_src->val;
-    }
+static void do_execute(){
+    cpu.eip = op_src->val;
+#if DATA_BYTE == 2
     cpu.eip = cpu.eip & 0x0000ffff;
+#endif
+    print_asm(str(instr) " %x" ,cpu.eip + 1 + DATA_BYTE);
+}
+
+make_helper(concat3(instr, _si_, SUFFIX)) {
+    int len = 0;
+#if DATA_BYTE == 2 || DATA_BYTE == 4
+    len = decode_si_l(eip + 1);
+#else
+    len = decode_si_b(eip + 1);
+#endif
+    if(concat(is_, instr)()){
+        cpu.eip += op_src->val;
+    }
+#if DATA_BYTE == 2
+    cpu.eip = cpu.eip & 0x0000ffff;
+#endif
     print_asm(str(instr) " %x", cpu.eip + 1 + DATA_BYTE);
     return len + 1;
 }
-#endif
+
+make_instr_helper(rm)
+
 #include "cpu/exec/template-end.h"
-
-
-/*
-
-*/
