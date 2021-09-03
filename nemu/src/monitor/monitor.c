@@ -74,12 +74,18 @@ static void load_entry() {
 	fclose(fp);
 }
 
+static void init_eflags(){
+	cpu.eflags.val = 2;
+}
+
 void restart() {
 	/* Perform some initialization to restart a program */
 #ifdef USE_RAMDISK
 	/* Read the file with name `argv[1]' into ramdisk. */
 	init_ramdisk();
 #endif
+	/* Initialize e-flags */
+	init_eflags();
 
 	/* Read the entry code into memory. */
 	load_entry();

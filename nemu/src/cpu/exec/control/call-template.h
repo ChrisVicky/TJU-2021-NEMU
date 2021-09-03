@@ -2,30 +2,33 @@
 
 #define instr call
 
-#if DATA_BYTE == 4
+swaddr_t concat(get_eip_, )
+
 make_helper(concat(call_si_, SUFFIX)) {
-    int len = concat(decode_si_, SUFFIX) (eip + 1);
-    cpu.esp -= 4;
-    swaddr_write(cpu.esp, 4, cpu.eip + len + 1);
-    
+    int len = decode_si_l(eip + 1);
+    cpu.eip = cpu.eip + len + 1;
+    cpu.esp -= DATA_BYTE;
+    swaddr_write(cpu.esp, DATA_BYTE, cpu.eip);
     cpu.eip = cpu.eip + op_src->val;
-    print_asm(str(instr) " %x", cpu.eip + len + 1);
+#if DATA_BYTE == 2
+    cpu.eip = cpu.eip & 0x0000ffff;
+#endif
+    print_asm(str(instr) " %x", cpu.eip);
+    cpu.eip = cpu.eip - (len + 1);
     return len + 1;
 }
-#endif
-
-#if DATA_BYTE == 2
-make_helper(concat(call_si_, SUFFIX)) {
-    Assert(0, "call_si_w");
-}
-#endif
 
 make_helper(concat(call_rm_, SUFFIX)) {
     int len = concat(decode_rm_, SUFFIX) (eip + 1);
-    cpu.esp -= 4;
-    swaddr_write(cpu.esp, 4, cpu.eip + len + 1);
-    cpu.eip = op_src->val - (len + 1);
-    print_asm(str(instr) " %s", op_src->str);
+    cpu.esp -= DATA_BYTE;
+    cpu.eip = cpu.eip + len + 1;
+    swaddr_write(cpu.esp, DATA_BYTE, cpu.eip);
+    cpu.eip = op_src->val;
+#if DATA_BYTE == 2
+    cpu.eip = cpu.eip & 0x0000ffff;
+#endif
+    print_asm(str(instr) " %x", cpu.eip);
+    cpu.eip = cpu.eip - (len + 1);
     return len + 1;
 }
 
