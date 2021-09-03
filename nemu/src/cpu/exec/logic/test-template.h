@@ -1,0 +1,26 @@
+#include "cpu/exec/template-start.h"
+
+#define instr test
+
+static void do_execute () {
+    DATA_TYPE result = op_dest->val & op_src->val;
+    cpu.eflags.CF = 0;
+    cpu.eflags.OF = 0;
+    if(!result){
+        cpu.eflags.ZF = 1;
+        cpu.eflags.SF = 0;
+    }else if(result>0){
+        cpu.eflags.ZF = 0;
+        cpu.eflags.SF = 1;
+    }else{
+        cpu.eflags.ZF = 0;
+        cpu.eflags.SF = 0;
+    }
+    print_asm_template2();
+}
+
+make_instr_helper(i2a)
+make_instr_helper(i2rm)
+make_instr_helper(r2rm)
+
+#include "cpu/exec/template-end.h"
