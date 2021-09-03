@@ -2,8 +2,6 @@
 
 #define instr call
 
-swaddr_t concat(get_eip_, )
-
 make_helper(concat(call_si_, SUFFIX)) {
     int len = decode_si_l(eip + 1);
     cpu.eip = cpu.eip + len + 1;
