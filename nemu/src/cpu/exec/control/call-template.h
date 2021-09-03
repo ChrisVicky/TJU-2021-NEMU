@@ -11,7 +11,7 @@ make_helper(concat(call_si_, SUFFIX)) {
     
     print_asm(str(instr) " *%s", op_src->str);
     cpu.eip = cpu.eip + op_src->val - (len + 1);
-    Log("cpu.eip = %d, len = %d" ,cpu.eip, len);
+    Log("cpu.eip = %x, len = %d" ,cpu.eip, len);
     return len + 1;
 }
 #endif
