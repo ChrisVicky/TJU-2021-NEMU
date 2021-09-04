@@ -25,7 +25,7 @@ bool is_je() { return ZF == 1; }
 bool is_jg() { return !ZF && SF==OF; }
 bool is_jge() { return SF==OF; }
 bool is_jl() { return SF!=OF; }
-bool is_jle() { return ZF==1 && SF!=OF; }
+bool is_jle() { return ZF==1 || SF!=OF; }
 bool is_jne() { return !ZF; }
 bool is_jno() { return !OF; }
 bool is_jnp() { return !PF; }

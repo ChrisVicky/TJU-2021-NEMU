@@ -14,8 +14,18 @@ void update_eflags_pf_zf_sf(uint32_t result) {
 	cpu.eflags.SF = result >> 31;
 }
 
-void update_eflags_cf_of(int32_t result, uint32_t dest, uint32_t src) {
-	Log("Watch DEST=%d, SRC=%d, RESULT=%d" ,dest, src, result);
+/* result = dest + src */
+void update_eflags_cf_of_PULS(int32_t result, uint32_t dest, uint32_t src) {
+	Log("PLUS_Watch DEST=%d, SRC=%d, RESULT=%d" ,dest, src, result);
 	cpu.eflags.CF = (result < dest && result < src);
 	cpu.eflags.OF = ((dest>0 && src>0 && result<0) || (dest<0 && src<0 && result>=0));
+}
+
+/* result = dest - src */
+void update_eflags_cf_of_MINUS(int32_t result, uint32_t dest, uint32_t src) {
+	// cpu.eflags.CF = result > dest;
+	// cpu.eflags.OF = MSB((dest ^ src) & (dest ^ result));
+	Log("MINUS_Watch DEST=%d, SRC=%d, RESULT=%d" ,dest, src, result);
+	cpu.eflags.CF = dest < src;
+	cpu.eflags.OF = ((dest>0 && src<0 && result>0) || (dest<0 && src>0 && result<0));
 }
