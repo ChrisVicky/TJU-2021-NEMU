@@ -13,6 +13,7 @@ typedef struct watchpoint {
 	char expressions[32*32];
 	int old_value;
 	bool enable;
+	int cnt;
 
 } WP;
 WP * new_wp();

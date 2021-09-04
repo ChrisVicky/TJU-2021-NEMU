@@ -10,6 +10,7 @@ void init_wp_pool()
 	int i;
 	for (i = 0; i < NR_WP; i++)
 	{
+		wp_pool[i].cnt = 0;
 		wp_pool[i].NO = i;
 		wp_pool[i].enable = true;
 		wp_pool[i].next = &wp_pool[i + 1];
