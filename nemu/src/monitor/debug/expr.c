@@ -293,7 +293,7 @@ static uint32_t exe(int q, int p, bool *flag)
 				break;
 			default:
 				data = cpu.gpr[position]._32;
-				Log("Reg %s; data=%x" ,tokens[p].str ,data);
+				Log("Reg %s; data=%x	position=%d" ,tokens[p].str ,data ,position);
 				break;
 			}
 			break;
