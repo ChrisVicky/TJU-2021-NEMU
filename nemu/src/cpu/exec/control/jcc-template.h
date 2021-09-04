@@ -38,18 +38,22 @@ bool is_js() { return SF==1; }
 
 make_helper(concat3(instr, _si_, SUFFIX)) {
     int len = 0;
+    int temp_eip = cpu.eip;
 #if DATA_BYTE == 2 || DATA_BYTE == 4
     len = decode_si_l(eip + 1);
 #else
     len = decode_si_b(eip + 1);
 #endif
-    if(concat(is_, instr)()){
-        cpu.eip += op_src->val;
-    }
+
+    cpu.eip += op_src->val;
+    
 #if DATA_BYTE == 2
     cpu.eip = cpu.eip & 0x0000ffff;
 #endif
     print_asm(str(instr) " %x", cpu.eip + 1 + DATA_BYTE);
+    if(!concat(is_, instr)()){
+        cpu.eip = temp_eip;
+    }
     return len + 1;
 }
 
