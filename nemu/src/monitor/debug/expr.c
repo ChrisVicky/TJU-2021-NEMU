@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <regex.h>
-const char registers[] = "$eax$ecx$edx$ebx$esp$edp$esi$edi$eip";
+const char registers[] = "$eax$ecx$edx$ebx$esp$ebp$esi$edi$eip";
 enum
 {
 	NOTYPE = 256,
