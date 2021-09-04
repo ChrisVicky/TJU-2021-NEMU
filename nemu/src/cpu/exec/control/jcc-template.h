@@ -45,7 +45,7 @@ make_helper(concat3(instr, _si_, SUFFIX)) {
     len = decode_si_b(eip + 1);
 #endif
 
-    Log("Debug : cpu.eip=%x val=%x",cpu.eip, op_src->simm);
+    Log("Debug : cpu.eip=%x val=%d",cpu.eip, op_src->simm);
     cpu.eip += op_src->simm;
 
 #if DATA_BYTE == 2
