@@ -14,7 +14,7 @@ void update_eflags_pf_zf_sf(uint32_t result) {
 	cpu.eflags.SF = result >> 31;
 }
 
-void update_eflags_cf_of(int32_t result, int32_t dest, int32_t src) {
+void update_eflags_cf_of(int32_t result, uint32_t dest, uint32_t src) {
 	cpu.eflags.CF = (result < dest && result < src);
 	cpu.eflags.OF = ((dest>0 && src>0 && result<0) || (dest<0 && src<0 && result>=0));
 }
