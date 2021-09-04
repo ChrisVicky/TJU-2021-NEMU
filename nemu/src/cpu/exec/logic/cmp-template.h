@@ -7,6 +7,7 @@ static void do_execute() {
     Log("%x - %x = %d" ,op_dest->val, op_src->val, result);
     update_eflags_pf_zf_sf(result);
     update_eflags_cf_of(result, op_dest->val, op_src->val);
+    Log("Show Flags : ZF = %x, OF = %x, SF = %x" ,cpu.eflags.ZF, cpu.eflags.OF, cpu.eflags.SF);
     print_asm_template2();
 }
 
