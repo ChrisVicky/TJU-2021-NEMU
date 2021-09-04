@@ -296,7 +296,7 @@ static uint32_t exe(int q, int p, bool *flag)
 				break;
 			}
 
-				Log("Reg %s; data=%x; temp=%s;p osition=%d" ,tokens[p].str ,data ,temp ,position);
+			//	Log("Reg %s; data=%x; temp=%s;p osition=%d" ,tokens[p].str ,data ,temp ,position);
 			break;
 		case HEX:
 			data = strtol(tokens[p].str, NULL, 16);

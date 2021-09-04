@@ -4,6 +4,7 @@
 
 static void do_execute() {
     DATA_TYPE_S result = op_dest->val - op_src->val;
+    Log("%x - %x = %x" ,op_dest->val, op_src->val, result);
     update_eflags_pf_zf_sf(result);
     update_eflags_cf_of(result, op_dest->val, op_src->val);
     print_asm_template2();
