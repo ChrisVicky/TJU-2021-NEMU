@@ -56,7 +56,8 @@ clean: clean-cpp
 # USERPROG := obj/testcase/mov
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/sum
-USERPROG := obj/testcase/pascal
+# USERPROG := obj/testcase/pascal
+USERPROG := obj/testcase/sub-longlong
 ENTRY := $(USERPROG)
 
 define count_lines
