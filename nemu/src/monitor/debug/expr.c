@@ -293,9 +293,10 @@ static uint32_t exe(int q, int p, bool *flag)
 				break;
 			default:
 				data = cpu.gpr[position]._32;
-				Log("Reg %s; data=%x; temp=%s;p osition=%d" ,tokens[p].str ,data ,temp ,position);
 				break;
 			}
+
+				Log("Reg %s; data=%x; temp=%s;p osition=%d" ,tokens[p].str ,data ,temp ,position);
 			break;
 		case HEX:
 			data = strtol(tokens[p].str, NULL, 16);
