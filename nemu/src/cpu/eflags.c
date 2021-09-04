@@ -15,7 +15,7 @@ void update_eflags_pf_zf_sf(uint32_t result) {
 }
 
 /* result = dest + src */
-void update_eflags_cf_of_PULS(int32_t result, uint32_t dest, uint32_t src) {
+void update_eflags_cf_of_PLUS(int32_t result, uint32_t dest, uint32_t src) {
 	Log("PLUS_Watch DEST=%d, SRC=%d, RESULT=%d" ,dest, src, result);
 	cpu.eflags.CF = (result < dest && result < src);
 	cpu.eflags.OF = ((dest>0 && src>0 && result<0) || (dest<0 && src<0 && result>=0));
