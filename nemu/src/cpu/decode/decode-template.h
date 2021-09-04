@@ -25,10 +25,10 @@ make_helper(concat(decode_i_, SUFFIX)) {
 /* sign immediate */
 make_helper(concat(decode_si_, SUFFIX)) {
 	op_src->type = OP_TYPE_IMM;
-#if SUFFIX == b
+#if DATA_BYTE == 1
 	int8_t temp = instr_fetch(eip, DATA_BYTE);
 	op_src->simm = temp;
-#elif SUFFIX == l
+#elif DATA_BYTE == 4
 	int32_t temp = instr_fetch(eip, DATA_BYTE);;
 	op_src->simm = temp;
 #endif
