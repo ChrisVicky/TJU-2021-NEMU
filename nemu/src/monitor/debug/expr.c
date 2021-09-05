@@ -214,6 +214,7 @@ static bool make_token(char *e)
 			cnt--;
 		if (cnt < 0)
 		{
+			Log("NOOO");
 			printf("\33[1;34mError: Wrong Expression: Brackets\33[0m\n");
 			return false;
 		}
@@ -222,6 +223,7 @@ static bool make_token(char *e)
 	{
 		return true;
 	}
+	Log("SECOND");
 	printf("\33[1;34mError: Wrong Expression: Brackets\33[0m\n");
 	return false;
 }
@@ -316,7 +318,6 @@ static uint32_t exe(int q, int p, bool *flag)
 		bool bracket_flag = brackets(q, p);
 		if (bracket_flag)
 		{
-			Log("NOOO");
 			q++, p--;
 			return exe(q, p, flag);
 		}
