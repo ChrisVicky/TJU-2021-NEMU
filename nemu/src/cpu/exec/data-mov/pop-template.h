@@ -3,7 +3,7 @@
 #define instr pop
 
 static void do_execute() {
-    op_src->val = MEM_R(cpu.esp);
+    OPERAND_W(op_src, MEM_R(cpu.esp));
     cpu.esp += DATA_BYTE;
     print_asm_template1();
 }
