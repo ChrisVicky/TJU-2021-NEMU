@@ -2,6 +2,7 @@
 #include "monitor/expr.h"
 #include "cpu/helper.h"
 #include "monitor/watchpoint.h"
+#include "monitor/breakpoint.h"
 #include <setjmp.h>
 
 /* The assembly code of instructions executed is only output to the screen
@@ -80,7 +81,7 @@ void cpu_exec(volatile uint32_t n) {
 #endif
 
 		/* TODO: check watchpoints here. */
-		WP * head = get_head();
+		WP * head = get_watchpoint_head();
 		while(head!=NULL){
 			if(head->enable==false){
 				head = head->next;
@@ -103,8 +104,29 @@ void cpu_exec(volatile uint32_t n) {
 			printf("\033[1;37mHit it \33[0m\33[1;36m%d\33[0m\33[1;37m Times\33[0m\n" ,head->cnt);
 			//printf("Value: 0x%08x ->" ,head->old_value);
 			//printf(" 0x%08x\n\n" ,value);
-			// head->old_value = value;
+			head->old_value = value;
 			head = head->next;
+		}
+
+		/* TODO: Check breakpoints here. */
+		BP * b_head = get_breakpoint_head();
+		while(b_head!=NULL){
+			if(b_head->enable==false){
+				b_head = b_head->next;
+				continue;
+			}
+			int value = cpu.eip;
+			if(value != b_head->eip){
+				b_head = b_head->next;
+				continue;
+			}
+			nemu_state = STOP;
+			b_head->cnt ++;
+			printf("\033[1;36mHint Watchpoint %d at address 0x%08x, expr = \033[0m\n" ,b_head->NO ,cpu.eip);
+			printf("\033[1;37mHit it \33[0m\33[1;36m%d\33[0m\33[1;37m Times\33[0m\n" ,b_head->cnt);
+			//printf("Value: 0x%08x ->" ,b_head->old_value);
+			//printf(" 0x%08x\n\n" ,value);
+			b_head = b_head->next;
 		}
 
 

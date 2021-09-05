@@ -79,7 +79,7 @@ void free_wp(WP * wp)
 	return;
 }
 
-WP *get_head()
+WP *get_watchpoint_head()
 {
 	return head;
 }

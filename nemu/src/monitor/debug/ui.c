@@ -1,6 +1,7 @@
 #include "monitor/monitor.h"
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
+#include "monitor/breakpoint.h"
 #include "nemu.h"
 
 #include <stdlib.h>
@@ -47,6 +48,7 @@ static int cmd_info(char *args);
 static int cmd_x(char *arg);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
+static int cmd_b(char *args);
 static int cmd_d(char *args);
 
 static struct
@@ -64,6 +66,7 @@ static struct
 	{"x", "Scan cache", cmd_x},
 	{"p", "Compute an expression", cmd_p},
 	{"w", "Make watchpoints", cmd_w},
+	{"b", "Make breakpoints", cmd_b},
 	{"d", "Delete points", cmd_d},
 };
 
@@ -140,7 +143,7 @@ static int cmd_info(char *args)
 	}
 	else if (strcmp("w", temp_args) == 0)
 	{
-		WP *head = get_head();
+		WP *head = get_watchpoint_head();
 		if (head == NULL)
 		{
 			printf("\33[1;37mNo watchpoints\33[0m\n");
@@ -152,6 +155,17 @@ static int cmd_info(char *args)
 			printf("\33[1;36m%d	\33[0m%s	\33[40;36m%s \33[0m(0x%08x)\n", head->NO, head->enable ? "\33[1;32mYes\33[0m" : "\33[1;31mNo\33[0m", head->expressions, head->old_value);
 			head = head->next;
 		}
+	}
+	else if(strcmp("b", temp_args) == 0){
+		BP *head = get_breakpoint_head();
+		if(head==NULL){
+			printf("\33[1;37mNo breakpoints\33[0m\n");
+			return 0;
+		}
+		printf("\33[1;37mNum	Enb	eip\33[0m\n");
+		while(head!=NULL){
+			printf("\33[1;36m%d	\33[0m%s	\33[40;36m%d\33[0m\n" ,head->NO, head->enable ? "\33[1;32mYes\33[0m" : "\33[1;31mNo\33[0m", head->eip);
+		}	
 	}
 	else
 	{
@@ -242,6 +256,26 @@ static int cmd_w(char *args)
 	return 0;
 }
 
+static int cmd_b(char *args)
+{	
+//	bool flag = true;
+	if (args == NULL)
+	{
+		printf("\33[1;31mArguments required\33[0m\n");
+		return 0;
+	}
+	int ans = strtol(args, NULL, 16);
+	BP *bp = new_bp();
+	if (bp == NULL)
+	{
+		return 0;
+	}
+	bp->eip = ans;
+	printf("\033[1;37mBreakpoint \033[0m\33[1;36m%d\33[0m : \33[40;36m%d\33[0m\n", bp->NO, bp->eip);
+	return 0;
+}
+
+
 static int cmd_d(char *args)
 {
 	if (args == NULL)
@@ -261,14 +295,36 @@ static int cmd_d(char *args)
 		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
-	int number;
-	number = strtol(args1, NULL, 10);
-	if(!number && strcmp("0", args1)){
-		printf("\033[1;31mInvalid Argument '%s'\033[0m\n" ,args1);
+	args = args + strlen(args1) + 1;
+	char *args2 = strtok(args, " ");
+	if(args2 == NULL){
+		printf("\33[1;31mArguments required\33[0m\n");
 		return 0;
 	}
-	delete_wp(number);
+	if (strcmp("w", args1) == 0){
+		int number;
+		number = strtol(args1, NULL, 10);
+		if (!number && strcmp("0", args1))
+		{
+			printf("\033[1;31mInvalid Argument '%s'\033[0m\n", args1);
+			return 0;
+		}
+		delete_wp(number);
+		return 0;
+	}else if(strcmp("b", args1) == 0){
+		int number;
+		number = strtol(args1, NULL, 10);
+		if (!number && strcmp("0", args1))
+		{
+			printf("\033[1;31mInvalid Argument '%s'\033[0m\n", args1);
+			return 0;
+		}
+		delete_bp(number);
+		return 0;
+	}else{
+		printf("\033[1;31mUndified info command '%s'\33[0m\n", args1);
 	return 0;
+	}
 }
 
 void ui_mainloop()
