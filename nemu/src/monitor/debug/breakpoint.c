@@ -27,7 +27,7 @@ BP *new_bp()
 {
 	if (free_ == NULL)
 	{
-		printf("\33[1;34mError: No new watchpoints available\33[0m\n");
+		printf("\33[1;34mError: No new breakpoints available\33[0m\n");
 		return NULL;
 	}
 	BP *temp = head;
