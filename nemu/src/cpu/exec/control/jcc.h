@@ -35,8 +35,7 @@ make_v(jne);
 make_v(jno);
 make_v(jnp);
 make_v(jns);
-make_helper(jo_si_v);
-//make_v(jo);
+make_v(jo);
 make_v(jp);
 make_v(js);
 
