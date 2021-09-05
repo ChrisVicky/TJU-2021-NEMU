@@ -209,12 +209,17 @@ static bool make_token(char *e)
 			return false;
 		}
 		if (tokens[nr_token].type == FR_BRACKET)
+		{
+			Log("FRONT %s" ,tokens[nr_token].str);
 			cnt++;
+		}
 		else if (tokens[nr_token].type == BA_BRACKET)
+		{
+			Log("BACK %s" ,tokens[nr_token].str);
 			cnt--;
+		}
 		if (cnt < 0)
 		{
-			Log("NOOO");
 			printf("\33[1;34mError: Wrong Expression: Brackets\33[0m\n");
 			return false;
 		}
@@ -223,7 +228,6 @@ static bool make_token(char *e)
 	{
 		return true;
 	}
-	Log("SECOND");
 	printf("\33[1;34mError: Wrong Expression: Brackets\33[0m\n");
 	return false;
 }
