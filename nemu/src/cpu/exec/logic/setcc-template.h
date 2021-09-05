@@ -38,8 +38,8 @@ bool is_sets() { return SF==1; }
 
 static void do_execute() {
     if(concat(is_, instr)()){
-       op_src->val = 1; 
-    }else op_src->val = 0;
+       	OPERAND_W(op_src, 1);
+    }else OPERAND_W(op_src, 0);
     print_asm_template1();
 }
 make_instr_helper(rm)
