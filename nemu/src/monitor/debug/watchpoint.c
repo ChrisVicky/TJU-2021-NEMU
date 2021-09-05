@@ -74,6 +74,7 @@ void free_wp(WP * wp)
 		wp->next = free_;
 		free_ = wp;
 	}
+	wp->cnt = 0;
 	printf("\33[1;37mFree watchpoint\33[0m \33[1;36m%d\33[0m : \33[40;36m%s\33[0m (0x%08x)\n" ,wp->NO ,wp->expressions ,wp->old_value);
 	return;
 }
