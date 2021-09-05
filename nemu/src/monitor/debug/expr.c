@@ -314,7 +314,6 @@ static uint32_t exe(int q, int p, bool *flag)
 	else
 	{
 		bool bracket_flag = brackets(q, p);
-		if(bracket_flag) Log("YES");
 		if (bracket_flag)
 		{
 			q++, p--;
@@ -323,6 +322,7 @@ static uint32_t exe(int q, int p, bool *flag)
 		else
 		{
 			int op = getOp(q, p, flag);
+			Log("%s" ,tokens[q].str);
 			if (op == 0)
 			{
 				char *temp_str = tokens[q].str;
