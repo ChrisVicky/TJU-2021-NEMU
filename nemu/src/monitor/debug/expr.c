@@ -211,12 +211,12 @@ static bool make_token(char *e)
 		Log("tokens[%d] = %s" ,nr_token, tokens[nr_token].str);
 		if (tokens[nr_token].type == FR_BRACKET)
 		{
-			Log("FRONT %s" ,tokens[nr_token].str);
+		//	Log("FRONT %s" ,tokens[nr_token].str);
 			cnt++;
 		}
 		else if (tokens[nr_token].type == BA_BRACKET)
 		{
-			Log("BACK %s" ,tokens[nr_token].str);
+		//	Log("BACK %s" ,tokens[nr_token].str);
 			cnt--;
 		}
 		if (cnt < 0)
