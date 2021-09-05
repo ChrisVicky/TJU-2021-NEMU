@@ -316,6 +316,7 @@ static uint32_t exe(int q, int p, bool *flag)
 		bool bracket_flag = brackets(q, p);
 		if (bracket_flag)
 		{
+			Log("NOOO");
 			q++, p--;
 			return exe(q, p, flag);
 		}
