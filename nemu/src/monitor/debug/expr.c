@@ -333,7 +333,7 @@ static uint32_t exe(int q, int p, bool *flag)
 		else
 		{
 			int op = getOp(q, p, flag);
-			Log("%s" ,tokens[q].str);
+			//Log("%s" ,tokens[q].str);
 			if (op == 0)
 			{
 				char *temp_str = tokens[q].str;
