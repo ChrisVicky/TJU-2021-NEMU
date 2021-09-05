@@ -22,10 +22,10 @@ bool is_setae() { return !CF; }
 bool is_setb() { return CF==1; }
 bool is_setbe() { return CF==1 || ZF==1; }
 bool is_sete() { return ZF==1; }
-bool is_setg() { return !ZF || SF==OF; }
+bool is_setg() { return !ZF && SF==OF; }
 bool is_setge() { return SF==OF; }
 bool is_setl() { return SF!=OF; }
-bool is_setle() { return ZF==1 && SF!=OF; }
+bool is_setle() { return ZF==1 || SF!=OF; }
 bool is_setne() { return !ZF; }
 bool is_setno() { return !OF; }
 bool is_setnp() { return !PF; }
