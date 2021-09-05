@@ -123,6 +123,7 @@ typedef struct token
 
 Token tokens[32];
 int nr_token;
+bool vst[32];
 
 static bool is_sign(Token t)
 {
@@ -137,6 +138,7 @@ static bool make_token(char *e)
 
 	nr_token = 0;
 	memset(tokens, 0, sizeof(tokens));
+	memset(vst, 0, sizeof(vst));
 
 	while (e[position] != '\0')
 	{
@@ -209,15 +211,17 @@ static bool make_token(char *e)
 			return false;
 		}
 		Log("tokens[%d] = %s" ,nr_token, tokens[nr_token].str);
-		if (tokens[nr_token].type == FR_BRACKET)
+		if (tokens[nr_token].type == FR_BRACKET && !vst[nr_token])
 		{
 		//	Log("FRONT %s" ,tokens[nr_token].str);
 			cnt++;
+			vst[nr_token] = 1;
 		}
-		else if (tokens[nr_token].type == BA_BRACKET)
+		else if (tokens[nr_token].type == BA_BRACKET && !vst[nr_token])
 		{
 		//	Log("BACK %s" ,tokens[nr_token].str);
 			cnt--;
+			vst[nr_token] = 1;
 		}
 		if (cnt < 0)
 		{
