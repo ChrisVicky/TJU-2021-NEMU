@@ -314,6 +314,7 @@ static uint32_t exe(int q, int p, bool *flag)
 	else
 	{
 		bool bracket_flag = brackets(q, p);
+		if(bracket_flag) Log("YES");
 		if (bracket_flag)
 		{
 			q++, p--;
