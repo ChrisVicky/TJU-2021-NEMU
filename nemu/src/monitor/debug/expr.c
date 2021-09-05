@@ -208,6 +208,7 @@ static bool make_token(char *e)
 			printf("\33[1;34mNo match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
 			return false;
 		}
+		Log("tokens[%d] = %s" ,nr_token, tokens[nr_token].str);
 		if (tokens[nr_token].type == FR_BRACKET)
 		{
 			Log("FRONT %s" ,tokens[nr_token].str);
