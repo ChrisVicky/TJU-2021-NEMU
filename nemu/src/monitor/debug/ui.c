@@ -110,7 +110,6 @@ static int cmd_si(char *args)
 		n = 1;
 	else
 		n = atoi(temp_args);
-	Log("运行 %d " ,n);
 	cpu_exec(n);
 	return 0;
 }
