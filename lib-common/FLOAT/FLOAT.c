@@ -1,8 +1,10 @@
 #include "FLOAT.h"
 
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-	nemu_assert(0);
-	return 0;
+//	nemu_assert(0);
+	long long int temp = a * b;
+	FLOAT ret = temp >> 16;
+	return ret;
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
@@ -15,7 +17,6 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * `div' or `idiv' by inline assembly. We provide a template for you
 	 * to prevent you from uncessary details.
 	 *
-	 *     asm volatile ("??? %2" : "=a"(???), "=d"(???) : "r"(???), "a"(???), "d"(???));
 	 *
 	 * If you want to use the template above, you should fill the "???"
 	 * correctly. For more information, please read the i386 manual for
@@ -23,7 +24,8 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * It is OK not to use the template above, but you should figure
 	 * out another way to perform the division.
 	 */
-
+	
+	asm volatile ("??? %2" : "=a"(???), "=d"(???) : "r"(???), "a"(???), "d"(???));
 	nemu_assert(0);
 	return 0;
 }
@@ -38,9 +40,22 @@ FLOAT f2F(float a) {
 	 * stack. How do you retrieve it to another variable without
 	 * performing arithmetic operations on it directly?
 	 */
-
-	nemu_assert(0);
-	return 0;
+	/* float is a 32-bit 1, 8, 23 bits structure variable */
+	unsigned int temp = ((unsigned int *) & a) [0];
+	FLOAT ret = temp & 0x7fffff;
+	unsigned int mark = temp >> 31;
+	ret += (1<<23);
+	unsigned int exp = ((temp >> 23) & 0xff) + 16;
+	if(exp > 23){
+		ret << (exp-23);
+	}else{
+		ret >> (23 - exp);
+	}
+	if(mark){
+		ret = ~ ret + 1;
+	}
+//	nemu_assert(0);
+	return ret;
 }
 
 FLOAT Fabs(FLOAT a) {
