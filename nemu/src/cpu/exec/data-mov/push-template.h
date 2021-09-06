@@ -3,8 +3,8 @@
 #define instr push
 
 static void do_execute(){
-    cpu.esp -= DATA_BYTE;
-    MEM_W(cpu.esp, op_src->val);
+    REG(R_ESP) -= DATA_BYTE;
+    MEM_W(REG(R_ESP), op_src->val);
     print_asm_template1();
 }
 
