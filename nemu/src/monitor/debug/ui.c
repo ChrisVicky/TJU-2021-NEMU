@@ -333,6 +333,7 @@ void ui_mainloop()
 {
 #if IF_DEBUG == 0
 	cpu_exec(-1);
+	return ;
 #endif
 	while (1)
 	{
