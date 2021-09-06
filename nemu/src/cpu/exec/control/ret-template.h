@@ -9,7 +9,7 @@ make_helper(concat(ret_, SUFFIX)) {
     cpu.eip = cpu.eip & 0x0000ffff;
 #endif
     cpu.eip -= 1;
-    print_asm_template1();
+    print_asm("ret");
     return 1;
 }
 
@@ -21,7 +21,7 @@ make_helper(concat(ret_i_, SUFFIX)){
     cpu.eip = cpu.eip & 0x0000ffff;
 #endif
     REG(R_ESP) += op_src->val;
-    print_asm_template2();
+    print_asm_template1();
     cpu.eip -= (len + 1);
     return len + 1;
 }
