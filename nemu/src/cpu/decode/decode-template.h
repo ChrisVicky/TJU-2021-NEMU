@@ -29,7 +29,7 @@ make_helper(concat(decode_si_, SUFFIX)) {
 	int8_t temp = instr_fetch(eip, DATA_BYTE);
 	op_src->simm = temp;
 #elif DATA_BYTE == 4
-	int32_t temp = instr_fetch(eip, DATA_BYTE);;
+	int32_t temp = instr_fetch(eip, DATA_BYTE);
 	op_src->simm = temp;
 #endif
 	/* TODO: Use instr_fetch() to read `DATA_BYTE' bytes of memory pointed
