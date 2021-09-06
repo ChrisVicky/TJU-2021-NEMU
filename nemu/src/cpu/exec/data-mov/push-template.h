@@ -5,6 +5,8 @@
 static void do_execute(){
     REG(R_ESP) -= DATA_BYTE;
     MEM_W(cpu.esp, op_src->val);
+    Log("cpu.esp = 0x%x" ,cpu.eip);
+    Log("REG(R_ESP) = 0x%x" ,REG(R_ESP));
     print_asm_template1();
 }
 
