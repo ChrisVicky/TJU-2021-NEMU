@@ -3,7 +3,7 @@
 #define instr push
 
 static void do_execute(){
-    REG(R_ESP) -= DATA_BYTE;
+    cpu.esp -= DATA_BYTE;
     MEM_W(cpu.esp, op_src->val);
     Log("cpu.esp = 0x%x" ,cpu.esp);
     Log("REG(R_ESP) = 0x%x" ,REG(R_ESP));
