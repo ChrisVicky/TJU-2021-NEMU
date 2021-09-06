@@ -3,14 +3,9 @@
 #define instr lods
 
 make_helper(concat3(instr, _m_, SUFFIX)){
-    uint32_t address = cpu.esi;
-    REG(R_EAX) = swaddr_read(address, 4);
-    if(cpu.eflags.DF){
-        cpu.esi += DATA_BYTE;
-    }else{
-        cpu.esi -= DATA_BYTE;
-    }
-    print_asm_template1();
+    REG(R_EAX) = MEM_R(cpu.esi);
+    cpu.esi += (cpu.eflags.DF ? -DATA_BYTE : DATA_BYTE);
+    print_asm("lods" str(SUFFIX) " %%ds:(%%esi),%%%s", REG_NAME(R_EAX));
     return 1;
 }
 
