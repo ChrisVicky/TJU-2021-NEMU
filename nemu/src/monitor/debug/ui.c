@@ -8,7 +8,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#define IF_DEBUG 0
+#define IF_DEBUG 1
 
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
