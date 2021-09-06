@@ -19,7 +19,7 @@ make_instr_helper(r)
 
 make_helper(concat(push_i_, SUFFIX)){
     int len = concat(decode_i_, SUFFIX)(eip + 1);
-    cpu.esp -= DATA_BYTE;
+    cpu.esp -= 4;
     MEM_W(cpu.esp, op_src->val);
     print_asm_template1();
     return len + 1;
