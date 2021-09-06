@@ -4,7 +4,8 @@
 
 make_helper(concat(ret_, SUFFIX)) {
     cpu.eip = MEM_R(REG(R_ESP));
-    REG(R_ESP) += DATA_BYTE;
+    //REG(R_ESP) += DATA_BYTE;
+    cpu.esp += DATA_BYTE;
 #if DATA_BYTE == 2
     cpu.eip = cpu.eip & 0x0000ffff;
 #endif
@@ -16,7 +17,8 @@ make_helper(concat(ret_, SUFFIX)) {
 make_helper(concat(ret_i_, SUFFIX)){
     int len = decode_i_w(eip + 1);
     cpu.eip = MEM_R(REG(R_ESP));
-    REG(R_ESP) += DATA_BYTE;
+//    REG(R_ESP) += DATA_BYTE;
+    cpu.esp += DATA_BYTE;
 #if DATA_BYTE == 2
     cpu.eip = cpu.eip & 0x0000ffff;
 #endif
