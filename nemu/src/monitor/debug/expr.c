@@ -301,7 +301,6 @@ static uint32_t exe(int q, int p, bool *flag)
 			{
 			case 8:
 				data = cpu.eip;
-				Log("data=%x" ,data);
 				break;
 			default:
 				data = cpu.gpr[position]._32;
