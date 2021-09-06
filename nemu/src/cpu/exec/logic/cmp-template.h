@@ -8,7 +8,7 @@ static void do_execute() {
     update_eflags_pf_zf_sf(result);
     update_eflags_cf_of_MINUS(result, op_dest->val, op_src->val);
     // Log("Show Flags : ZF = %x, OF = %x, SF = %x" ,cpu.eflags.ZF, cpu.eflags.OF, cpu.eflags.SF);
-    Log("Compare 0x%x and 0x%x, RESULT=0x%x\n" ,op_dest->val, op_src->val, result);
+    Log("Compare 0x%d and 0x%d, RESULT=0x%d\n" ,op_dest->val, op_src->val, result);
     print_asm_template2();
 }
 
