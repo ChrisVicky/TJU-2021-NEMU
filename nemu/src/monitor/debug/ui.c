@@ -8,6 +8,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#define IF_DEBUG 0
+
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -329,6 +331,9 @@ static int cmd_d(char *args)
 
 void ui_mainloop()
 {
+#if IF_DEBUG == 0
+	cpu_exec(-1);
+#endif
 	while (1)
 	{
 		int i;
@@ -380,6 +385,7 @@ void ui_mainloop()
 		}
 	}
 }
+#undef IF_DEBUG
 /*
 static bool is_number(char *arg){
 	int i;
