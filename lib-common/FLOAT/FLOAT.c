@@ -55,12 +55,7 @@ FLOAT f2F(float a) {
 	 * performing arithmetic operations on it directly?
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
-	// unsigned int temp = ((unsigned int *) & a) [0];
-	unsigned int temp;
-	asm volatile(
-		"movl %0, %1\n\t"
-		:"=a"(temp), "=r"(a)
-	);
+	unsigned int temp = ((unsigned int *) & a) [0];
 	const unsigned int BIAS = 127;
 	FLOAT ret = temp & 0x7fffff;
 	unsigned int mark = temp >> 31;
