@@ -64,10 +64,10 @@ FLOAT f2F(float a) {
 	
 	if(exp==0){	
 		ret = ret;
-	}else if(exp-7 > 0){
-		ret = ret << (exp - 7);
+	}else if(exp-8 > 0){
+		ret = ret << (exp - 8);
 	}else{
-		ret = ret >> (7 - exp);
+		ret = ret >> (8 - exp);
 	}
 	/*
 	switch((exp - 7) > 0){
