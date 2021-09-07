@@ -72,6 +72,7 @@ FLOAT f2F(float a) {
 	if(mark){
 		ret = ~ ret + 1;
 	}
+	printf();
 /*
 	asm volatile(
 		"cmpl %0, 0x7\n\t"
