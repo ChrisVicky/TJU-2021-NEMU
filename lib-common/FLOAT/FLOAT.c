@@ -77,9 +77,10 @@ FLOAT f2F(float a) {
 			ret << (exp - 7);
 			break;
 	}
-	if(mark){
+/*	if(mark){
 		ret = ~ ret + 1;
 	}
+*/	
 /*
 	asm volatile(
 		"cmpl %0, 0x7\n\t"
