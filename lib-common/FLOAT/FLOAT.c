@@ -70,7 +70,7 @@ FLOAT f2F(float a) {
 			ret << (exp - 7);
 			break;
 	}
-	if(a >> 31) ret = ~ ret + 1;
+	if(temp >> 31) ret = ~ ret + 1;
 	return ret;
 }
 
