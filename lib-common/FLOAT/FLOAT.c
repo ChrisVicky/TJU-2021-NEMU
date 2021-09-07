@@ -65,7 +65,7 @@ FLOAT f2F(float a) {
 	if(exp==0){	
 		if(temp >> 31) ret = ~ ret + 1;
 		return ret;
-	}
+	}/*
 	switch((exp - 7) > 0){
 		case 0:
 			ret = ret >> (exp - 7);
@@ -73,7 +73,7 @@ FLOAT f2F(float a) {
 		default:
 			ret = ret << (exp - 7);
 			break;
-	}
+	}*/
 	if(temp >> 31) ret = ~ ret + 1;
 	return ret;
 }
