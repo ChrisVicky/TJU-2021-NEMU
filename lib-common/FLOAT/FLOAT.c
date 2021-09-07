@@ -17,6 +17,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * `div' or `idiv' by inline assembly. We provide a template for you
 	 * to prevent you from uncessary details.
 	 *
+	 * asm volatile ("??? %2" : "=a"(???), "=d"(???) : "r"(???), "a"(???), "d"(???));
 	 *
 	 * If you want to use the template above, you should fill the "???"
 	 * correctly. For more information, please read the i386 manual for
@@ -24,10 +25,23 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * It is OK not to use the template above, but you should figure
 	 * out another way to perform the division.
 	 */
-	
-	asm volatile ("??? %2" : "=a"(???), "=d"(???) : "r"(???), "a"(???), "d"(???));
-	nemu_assert(0);
-	return 0;
+	/*
+	asm volatile ("??? %2" 
+				: "=a"(???), "=d"(???) 
+				: "r"(???), "a"(???), "d"(???)
+				);
+				a->%eax, d->%edx, r->registers
+				divl %1 %0 : %0 / %1
+	*/
+	ams volatile (
+		"	divl %1 %0;
+			salq %2 %0; "
+		: "=a" (a), "=d"(b)
+		: "r" (16), "a"(a), "d"(b)
+	);
+
+// 	nemu_assert(0);
+	return a;
 }
 
 FLOAT f2F(float a) {
@@ -42,14 +56,15 @@ FLOAT f2F(float a) {
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
 	unsigned int temp = ((unsigned int *) & a) [0];
+	const unsigned int BIAS = 127;
 	FLOAT ret = temp & 0x7fffff;
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
-	unsigned int exp = ((temp >> 23) & 0xff) + 16;
-	if(exp > 23){
-		ret << (exp-23);
+	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
+	if(exp > 7){
+		ret << (exp - 7);
 	}else{
-		ret >> (23 - exp);
+		ret >> (7 - exp);
 	}
 	if(mark){
 		ret = ~ ret + 1;
@@ -59,8 +74,16 @@ FLOAT f2F(float a) {
 }
 
 FLOAT Fabs(FLOAT a) {
-	nemu_assert(0);
-	return 0;
+
+	FLOAT temp = a >> 31;
+	FLOAT ret;
+	if(temp){
+		ret = ~ a + 1;
+	}else {
+		ret = a;
+	}
+//	nemu_assert(0);
+	return ret;
 }
 
 /* Functions below are already implemented */
