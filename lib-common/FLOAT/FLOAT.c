@@ -61,29 +61,41 @@ FLOAT f2F(float a) {
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
+	//int w;
+	
 	if(exp > 7){
 		ret << (exp - 7);
 	}else{
+		
 		ret >> (7 - exp);
 	}
 	if(mark){
 		ret = ~ ret + 1;
 	}
+/*
+	asm volatile(
+		"cmpl %0, 0x7\n\t"
+		"jngl 0xb\n\t"
+		"movl %%ebx, %0"
+		"movl %0, 0x7\n\t"
+		"subl %0, %%ebx\n\t"
+		"jmpl 0x6\n\t"
+		"subl %0, 0x7\n\t"
+		"sall %1, %0\n\t"
+		:"=a"(ret), "=r"(exp)
+		:"a"(ret), "r"(exp)
+		:"%ebx"
+	);
+*/
 //	nemu_assert(0);
 	return ret;
 }
 
 FLOAT Fabs(FLOAT a) {
 
-	FLOAT temp = a >> 31;
-	FLOAT ret;
-	if(temp){
-		ret = ~ a + 1;
-	}else {
-		ret = a;
-	}
+	if(a >> 31) a = ~ a + 1;
 //	nemu_assert(0);
-	return ret;
+	return a;
 }
 
 /* Functions below are already implemented */
