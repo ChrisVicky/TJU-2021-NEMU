@@ -63,7 +63,8 @@ FLOAT f2F(float a) {
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
 	
 	if(exp==0){
-		ret = ret;
+		if(temp >> 31) ret = ~ ret + 1;
+		return ret;
 	}else if(exp-7 > 0){
 		ret = ret << (exp - 7);
 	}else{
