@@ -70,11 +70,7 @@ FLOAT f2F(float a) {
 			ret << (exp - 7);
 			break;
 	}
-	int j,m=-1;
-	for(j=1;j<=mark;j++){
-		m = m * m;
-	}
-	ret = ret * m;
+	if(a >> 31) ret = ~ ret + 1;
 	return ret;
 }
 
