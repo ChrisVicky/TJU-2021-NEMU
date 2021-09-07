@@ -3,7 +3,7 @@
 #define instr ret
 
 make_helper(concat(ret_, SUFFIX)) {
-    cpu.eip = MEM_R(REG(R_ESP));
+    cpu.eip = MEM_R(cpu.esp);
     //REG(R_ESP) += DATA_BYTE;
     cpu.esp += DATA_BYTE;
 #if DATA_BYTE == 2
@@ -16,13 +16,13 @@ make_helper(concat(ret_, SUFFIX)) {
 
 make_helper(concat(ret_i_, SUFFIX)){
     int len = decode_i_w(eip + 1);
-    cpu.eip = MEM_R(REG(R_ESP));
+    cpu.eip = MEM_R(cpu.esp);
 //    REG(R_ESP) += DATA_BYTE;
     cpu.esp += DATA_BYTE;
 #if DATA_BYTE == 2
     cpu.eip = cpu.eip & 0x0000ffff;
 #endif
-    REG(R_ESP) += op_src->val;
+    cpu.esp += op_src->val;
     print_asm_template1();
     cpu.eip -= (len + 1);
     return len + 1;

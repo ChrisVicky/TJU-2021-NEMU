@@ -4,9 +4,9 @@
 
 make_helper(concat(leave_, SUFFIX)){
     // MEM_W(cpu.esp, cpu.ebp);
-    REG(R_ESP) = REG(R_EBP);
-    REG(R_EBP) = MEM_R(REG(R_ESP));
-    REG(R_ESP) += DATA_BYTE;
+    cpu.esp = REG(R_EBP);
+    REG(R_EBP) = MEM_R(cpu.esp);
+    cpu.esp += DATA_BYTE;
     print_asm(str(instr));
     return 1;
     /*
