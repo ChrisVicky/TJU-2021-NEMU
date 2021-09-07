@@ -57,6 +57,7 @@ FLOAT f2F(float a) {
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
 	unsigned int temp = ((unsigned int *) & a) [0];
 	const unsigned int BIAS = 127;
+	FLOAT temp_ret = (temp << 8) + (1 << 31);
 	FLOAT ret = temp & 0x7fffff;
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
@@ -70,26 +71,10 @@ FLOAT f2F(float a) {
 			break;
 	}
 	int j,m=-1;
-	for(j=1;j>=mark;j++){
+	for(j=1;j<=mark;j++){
 		m = m * m;
 	}
 	ret = ret * m;
-/*
-	asm volatile(
-		"cmpl %0, 0x7\n\t"
-		"jngl 0xb\n\t"
-		"movl %%ebx, %0"
-		"movl %0, 0x7\n\t"
-		"subl %0, %%ebx\n\t"
-		"jmpl 0x6\n\t"
-		"subl %0, 0x7\n\t"
-		"sall %1, %0\n\t"
-		:"=a"(ret), "=r"(exp)
-		:"a"(ret), "r"(exp)
-		:"%ebx"
-	);
-*/
-//	nemu_assert(0);
 	return ret;
 }
 
