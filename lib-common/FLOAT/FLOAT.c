@@ -61,9 +61,6 @@ FLOAT f2F(float a) {
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
-	//int w;
-
-
 	switch((exp - 7) > 0){
 		case 0:
 			ret >> (exp - 7);
@@ -72,9 +69,11 @@ FLOAT f2F(float a) {
 			ret << (exp - 7);
 			break;
 	}
-	if(mark){
-		ret = ~ ret + 1;
+	int j,m=-1;
+	for(j=1;j>=mark;j++){
+		m = m * m;
 	}
+	ret = ret * m;
 /*
 	asm volatile(
 		"cmpl %0, 0x7\n\t"
