@@ -63,9 +63,13 @@ FLOAT f2F(float a) {
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
 	
 	if(exp==0){	
-		if(temp >> 31) ret = ~ ret + 1;
-		return ret;
-	}/*
+		ret = ret;
+	}else if(exp-7 > 0){
+		ret = ret << (exp - 7);
+	}else{
+		ret = ret >> (7 - exp);
+	}
+	/*
 	switch((exp - 7) > 0){
 		case 0:
 			ret = ret >> (exp - 7);
