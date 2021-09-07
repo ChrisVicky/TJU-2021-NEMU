@@ -57,7 +57,6 @@ FLOAT f2F(float a) {
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
 	unsigned int temp = ((unsigned int *) & a) [0];
 	const unsigned int BIAS = 127;
-	FLOAT temp_ret = (temp << 8) + (1 << 31);
 	FLOAT ret = temp & 0x7fffff;
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
