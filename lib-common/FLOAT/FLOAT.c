@@ -61,13 +61,14 @@ FLOAT f2F(float a) {
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
-		if(temp >> 31) ret = ~ ret + 1;
-		return ret;
-	/*
+	
 	if(exp==0){
 		if(temp >> 31) ret = ~ ret + 1;
 		return ret;
-	}else if(exp-7 > 0){
+	}else{
+		nemu_assert(0);
+	}
+	/*else if(exp-7 > 0){
 		ret = ret << (exp - 7);
 	}else{
 		ret = ret >> (7 - exp);
