@@ -62,6 +62,9 @@ FLOAT f2F(float a) {
 	ret += (1<<23);
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
 	
+	if(exp==0){
+		nemu_assert(0);
+	}
 	switch((exp - 7) > 0){
 		case 0:
 			ret = ret >> (exp - 7);
