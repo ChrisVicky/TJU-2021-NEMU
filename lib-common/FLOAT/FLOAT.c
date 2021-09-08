@@ -33,13 +33,13 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 				a->%eax, d->%edx, r->registers
 				divl %1 %0 : %0 = %0 / %1
 	*/
-/*
 	asm volatile (
-		"divl %1, %0;"
+		"idivl %1, %0;"
 		"shll %2;"
 		: "=a" (a), "=d"(b)
 		: "r" (16), "a"(a), "d"(b)
-	);*/
+	);
+	return a;
 	
 	int sign=1;
 	if(a<0)
