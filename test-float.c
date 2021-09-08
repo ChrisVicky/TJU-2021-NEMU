@@ -1,5 +1,19 @@
 #include <stdio.h>
 #define FLOAT int
+int f2FF(float a) {
+	int tep = ((int *) & a) [0];
+	int sign = tep >> 31;
+  int exp = (tep >> 23) & 0xff;
+  int x = tep & 0x7fffff;
+  if (exp != 0)
+    x += 1 << 23;
+  exp -= 150;
+  if (exp < -16)
+    x >>= -16 - exp;
+  if (exp > -16)
+    x <<= 16 + exp;
+  return sign == 0 ? x : -x;
+}
 int f2F(float a) {
 	/* You should figure out how to convert `a' into FLOAT without
 	 * introducing x87 floating point instructions. Else you can
@@ -36,19 +50,30 @@ int f2F(float a) {
 	}
 */
 	if(temp >> 31) ret = ~ ret + 1;
-	return ret;*/
+	return ret;
 }
 int main(){
 	int t = f2F(1.25);
 	FLOAT _FLOAT_q = f2F(0.0001);
-	printf("%x\n" ,_FLOAT_q);
-	FLOAT _FLOAT_a = f2F(1e-4);
-	printf("%x\n" ,_FLOAT_a);
-    FLOAT _FLOAT_b = f2F(0.551222);
-	printf("%x\n" ,_FLOAT_b);
-	FLOAT _FLOAT_c = f2F(-1.0);
-	printf("%x\n" ,_FLOAT_c);
-	FLOAT _FLOAT_d = f2F(1.0);
-	printf("%x\n" ,_FLOAT_d);
+	FLOAT _FLOAT_p = f2FF(0.0001);
+	if(_FLOAT_q==_FLOAT_p) printf("YES");
+	else printf("NO");
+	 _FLOAT_q = f2F(1e-4);
+	 _FLOAT_p = f2FF(1e-4);
+	if(_FLOAT_q==_FLOAT_p) printf("YES");
+	else printf("NO");
+	 _FLOAT_q = f2F(0.551222);
+	 _FLOAT_p = f2FF(0.551222);
+	if(_FLOAT_q==_FLOAT_p) printf("YES");
+	else printf("NO");
+	 _FLOAT_q = f2F(1);
+	 _FLOAT_p = f2FF(1);
+	if(_FLOAT_q==_FLOAT_p) printf("YES");
+	else printf("NO");
+	 _FLOAT_q = f2F(-1);
+	 _FLOAT_p = f2FF(-1);
+	if(_FLOAT_q==_FLOAT_p) printf("YES");
+	else printf("NO");
+	
 	return 0;
 }
