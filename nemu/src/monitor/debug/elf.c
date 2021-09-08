@@ -95,7 +95,7 @@ void load_elf_variables(){
 int get_address(char * name){
 	int i;
 	for(i=0;i<nr_symtab_entry;i++){
-		if(strcmp(name, strtab + symtab[i].st_name)) continue;
+		if(symtab[i].st_info!=17 || strcmp(name, strtab + symtab[i].st_name)) continue;
 		return symtab[i].st_value;
 	}
 	return 0;
@@ -108,7 +108,6 @@ bool is_variable(char * name){
 	for(i=0;i<nr_symtab_entry;i++){
 		if(symtab[i].st_info!=17) continue;
 		char *temp = strtab + symtab[i].st_name;
-		Log("TARGET %s	NAME %s" ,temp ,name);
 		if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
 		
 	}
