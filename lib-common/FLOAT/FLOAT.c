@@ -1,8 +1,9 @@
 #include "FLOAT.h"
-
+#include <string.h>
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-//	nemu_assert(0);
 	return (FLOAT)(((long long)a * (long long)b) >> 16);
+//	long long i=(long long)a*(long long)b;
+//	return (FLOAT)(i>>16);
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
@@ -15,7 +16,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * `div' or `idiv' by inline assembly. We provide a template for you
 	 * to prevent you from uncessary details.
 	 *
-	 * asm volatile ("??? %2" : "=a"(???), "=d"(???) : "r"(???), "a"(???), "d"(???));
+	 *     asm volatile ("??? %2" : "=a"(???), "=d"(???) : "r"(???), "a"(???), "d"(???));
 	 *
 	 * If you want to use the template above, you should fill the "???"
 	 * correctly. For more information, please read the i386 manual for
@@ -23,21 +24,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * It is OK not to use the template above, but you should figure
 	 * out another way to perform the division.
 	 */
-	/*
-	asm volatile ("??? %2" 
-				: "=a"(???), "=d"(???) 
-				: "r"(???), "a"(???), "d"(???)
-				);
-				a->%eax, d->%edx, r->registers
-				divl %1 %0 : %0 = %0 / %1
-	*/
-/*
-	asm volatile (
-		"divl %1, %0;"
-		"shll %2;"
-		: "=a" (a), "=d"(b)
-		: "r" (16), "a"(a), "d"(b)
-	);*/
+
 	int sign=1;
 	if(a<0)
 	{
@@ -62,7 +49,14 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 			ans++;
 		}
 	}
-	return ans*sign;	
+	return ans*sign;
+	asm volatile (
+		"divl %1, %0;"
+		"shll %2;"
+		: "=a" (a), "=d"(b)
+		: "r" (16), "a"(a), "d"(b)
+	);
+
 }
 
 FLOAT f2F(float a) {
@@ -75,13 +69,11 @@ FLOAT f2F(float a) {
 	 * stack. How do you retrieve it to another variable without
 	 * performing arithmetic operations on it directly?
 	 */
-	/* float is a 32-bit 1, 8, 23 bits structure variable */
 	int u[100];
 	memcpy((void *)u,(void *)&a,4);
 	int temp=u[0];
 	const int BIAS = 150;
 	FLOAT ret = temp & 0x7fffff;
-	int mark = temp >> 31;
 	ret += (1<<23);
 	int exp = ((temp >> 23) & 0xff) - BIAS;
 	if(exp<-16)
@@ -101,10 +93,11 @@ FLOAT f2F(float a) {
 	return ret;
 }
 
-FLOAT Fabs(FLOAT a) {
 
-	if(a >> 31) a = ~ a + 1;
-//	nemu_assert(0);
+FLOAT Fabs(FLOAT a) {
+	if(a<0)
+	return -a;
+	else
 	return a;
 }
 
