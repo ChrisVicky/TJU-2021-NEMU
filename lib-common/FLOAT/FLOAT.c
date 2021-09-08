@@ -35,6 +35,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	*/
 	int temp_a = a;
 	int temp_b = b;
+	int i;
 	asm volatile (
 		"idivl %1, %0;"
 		"shll %2;"
