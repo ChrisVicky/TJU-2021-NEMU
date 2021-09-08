@@ -56,7 +56,9 @@ FLOAT f2F(float a) {
 	 * performing arithmetic operations on it directly?
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
-	int temp = ((int *) & a) [0];
+	int u[100];
+	memcpy((void *)u,(void *)&a,4);
+	int temp=u[0];
 	const int BIAS = 150;
 	FLOAT ret = temp & 0x7fffff;
 	int mark = temp >> 31;
