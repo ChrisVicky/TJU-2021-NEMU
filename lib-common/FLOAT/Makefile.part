@@ -10,9 +10,20 @@ $(FLOAT): $(FLOAT_A_OBJ)
 
 # TODO: complete the following rules
 
-$(FLOAT_O):
-	mkdir -p obj/lib-common/FLOAT/
-	gcc -c -m32 -O2 -fno-builtin lib-common/FLOAT/FLOAT.c -I lib-common -o obj/lib-common/FLOAT/FLOAT.o
+# $(FLOAT_O):
+#	mkdir -p obj/lib-common/FLOAT/
+#	gcc -c -m32 -O2 -fno-builtin lib-common/FLOAT/FLOAT.c -I lib-common -o obj/lib-common/FLOAT/FLOAT.o
 
-$(FLOAT_VFPRINTF_O):
-	gcc -c -m32 -O2 -fno-builtin -fno-stack-protector -D_FORTIFY_SOURCE=0 lib-common/FLOAT/FLOAT_vfprintf.c -I lib-common -o obj/lib-common/FLOAT/FLOAT_vfprintf.o 
+#$(FLOAT_VFPRINTF_O):
+#	gcc -c -m32 -O2 -fno-builtin -fno-stack-protector -D_FORTIFY_SOURCE=0 lib-common/FLOAT/FLOAT_vfprintf.c -I lib-common -o obj/lib-common/FLOAT/FLOAT_vfprintf.o 
+
+$(FLOAT_O):lib-common/FLOAT/FLOAT.c
+	mkdir -p obj/lib-common/FLOAT
+	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORITFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
+
+
+
+$(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
+	mkdir -p obj/lib-common/FLOAT
+	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORITFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
+
