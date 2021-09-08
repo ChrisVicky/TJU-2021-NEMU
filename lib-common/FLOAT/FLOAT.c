@@ -33,39 +33,18 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 				a->%eax, d->%edx, r->registers
 				divl %1 %0 : %0 = %0 / %1
 	*/
-	int temp_a = a;
-	int temp_b = b;
-	int i;
 	asm volatile (
 		"idivl %1, %0;"
 		"shll %2;"
 		: "=a" (a), "=d"(b)
 		: "r" (16), "a"(a), "d"(b)
 	);
-	temp_a=temp_a%temp_b;
-	for(i=1;i<=16;i++)
-	{
-		temp_a<<=1;
-		a<<=1;
-		if(temp_a>=temp_b)
-		{
-			temp_a-=temp_b;
-			a++;
-		}
-	}
-	return a;
-	
 	int sign=1;
-	if(a<0)
-	{
-		a=-a;
-		sign*=-1;
+	if((a>>31)^(b>>31)){
+		sign=-1;
 	}
-	if(b<0)
-	{
-		b=-b;
-		sign*=-1;
-	}
+	a = Fabs(a);
+	b = Fabs(b);
 	FLOAT ans=a/b;
 	int i;
 	a=a%b;
