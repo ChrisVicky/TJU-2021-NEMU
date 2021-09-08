@@ -11,11 +11,10 @@ int f2F(float a) {
 	 * performing arithmetic operations on it directly?
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
-/*
 	unsigned int temp = ((unsigned int *) & a) [0];
 	const int BIAS = 127;
 	FLOAT ret = temp & 0x7fffff;
-	unsigned int mark = temp >> 31;
+	int mark = temp >> 31;
 	ret += (1<<23);
 	int exp = ((temp >> 23) & 0xff) - BIAS;
 	printf("temp=%x	exp=%d	ret=%x	mark=%d	\n"  ,temp,exp, ret, mark);
@@ -35,23 +34,9 @@ int f2F(float a) {
 			ret = ret << (exp - 7);
 			break;
 	}
-
+*/
 	if(temp >> 31) ret = ~ ret + 1;
 	return ret;*/
-	int u[100];
-	memcpy((void *)u,(void *)&a,4);
-	int tep=u[0];
-	int sign = tep >> 31;
-  int exp = (tep >> 23) & 0xff;
-  int x = tep & 0x7fffff;
-  if (exp != 0)
-    x += 1 << 23;
-  exp -= 150;
-  if (exp < -16)
-    x >>= -16 - exp;
-  if (exp > -16)
-    x <<= 16 + exp;
-  return sign == 0 ? x : -x;
 }
 int main(){
 	int t = f2F(1.25);

@@ -56,19 +56,15 @@ FLOAT f2F(float a) {
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
 	int temp = ((int *) & a) [0];
-	const int BIAS = 127;
+	const int BIAS = 150;
 	FLOAT ret = temp & 0x7fffff;
 	int mark = temp >> 31;
 	ret += (1<<23);
 	int exp = ((temp >> 23) & 0xff) - BIAS;
-	/*
-	if(exp==0){
-		ret = ret >> 7;
-	}else if(exp-7 > 0){
-		ret = ret << (exp - 7);
-	}else{
-		ret = ret >> (7 - exp);
-	}
+	if(exp<-16)
+		ret >>= -16 - exp;
+	if(exp>-16)
+		ret <<= 16+exp;
 /*	switch((exp - 7) > 0){
 		case 0:
 			ret = ret >> (exp - 7);
