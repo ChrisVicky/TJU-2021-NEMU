@@ -7,5 +7,7 @@ int main()
     if(a){
         b = w;
     }
+    int q = b;
+    a = q;
     return 0;
 }
