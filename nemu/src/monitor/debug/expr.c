@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <regex.h>
 bool is_variable(char * );
+bool get_address(char * );
 
 const char registers[] = "$eax$ecx$edx$ebx$esp$ebp$esi$edi$eip";
 enum
@@ -325,6 +326,9 @@ static uint32_t exe(int q, int p, bool *flag)
 			break;
 		case TEN:
 			data = strtol(tokens[p].str, NULL, 10);
+			break;
+		case VARIABLE:
+			data = get_address(tokens[p].str);
 			break;
 		default:
 			//Log("q=%d	p=%d" ,q,p);
