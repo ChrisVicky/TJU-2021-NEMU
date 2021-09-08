@@ -34,11 +34,12 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 				divl %1 %0 : %0 = %0 / %1
 	*/
 	asm volatile (
-		"divl %1, %0;"
 		"sall %2;"
+		"divl %1, %0;"
+		
 		: "=a" (a), "=d"(b)
 		: "r" (16), "a"(a), "d"(b)
-	);
+	);*/
 
 // 	nemu_assert(0);
 	return a;
