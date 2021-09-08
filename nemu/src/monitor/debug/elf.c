@@ -81,3 +81,11 @@ void load_elf_tables(int argc, char *argv[]) {
 	fclose(fp);
 }
 
+void load_elf_variables(){
+	int i;
+	for(i=0;i<nr_symtab_entry;i++){
+		printf("info %d\n" ,symtab[i].st_info);
+	}
+	return ;
+}
+
