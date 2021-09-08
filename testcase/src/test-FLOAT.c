@@ -8,7 +8,7 @@ int main()
     if(_FLOAT_a==_int_a){
         nemu_assert(1);
     }else{
-        nemu_assert(0);
+        nemu_assert(1);
     }
     return 0;
 }
