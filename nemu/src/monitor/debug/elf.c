@@ -104,6 +104,7 @@ bool is_variable(char * name){
 
 	int i;
 	for(i=0;i<nr_symtab_entry;i++){
+		printf("%s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
 		char *temp = strtab + symtab[i].st_name;
 		Log("TARGET %s	NAME %s" ,temp ,name);
 		if(strncmp(name, temp, strlen(temp))==0) return strlen(temp);
