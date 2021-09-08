@@ -214,7 +214,7 @@ static bool make_token(char *e)
 			if(len){
 				tokens[++nr_token].type = VARIABLE;
 				strncpy(tokens[nr_token].str, e + position, len);
-				e += position;
+				e += len;
 			}else{
 				// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 				printf("\33[1;34mNo match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
