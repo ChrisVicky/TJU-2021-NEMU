@@ -56,8 +56,8 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 			ans++;
 		}
 	}
-	return sign ? -ans : ans;
-	//return ans*sign;	
+	if(sign) ans = ~ans + 1;
+	return ans;	
 
 }
 
