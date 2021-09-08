@@ -58,20 +58,19 @@ FLOAT f2F(float a) {
 	unsigned int temp = ((unsigned int *) & a) [0];
 	const unsigned int BIAS = 127;
 	FLOAT ret = temp & 0x7fffff;
+	ret = ret << 7;
 	unsigned int mark = temp >> 31;
-	ret += (1<<23);
+	ret += (1<<30);
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
 	
 	if(exp==0){
-		if(mark){
-			nemu_assert(0);
-		}
+
 	}else if(exp-7 > 0){
 		ret = ret << (exp - 7);
 	}else{
 		ret = ret >> (7 - exp);
 	}
-	switch((exp - 7) > 0){
+/*	switch((exp - 7) > 0){
 		case 0:
 			ret = ret >> (exp - 7);
 			break;
@@ -79,6 +78,7 @@ FLOAT f2F(float a) {
 			ret = ret << (exp - 7);
 			break;
 	}
+*/
 	if(temp >> 31) ret = ~ ret + 1;
 	return ret;
 }
