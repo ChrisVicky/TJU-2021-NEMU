@@ -56,6 +56,9 @@ FLOAT f2F(float a) {
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
 	unsigned int temp = ((unsigned int *) & a) [0];
+	if(temp==1){
+		nemu_assert(0);
+	}
 	const unsigned int BIAS = 127;
 	FLOAT ret = temp & 0x7fffff;
 	ret = ret << 7;
@@ -64,7 +67,7 @@ FLOAT f2F(float a) {
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
 	
 	if(exp==0){
-
+		ret = ret;
 	}else if(exp-7 > 0){
 		ret = ret << (exp - 7);
 	}else{
