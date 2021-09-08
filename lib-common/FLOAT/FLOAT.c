@@ -40,7 +40,10 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	);
 
 	*/
-	int sign=(a>>31)^(b>>31);
+	int sign=1;
+	if((a>>31)^(b>>31)){
+		sign=-1;
+	}
 	a = Fabs(a);
 	b = Fabs(b);
 	FLOAT ans=a/b;
@@ -56,8 +59,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 			ans++;
 		}
 	}
-	if(sign) ans = ~ans + 1;
-	return ans;	
+	return ans*sign;	
 
 }
 
