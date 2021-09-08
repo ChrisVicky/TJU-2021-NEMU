@@ -106,10 +106,10 @@ bool is_variable(char * name){
 	int i;
 	printf("nr_symtab=%d\n" ,nr_symtab_entry);
 	for(i=0;i<nr_symtab_entry;i++){
-		printf("%s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
+		if(symtab[i].st_info!=17) continue;
 		char *temp = strtab + symtab[i].st_name;
 		Log("TARGET %s	NAME %s" ,temp ,name);
-		//if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
+		if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
 		
 	}
 	return false;
