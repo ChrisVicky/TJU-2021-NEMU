@@ -34,9 +34,8 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 				divl %1 %0 : %0 = %0 / %1
 	*/
 	asm volatile (
-		"sall %2;"
 		"divl %1, %0;"
-		
+		"shll %2;"
 		: "=a" (a), "=d"(b)
 		: "r" (16), "a"(a), "d"(b)
 	);
@@ -56,10 +55,10 @@ FLOAT f2F(float a) {
 	 * performing arithmetic operations on it directly?
 	 */
 	/* float is a 32-bit 1, 8, 23 bits structure variable */
-	unsigned int temp = ((unsigned int *) & a) [0];
+	int temp = ((int *) & a) [0];
 	const int BIAS = 127;
 	FLOAT ret = temp & 0x7fffff;
-	unsigned int mark = temp >> 31;
+	int mark = temp >> 31;
 	ret += (1<<23);
 	int exp = ((temp >> 23) & 0xff) - BIAS;
 	
