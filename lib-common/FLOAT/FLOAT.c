@@ -61,7 +61,7 @@ FLOAT f2F(float a) {
 	int mark = temp >> 31;
 	ret += (1<<23);
 	int exp = ((temp >> 23) & 0xff) - BIAS;
-	
+	/*
 	if(exp==0){
 		ret = ret >> 7;
 	}else if(exp-7 > 0){
