@@ -39,7 +39,7 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 		
 		: "=a" (a), "=d"(b)
 		: "r" (16), "a"(a), "d"(b)
-	);*/
+	);
 
 // 	nemu_assert(0);
 	return a;
