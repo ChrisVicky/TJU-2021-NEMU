@@ -329,7 +329,6 @@ static uint32_t exe(int q, int p, bool *flag)
 			break;
 		case VARIABLE:
 			data = get_address(tokens[p].str);
-			Log("Got data = %x" ,data);
 			break;
 		default:
 			//Log("q=%d	p=%d" ,q,p);

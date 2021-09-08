@@ -96,9 +96,7 @@ int get_address(char * name){
 	int i;
 	for(i=0;i<nr_symtab_entry;i++){
 		if(symtab[i].st_info!=17 || strncmp(name, strtab + symtab[i].st_name, strlen(name))) continue;
-		int ret = symtab[i].st_value;
-		Log("RET = %d	%x" ,ret, ret);
-		return ret;
+		return symtab[i].st_value;
 	}
 	return 0;
 }
@@ -106,7 +104,6 @@ int get_address(char * name){
 bool is_variable(char * name){
 
 	int i;
-	printf("nr_symtab=%d\n" ,nr_symtab_entry);
 	for(i=0;i<nr_symtab_entry;i++){
 		if(symtab[i].st_info!=17) continue;
 		char *temp = strtab + symtab[i].st_name;
