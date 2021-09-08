@@ -82,6 +82,13 @@ FLOAT f2F(float a) {
 	return ret;
 }
 
+FLOAT Fabs(FLOAT a) {
+
+	if(a >> 31) a = ~ a + 1;
+//	nemu_assert(0);
+	return a;
+}
+
 /* Functions below are already implemented */
 
 FLOAT sqrt(FLOAT x) {
