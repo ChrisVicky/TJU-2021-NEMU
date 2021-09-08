@@ -227,7 +227,7 @@ static int cmd_p(char *args)
 		return 0;
 	}
 	// printf("NEW E: %s\n" ,args);
-	printf("%d	(\033[1;38m0x%08x\33[0m)\n", ans, ans);
+	printf("%d	(\033[40;35m0x%08x\33[0m)\n", ans, ans);
 	return 0;
 }
 static int cmd_w(char *args)
