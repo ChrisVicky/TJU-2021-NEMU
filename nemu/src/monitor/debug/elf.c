@@ -109,7 +109,7 @@ bool is_variable(char * name){
 		printf("%s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
 		char *temp = strtab + symtab[i].st_name;
 		Log("TARGET %s	NAME %s" ,temp ,name);
-		if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
+		//if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
 		
 	}
 	return false;
