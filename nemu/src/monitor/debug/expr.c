@@ -209,6 +209,7 @@ static bool make_token(char *e)
 		// Log("e='%s' i=%d" ,e ,i);
 		if (i == NR_REGEX)
 		{
+			Log("Check is variable");
 			int len = is_variable(e + position);
 			if(len){
 				tokens[++nr_token].type = VARIABLE;
