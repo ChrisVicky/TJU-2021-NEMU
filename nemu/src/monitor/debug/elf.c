@@ -86,7 +86,7 @@ void load_elf_variables(){
 	printf("nr_symtab=%d\n" ,nr_symtab_entry);
 	printf("name	value\n");
 	for(i=0;i<nr_symtab_entry;i++){
-		//if(symtab[i].st_info==17)
+		if(symtab[i].st_info==17)
 			printf("%s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
 	}
 	return ;
@@ -95,7 +95,7 @@ void load_elf_variables(){
 int get_address(char * name){
 	int i;
 	for(i=0;i<nr_symtab_entry;i++){
-		if(symtab[i].st_info!=17 || strcmp(name, strtab + symtab[i].st_name)) continue;
+		if(symtab[i].st_info!=17 || strncmp(name, strtab + symtab[i].st_name, strlen(name))) continue;
 		return symtab[i].st_value;
 	}
 	return 0;
