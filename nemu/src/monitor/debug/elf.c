@@ -83,6 +83,7 @@ void load_elf_tables(int argc, char *argv[]) {
 
 void load_elf_variables(){
 	int i;
+	printf("nr_symtab=%d\n" ,nr_symtab_entry);
 	printf("name	value\n");
 	for(i=0;i<nr_symtab_entry;i++){
 		if(symtab[i].st_info==17)
@@ -103,6 +104,7 @@ int get_address(char * name){
 bool is_variable(char * name){
 
 	int i;
+	printf("nr_symtab=%d\n" ,nr_symtab_entry);
 	for(i=0;i<nr_symtab_entry;i++){
 		printf("%s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
 		char *temp = strtab + symtab[i].st_name;
