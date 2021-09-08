@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <regex.h>
 bool is_variable(char * );
-bool get_address(char * );
+int get_address(char * );
 
 const char registers[] = "$eax$ecx$edx$ebx$esp$ebp$esi$edi$eip";
 enum
