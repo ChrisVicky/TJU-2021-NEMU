@@ -106,8 +106,8 @@ bool is_variable(char * name){
 	for(i=0;i<nr_symtab_entry;i++){
 		char *temp = strtab + symtab[i].st_name;
 		Log("CHECK %s" ,temp);
-		if(strncmp(name, temp, strlen(temp))) continue;
-		return strlen(temp);
+		if(strncmp(name, temp, strlen(temp))==0) return strlen(temp);
+		
 	}
 	return false;
 }
