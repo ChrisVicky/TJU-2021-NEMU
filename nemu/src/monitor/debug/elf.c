@@ -91,3 +91,23 @@ void load_elf_variables(){
 	return ;
 }
 
+int get_address(char * name){
+	int i;
+	for(i=0;i<nr_symtab_entry;i++){
+		if(strcmp(name, strtab + symtab[i].st_name)) continue;
+		return symtab[i].st_value;
+	}
+	return 0;
+}
+
+bool is_variable(char * name){
+
+	int i;
+	for(i=0;i<nr_symtab_entry;i++){
+		char *temp = strtab + symtab[i].st_name;
+		if(strncmp(name, temp, strlen(temp))) continue;
+		return strlen(temp);
+	}
+	return false;
+}
+

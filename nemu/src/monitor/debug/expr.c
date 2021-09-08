@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <regex.h>
+bool is_variable(char * );
+
 const char registers[] = "$eax$ecx$edx$ebx$esp$ebp$esi$edi$eip";
 enum
 {
@@ -40,6 +42,7 @@ enum
 	FR_BRACKET,
 	BA_BRACKET,
 	REGISTER,
+	VARIABLE,
 	/* TODO: Add more token types */
 
 };
@@ -206,9 +209,15 @@ static bool make_token(char *e)
 		// Log("e='%s' i=%d" ,e ,i);
 		if (i == NR_REGEX)
 		{
-			// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
-			printf("\33[1;34mNo match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
-			return false;
+			int len = is_variable(e + position);
+			if(len){
+				tokens[++nr_token].type = VARIABLE;
+				strncpy(tokens[nr_token].str, e + position, len);
+			}else{
+				// Log("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+				printf("\33[1;34mNo match at position %d\n%s\n%*.s^\33[0m\n", position, e, position, "");
+				return false;
+			}
 		}
 		//Log("tokens[%d] = %s" ,nr_token, tokens[nr_token].str);
 		if (tokens[nr_token].type == FR_BRACKET && !vst[nr_token])
