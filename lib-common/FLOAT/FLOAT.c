@@ -61,7 +61,7 @@ FLOAT f2F(float a) {
 	unsigned int mark = temp >> 31;
 	ret += (1<<23);
 	unsigned int exp = ((temp >> 23) & 0xff) - BIAS;
-	/*
+	
 	if(exp==0){
 		if(temp >> 31) ret = ~ ret + 1;
 		return ret;
@@ -70,7 +70,6 @@ FLOAT f2F(float a) {
 	}else{
 		ret = ret >> (7 - exp);
 	}
-	/*
 	switch((exp - 7) > 0){
 		case 0:
 			ret = ret >> (exp - 7);
