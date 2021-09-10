@@ -56,6 +56,7 @@ static int cmd_w(char *args);
 static int cmd_b(char *args);
 static int cmd_d(char *args);
 static int cmd_bt(char *args);
+char * get_func_name_by_address(int );
 
 static struct
 {
@@ -339,7 +340,6 @@ static int cmd_bt(char * args){
 		ERROR("Too many arguments!\n");
 		return 0;
 	}
-	SUCCESS("YES\n");
 	int ebp = cpu.ebp;
 	int esp = cpu.esp;
 	if(esp>=HW_MEM_SIZE){
@@ -347,6 +347,8 @@ static int cmd_bt(char * args){
 		return 0;
 	}
 	while(esp!=0){
+		char * func_name = get_func_name_by_address(esp);
+		SUCCESS("FUNCTION NAME: %s\n" ,func_name);
 		SUCCESS("%-5s: 0x%-10x; %-5s: 0x%-10x\n" ,"ebp", ebp, "esp", esp);
 		int i,x;
 		SUCCESS("%-10s%-10s%-10s%-10s\n" ,"val1","val2","val3","val4");
