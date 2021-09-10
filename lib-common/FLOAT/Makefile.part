@@ -24,9 +24,7 @@ $(FLOAT_O):lib-common/FLOAT/FLOAT.c
 	@echo "###############"
 	gcc -m32 -O2 -fno-builtin -Ilib-common -c -o $@  $^
 
-
-
 $(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
 	mkdir -p obj/lib-common/FLOAT
-	gcc -c -m32 -O2 -fno-builtin -fno-stack-protector -D_FORITFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
+	gcc -m32 -O2 -fno-builtin -fno-stack-protector -Ilib-common -D_FORITFY_SOURCE=0 -c $^ -o $@
 
