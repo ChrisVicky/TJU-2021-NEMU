@@ -10,7 +10,6 @@ testcase_LDFLAGS := -m elf_i386 -T testcase/user.ld
 # testcase_LDFLAGS := -m elf_i386 -e main -Ttext-segment=0x00800000
 
 $(testcase_BIN): % : $(testcase_START_OBJ) %.o $(FLOAT) $(LIBC)
-	@echo $(LIBC)
 	$(call make_command, $(LD), $(testcase_LDFLAGS), ld $@, $^)
 	@objdump -d $@ > $@.txt
 
