@@ -1,5 +1,5 @@
 testcase_CFLAGS_EXTRA := -m32 -fno-builtin -fno-stack-protector \
-						-Wno-format -I$(LIB_COMMON_DIR) -I$(LIBC_INC_DIR)
+						-Wno-format -I$(LIB_COMMON_DIR) -I$(LIBC_INC_DIR) -nostdlib
 
 $(eval $(call make_common_rules,testcase,$(testcase_CFLAGS_EXTRA)))
 
