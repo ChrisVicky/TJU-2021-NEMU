@@ -339,7 +339,7 @@ static int cmd_bt(char * args){
 		ERROR("Too many arguments!\n");
 		return 0;
 	}
-	SUCCESS("YES");
+	SUCCESS("YES\n");
 	int ebp = cpu.ebp;
 	int esp = cpu.esp;
 	while(esp!=0){
