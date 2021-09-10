@@ -16,6 +16,7 @@
 #define PRINT(format, ...) printf("\33[1;37m" format "\33[0m", ## __VA_ARGS__)
 void cpu_exec(uint32_t);
 char *rl_gets();
+/*
 static int cmd_c(char *args);
 static int cmd_q(char *args);
 static int cmd_help(char *args);
@@ -27,7 +28,7 @@ static int cmd_w(char *args);
 static int cmd_b(char *args);
 static int cmd_d(char *args);
 static int cmd_bt(char *args);
-
+*/
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
