@@ -348,7 +348,7 @@ static int cmd_bt(char * args){
 		SUCCESS("%-10s%-10s%-10s%-10s\n" ,"val1","val2","val3","val4");
 		for(i=0;i<4;i++,esp+=4){
 			x = swaddr_read(esp, 4);
-			SUCCESS("0x%-10x" ,x);
+			SUCCESS("0x%-8x" ,x);
 		}
 		printf("\n");
 		esp = ebp;
