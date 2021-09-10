@@ -61,8 +61,6 @@ uint32_t loader() {
 #endif
 		}
 	}
-
-	nemu_assert(0);
 	volatile uint32_t entry = elf->e_entry;
 	nemu_assert(entry==0x00100000);
 

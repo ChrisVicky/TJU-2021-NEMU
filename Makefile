@@ -57,7 +57,7 @@ clean: clean-cpp
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/sum
 # USERPROG := obj/testcase/pascal
-USERPROG := obj/testcase/add
+USERPROG := obj/testcase/mov-c
 # ENTRY := $(USERPROG)
 ENTRY := $(kernel_BIN)
 
