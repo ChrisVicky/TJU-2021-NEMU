@@ -11,8 +11,8 @@
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
 #define IF_DEBUG 1
 
-#define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m\n",## __VA_ARGS__)
-#define ERROR(format, ...) printf("\33[1;31m" format "\33[0m\n", ## __VA_ARGS__)
+#define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m",## __VA_ARGS__)
+#define ERROR(format, ...) printf("\33[1;31m" format "\33[0m", ## __VA_ARGS__)
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -336,10 +336,24 @@ static int cmd_d(char *args)
 
 static int cmd_bt(char * args){
 	if(args!=NULL){
-		ERROR("Too many arguments!");
+		ERROR("Too many arguments!\n");
 		return 0;
 	}
 	SUCCESS("YES");
+	int ebp = cpu.ebp;
+	int esp = cpu.esp;
+	while(esp!=0){
+		SUCCESS("%-5s: 0x%-10x; %-5s: 0x%-10x\n" ,"ebp", ebp, "esp", esp);
+		int i,x;
+		SUCCESS("%-10s %-10s %-10s %-10s" ,"val1","val2","val3","val4");
+		for(i=0;i<4;i++,esp+=4){
+			x = swaddr_read(esp, 4);
+			SUCCESS("0x%-10x" ,x);
+		}
+		printf("\n");
+		esp = ebp;
+		ebp = swaddr_read(ebp, 4);
+	}
 	return 0;
 }
 
@@ -351,7 +365,7 @@ void ui_mainloop()
 	cpu_exec(-1);
 	return ;
 #endif
-	SUCCESS("DEBUG");
+	SUCCESS("DEBUG\n");
 	while (1)
 	{
 		int i;
