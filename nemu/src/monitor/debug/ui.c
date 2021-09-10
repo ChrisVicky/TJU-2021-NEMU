@@ -348,6 +348,7 @@ void ui_mainloop()
 	cpu_exec(-1);
 	return ;
 #endif
+	SUCCESS("DEBUG");
 	while (1)
 	{
 		int i;
