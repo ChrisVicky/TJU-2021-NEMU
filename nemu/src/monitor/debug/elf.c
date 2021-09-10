@@ -121,7 +121,7 @@ bool is_variable(char * name){
 
 char * get_func_name_by_address(int value){
 	int i;
-	unsigned int temp = -1;
+	int temp = 0xffffff;
 	int ret = 0;
 /* #define STT_FUNC	2		Symbol is a code object */ 
 	for(i=0;i<nr_symtab_entry;i++){
