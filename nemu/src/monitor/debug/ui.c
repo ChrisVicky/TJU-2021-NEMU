@@ -363,6 +363,7 @@ static int cmd_bt(char * args){
 		printf("\n");
 		esp = ebp;
 		ebp = swaddr_read(ebp, 4);
+		SUCCESS("ebp = 0x%x\n" ,ebp);
 		eip = swaddr_read(ebp-4, 4);
 	}
 	return 0;
