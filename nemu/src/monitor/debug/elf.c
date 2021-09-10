@@ -125,11 +125,11 @@ char * get_func_name_by_address(int value){
 	int ret = 0;
 /* #define STT_FUNC	2		Symbol is a code object */ 
 	for(i=0;i<nr_symtab_entry;i++){
-		Log("other = 0x%x	name=%s" ,symtab[i].st_info & 0xf, strtab + symtab[i].st_name);
-		if(((symtab[i].st_info & 0xf ) != 0x2)/* ||symtab[i].st_value > value*/) continue;
-		Log("EDD");
+		int type = symtab[i].st_info & 0xf;
+//		Log("other = 0x%x	name=%s" ,symtab[i].st_info & 0xf, strtab + symtab[i].st_name);
+		if(type != 0x2 || type != 0x0 ||symtab[i].st_value > value) continue;
 		if(value - symtab[i].st_value < temp){
-			Log("HIT");
+//			Log("HIT");
 			ret = i;
 			temp = value - symtab[i].st_value;
 		}
