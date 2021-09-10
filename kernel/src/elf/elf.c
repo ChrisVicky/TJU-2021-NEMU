@@ -52,7 +52,6 @@ uint32_t loader() {
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
 			memset((char *)(ph->p_vaddr+ph->p_filesz), 0, ph->p_memsz-ph->p_filesz);
-//			memset(*(ph->p_vaddr+ph->p_filesz), 0, ph->p_memsz);
 
 #ifdef IA32_PAGE
 			/* Record the program break for future use. */
@@ -64,6 +63,7 @@ uint32_t loader() {
 	}
 
 	volatile uint32_t entry = elf->e_entry;
+	nemu_assert(entry==0x00100000);
 
 #ifdef IA32_PAGE
 	mm_malloc(KOFFSET - STACK_SIZE, STACK_SIZE);
