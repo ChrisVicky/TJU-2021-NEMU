@@ -342,6 +342,10 @@ static int cmd_bt(char * args){
 	SUCCESS("YES\n");
 	int ebp = cpu.ebp;
 	int esp = cpu.esp;
+	if(esp>=HW_MEM_SIZE){
+		ERROR("physical address %x is outside of the physical memory!", esp);
+		return 0;
+	}
 	while(esp!=0){
 		SUCCESS("%-5s: 0x%-10x; %-5s: 0x%-10x\n" ,"ebp", ebp, "esp", esp);
 		int i,x;
