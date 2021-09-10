@@ -12,6 +12,8 @@ void load_elf_tables(int argc, char *argv[]) {
 	int ret;
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
 	exec_file = argv[1];
+	Log("PRESENT EXE_FILE");
+	printf("%s\n" ,exec_file);
 
 	FILE *fp = fopen(exec_file, "rb");
 	Assert(fp, "Can not open '%s'", exec_file);
@@ -92,20 +94,28 @@ void load_elf_variables(){
 	return ;
 }
 
-int get_address(char * name){
+int get_address_by_name(char * name){
 	int i;
 	for(i=0;i<nr_symtab_entry;i++){
-		if(symtab[i].st_info!=17 || strncmp(name, strtab + symtab[i].st_name, strlen(name))) continue;
+		if(/* symtab[i].st_info!=17 || // Check if variable */ strncmp(name, strtab + symtab[i].st_name, strlen(name))) continue;
 		return symtab[i].st_value;
 	}
 	return 0;
+}
+
+char * get_name_by_address(int value){
+	int i;
+	for(i=0;i<nr_symtab_entry;i++){
+		if(symtab[i].st_value==value) return strtab + symtab[i].st_name;
+	}
+	return NULL;
 }
 
 bool is_variable(char * name){
 
 	int i;
 	for(i=0;i<nr_symtab_entry;i++){
-		if(symtab[i].st_info!=17) continue;
+//		if(symtab[i].st_info!=17) continue;
 		char *temp = strtab + symtab[i].st_name;
 		if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
 	}
