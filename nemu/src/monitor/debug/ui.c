@@ -12,8 +12,8 @@
 #define IF_DEBUG 0
 
 #define ERROR(format, ...) \
-	printf("\33[1;33m[%s,%d,%s]" format "\33[0m\n", \
-			__FILE__, __LINE__, __func__, ## __VA_ARGS__)
+	printf("\33[1;33m" format "\33[0m\n", \
+			 ## __VA_ARGS__)
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
