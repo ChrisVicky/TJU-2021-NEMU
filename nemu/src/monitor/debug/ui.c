@@ -11,11 +11,6 @@
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
 #define IF_DEBUG 1
 
-#define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m",## __VA_ARGS__)
-#define ERROR(format, ...) printf("\33[1;31m" format "\33[0m", ## __VA_ARGS__)
-#define PRINT(format, ...) printf("\33[1;37m" format "\33[0m", ## __VA_ARGS__)
-
-#define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 void ui_mainloop()
 {
