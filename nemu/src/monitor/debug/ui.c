@@ -343,7 +343,7 @@ static int cmd_bt(char * args){
 	int ebp = cpu.ebp;
 	int esp = cpu.esp;
 	if(esp>=HW_MEM_SIZE){
-		ERROR("esp (0x%x) is vurrently outside of the physical memory!\n", esp);
+		ERROR("Stack Top (esp=0x%x) is currently outside of the physical memory!\n", esp);
 		return 0;
 	}
 	while(esp!=0){
