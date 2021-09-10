@@ -58,8 +58,8 @@ clean: clean-cpp
 # USERPROG := obj/testcase/sum
 # USERPROG := obj/testcase/pascal
 USERPROG := obj/testcase/mov-c
-# ENTRY := $(USERPROG)
-ENTRY := $(kernel_BIN)
+ENTRY := $(USERPROG)
+#ENTRY := $(kernel_BIN)
 
 
 define count_lines
