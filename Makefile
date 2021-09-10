@@ -61,6 +61,7 @@ USERPROG := obj/testcase/mov-c
 # ENTRY := $(USERPROG)
 ENTRY := $(kernel_BIN)
 
+
 define count_lines
 	@sh count_lines.sh
 endef
