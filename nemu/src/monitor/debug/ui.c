@@ -11,6 +11,9 @@
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
 #define IF_DEBUG 0
 
+#define ERROR(format, ...) \
+	printf("\33[1;33m[%s,%d,%s]" format "\33[0m\n", \
+			__FILE__, __LINE__, __func__, ## __VA_ARGS__)
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -53,6 +56,7 @@ static int cmd_p(char *args);
 static int cmd_w(char *args);
 static int cmd_b(char *args);
 static int cmd_d(char *args);
+static int cmd_bt(char *args);
 
 static struct
 {
@@ -71,6 +75,7 @@ static struct
 	{"w", "Make watchpoints", cmd_w},
 	{"b", "Make breakpoints", cmd_b},
 	{"d", "Delete points", cmd_d},
+	{"bt", "Print Stack" , cmd_bt},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -330,12 +335,20 @@ static int cmd_d(char *args)
 	}
 }
 
+static int cmd_bt(char * args){
+	if(args!=NULL){
+
+		return 0;
+	}
+}
+
 void ui_mainloop()
 {
 #if IF_DEBUG == 0
 	cpu_exec(-1);
 	return ;
 #endif
+	ERROR("TEST %s" ,"TET");
 	while (1)
 	{
 		int i;
