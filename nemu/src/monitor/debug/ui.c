@@ -14,21 +14,6 @@
 #define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m",## __VA_ARGS__)
 #define ERROR(format, ...) printf("\33[1;31m" format "\33[0m", ## __VA_ARGS__)
 #define PRINT(format, ...) printf("\33[1;37m" format "\33[0m", ## __VA_ARGS__)
-void cpu_exec(uint32_t);
-char *rl_gets();
-/*
-static int cmd_c(char *args);
-static int cmd_q(char *args);
-static int cmd_help(char *args);
-static int cmd_si(char *args);
-static int cmd_info(char *args);
-static int cmd_x(char *arg);
-static int cmd_p(char *args);
-static int cmd_w(char *args);
-static int cmd_b(char *args);
-static int cmd_d(char *args);
-static int cmd_bt(char *args);
-*/
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
