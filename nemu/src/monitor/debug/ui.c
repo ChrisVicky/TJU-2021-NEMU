@@ -12,6 +12,7 @@
 #define IF_DEBUG 1
 
 #define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m\n",## __VA_ARGS__)
+#define ERROR(format, ...) printf("\33[1;31m" format "\33[0m\n", ## __VA_ARGS__)
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -335,7 +336,7 @@ static int cmd_d(char *args)
 
 static int cmd_bt(char * args){
 	if(args!=NULL){
-		SUCCESS("NO");
+		SUCCESS("Too many arguments!");
 		return 0;
 	}
 	SUCCESS("YES");
