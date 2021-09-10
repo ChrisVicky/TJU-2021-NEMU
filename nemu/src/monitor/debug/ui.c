@@ -13,6 +13,7 @@
 
 #define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m",## __VA_ARGS__)
 #define ERROR(format, ...) printf("\33[1;31m" format "\33[0m", ## __VA_ARGS__)
+#define PRINT(format, ...) printf("\33[1;37m" format "\33[0m", ## __VA_ARGS__)
 void cpu_exec(uint32_t);
 const char *register_name[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -349,7 +350,8 @@ static int cmd_bt(char * args){
 	while(esp!=0){
 		char * func_name = get_func_name_by_address(esp);
 		SUCCESS("FUNCTION NAME: %s\n" ,func_name);
-		SUCCESS("%-5s: 0x%-10x; %-5s: 0x%-10x\n" ,"ebp", ebp, "esp", esp);
+		SUCCESS("%-10s%-10s\n" ,"ebp" ,"esp");
+		PRINT("%-10x%-10x\n" ,ebp, esp);
 		int i,x;
 		SUCCESS("%-10s%-10s%-10s%-10s\n" ,"val1","val2","val3","val4");
 		for(i=0;i<4;i++,esp+=4){
