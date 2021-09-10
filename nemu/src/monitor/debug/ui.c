@@ -336,7 +336,7 @@ static int cmd_d(char *args)
 
 static int cmd_bt(char * args){
 	if(args!=NULL){
-		SUCCESS("Too many arguments!");
+		ERROR("Too many arguments!");
 		return 0;
 	}
 	SUCCESS("YES");
