@@ -89,7 +89,7 @@ void load_elf_variables(){
 	printf("name	value\n");
 	for(i=0;i<nr_symtab_entry;i++){
 		if(symtab[i].st_info==17)
-			printf("%20s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
+			printf("%-20s	%x\n" ,strtab+symtab[i].st_name ,symtab[i].st_value);
 	}
 	return ;
 }
