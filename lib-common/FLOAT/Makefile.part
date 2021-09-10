@@ -22,7 +22,7 @@ $(FLOAT_O):lib-common/FLOAT/FLOAT.c
 	@echo "################"
 	@echo ${LIB_COMMON_DIR}
 	@echo "###############"
-	gcc -m32 -O2 -fno-builtin -Ilib-common -c -o $@  $^
+	gcc -m32 -O2 -fno-stack-protector -fno-builtin -Ilib-common -c -o $@  $^
 
 $(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
 	mkdir -p obj/lib-common/FLOAT
