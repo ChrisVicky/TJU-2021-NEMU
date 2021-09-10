@@ -343,13 +343,13 @@ static int cmd_bt(char * args){
 	}
 	int ebp = cpu.ebp;
 	int esp = cpu.esp;
+	int eip = cpu.eip;
 	if(esp>=HW_MEM_SIZE){
 		ERROR("Stack Top (esp=0x%x) is currently outside of the physical memory!\n", esp);
 		return 0;
 	}
 	while(esp!=0){
-		int ret_add = swaddr_read(ebp-4, 4);
-		char * func_name = get_func_name_by_address(ret_add);
+		char * func_name = get_func_name_by_address(eip);
 		SUCCESS("FUNCTION NAME\n");
 		PRINT("%s\n" ,func_name);
 		SUCCESS("%-10s%-10s\n" ,"ebp" ,"esp");
@@ -363,6 +363,7 @@ static int cmd_bt(char * args){
 		printf("\n");
 		esp = ebp;
 		ebp = swaddr_read(ebp, 4);
+		eip = swaddr_read(ebp-4, 4);
 	}
 	return 0;
 }
