@@ -349,14 +349,15 @@ static int cmd_bt(char * args){
 	}
 	while(esp!=0){
 		char * func_name = get_func_name_by_address(esp);
-		SUCCESS("FUNCTION NAME: %s\n" ,func_name);
+		SUCCESS("FUNCTION NAME\n");
+		PRINT("%s\n" ,func_name);
 		SUCCESS("%-10s%-10s\n" ,"ebp" ,"esp");
 		PRINT("%-10x%-10x\n" ,ebp, esp);
 		int i,x;
 		SUCCESS("%-10s%-10s%-10s%-10s\n" ,"val1","val2","val3","val4");
 		for(i=0;i<4;i++,esp+=4){
 			x = swaddr_read(esp, 4);
-			SUCCESS("0x%-8x" ,x);
+			PRINT("0x%-8x" ,x);
 		}
 		printf("\n");
 		esp = ebp;

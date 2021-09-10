@@ -127,6 +127,7 @@ char * get_func_name_by_address(int value){
 	for(i=0;i<nr_symtab_entry;i++){
 		if(((symtab[i].st_other & 0xf ) != 2) ||symtab[i].st_value > value) continue;
 		if(value - symtab[i].st_value < temp){
+			Log("HIT");
 			ret = i;
 			temp = value - symtab[i].st_value;
 		}
