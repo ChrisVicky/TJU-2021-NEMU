@@ -9,7 +9,7 @@
 #include <readline/history.h>
 
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
-#define IF_DEBUG 0
+#define IF_DEBUG 1
 
 #define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m\n",## __VA_ARGS__)
 void cpu_exec(uint32_t);
@@ -335,9 +335,11 @@ static int cmd_d(char *args)
 
 static int cmd_bt(char * args){
 	if(args!=NULL){
-
+		SUCCESS("NO");
 		return 0;
 	}
+	SUCCESS("YES");
+	return 0;
 }
 
 void ui_mainloop()
