@@ -19,7 +19,7 @@ $(FLOAT): $(FLOAT_A_OBJ)
 
 $(FLOAT_O):lib-common/FLOAT/FLOAT.c
 	mkdir -p obj/lib-common/FLOAT
-	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORITFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
+	gcc -m32 -O2 -fno-builtin -fno-stack-protector -D_FORITFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
 
 
 
