@@ -348,7 +348,8 @@ static int cmd_bt(char * args){
 		return 0;
 	}
 	while(esp!=0){
-		char * func_name = get_func_name_by_address(esp);
+		int ret_add = swaddr_read(ebp-4, 4);
+		char * func_name = get_func_name_by_address(ret_add);
 		SUCCESS("FUNCTION NAME\n");
 		PRINT("%s\n" ,func_name);
 		SUCCESS("%-10s%-10s\n" ,"ebp" ,"esp");
