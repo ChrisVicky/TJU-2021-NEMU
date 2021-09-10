@@ -345,10 +345,11 @@ static int cmd_bt(char * args){
 void ui_mainloop()
 {
 #if IF_DEBUG == 0
+	
+	ERROR("TEST %s" ,"TET");
 	cpu_exec(-1);
 	return ;
 #endif
-	ERROR("TEST %s" ,"TET");
 	while (1)
 	{
 		int i;
