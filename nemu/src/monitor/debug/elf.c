@@ -126,7 +126,7 @@ char * get_func_name_by_address(int value){
 /* #define STT_FUNC	2		Symbol is a code object */ 
 	for(i=0;i<nr_symtab_entry;i++){
 		Log("other = 0x%x	name=%s" ,symtab[i].st_info & 0xf, strtab + symtab[i].st_name);
-		if(((symtab[i].st_other & 0xf ) != 0x2)/* ||symtab[i].st_value > value*/) continue;
+		if(((symtab[i].st_info & 0xf ) != 0x2)/* ||symtab[i].st_value > value*/) continue;
 		Log("EDD");
 		if(value - symtab[i].st_value < temp){
 			Log("HIT");
