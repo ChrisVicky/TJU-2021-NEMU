@@ -1,16 +1,7 @@
-/*
-#include "monitor/monitor.h"
-#include "monitor/expr.h"
-#include "monitor/watchpoint.h"
-#include "monitor/breakpoint.h"
-#include "nemu.h"
-#include <stdlib.h>
-*/
 #include "ui_impl.h"
 
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
 #define IF_DEBUG 1
-
 
 void ui_mainloop()
 {
