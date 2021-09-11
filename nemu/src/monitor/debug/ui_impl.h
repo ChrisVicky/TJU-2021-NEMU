@@ -364,8 +364,8 @@ static int cmd_bt(char * args){
 		int offset = 1, address=0;
 		char * func_name = get_func_name_by_address(eip, &offset, &address);
 		SUCCESS("FUNC NAME\n");
-		if(strlen(func_name)==0) PRINT("Unknown Func Name\n");
-		else  PRINT("0x%08x<%s>\n" ,address ,func_name);
+		if(strlen(func_name)==0) PRINT("0x%08x Unknown Func Name\n", address);
+		else  PRINT("0x%08x <%s>\n" ,address ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
 		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
 		int i,x, temp_ebp=ebp;
