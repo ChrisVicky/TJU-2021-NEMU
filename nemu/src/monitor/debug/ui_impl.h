@@ -378,7 +378,7 @@ static int cmd_bt(char * args){
 		if(ebp==0){
 			return 0;
 		}
-		if(offset){
+		if(offset>1){
 			esp = ebp;
 			ebp = swaddr_read(esp, 4);
 			eip = swaddr_read(esp+4, 4);
