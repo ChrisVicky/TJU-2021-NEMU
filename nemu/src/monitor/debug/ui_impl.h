@@ -360,14 +360,14 @@ static int cmd_bt(char * args){
 	}
 	while(esp!=0){
 		SUCCESS("CURRENT EIP\t");
-		PRINT("0x%x\n" ,eip);
+		PRINT("0x%08x\n" ,eip);
 		int offset = 1, address=0;
 		char * func_name = get_func_name_by_address(eip, &offset, &address);
 		SUCCESS("FUNC NAME\t");
 		if(strlen(func_name)==0) PRINT("0x%08x <Unknown Func Name>\n", address);
 		else  PRINT("0x%08x <%s>\n" ,address ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
-		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
+		PRINT("0x%08x  0x%08x\n" ,ebp, esp);
 		int i,x, temp_ebp=ebp;
 		SUCCESS("%-12s%-12s%-12s%-12s\n" ,"val1","val2","val3","val4");
 		for(i=0;i<4&&temp_ebp>=esp;i++,temp_ebp-=4){
