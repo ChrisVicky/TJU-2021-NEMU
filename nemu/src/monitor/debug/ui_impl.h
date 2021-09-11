@@ -359,6 +359,8 @@ static int cmd_bt(char * args){
 		return 0;
 	}
 	while(esp!=0){
+		SUCCESS("CURRENT eip\n");
+		SUCCESS("0x%x" ,eip);
 		char * func_name = get_func_name_by_address(eip);
 		SUCCESS("FUNCTION NAME\n");
 		PRINT("%s\n" ,func_name);
