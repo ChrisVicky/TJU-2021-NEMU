@@ -371,12 +371,11 @@ static int cmd_bt(char * args){
 			PRINT("0x%-8x" ,x);
 		}
 		printf("\n");
-		esp = ebp;
-		ebp = swaddr_read(ebp, 4);
-		SUCCESS("ebp = 0x%x\n" ,ebp);
-		if(ebp+4>=HW_MEM_SIZE){
+		if(ebp==0){
 			return 0;
 		}
+		esp = ebp;
+		ebp = swaddr_read(ebp, 4);
 		eip = swaddr_read(ebp+4, 4);
 	}
 	return 0;
