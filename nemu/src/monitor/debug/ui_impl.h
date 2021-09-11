@@ -362,13 +362,13 @@ static int cmd_bt(char * args){
 		char * func_name = get_func_name_by_address(eip);
 		SUCCESS("FUNCTION NAME\n");
 		PRINT("%s\n" ,func_name);
-		SUCCESS("%-10s%-10s\n" ,"ebp" ,"esp");
-		PRINT("%-10x%-10x\n" ,ebp, esp);
+		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
+		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
 		int i,x;
-		SUCCESS("%-10s%-10s%-10s%-10s\n" ,"val1","val2","val3","val4");
+		SUCCESS("%-12s%-12s%-12s%-12s\n" ,"val1","val2","val3","val4");
 		for(i=0;i<4;i++,esp+=4){
 			x = swaddr_read(esp, 4);
-			PRINT("0x%-8x" ,x);
+			PRINT("0x%-10x" ,x);
 		}
 		printf("\n");
 		if(ebp==0){
