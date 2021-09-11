@@ -40,6 +40,7 @@ void init_monitor(int argc, char *argv[]) {
 
 	/* Initialize the watchpoint pool. */
 	init_wp_pool();
+	
 	/* Initialize the breakpoint pool*/
 	init_bp_pool();
 
