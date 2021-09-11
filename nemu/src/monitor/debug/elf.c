@@ -124,12 +124,12 @@ char * get_func_name_by_address(int value){
 	int temp = 0xffffff;
 	int ret = 0;
 /* #define STT_FUNC	2		Symbol is a code object */ 
-	Log("Current Value 0x%x" ,value );
+	//Log("Current Value 0x%x" ,value );
 	for(i=0;i<nr_symtab_entry;i++){
 		int type = symtab[i].st_info & 0xf;
-		Log("type = 0x%x	name=%s	value=0x%x" ,type, strtab + symtab[i].st_name, symtab[i].st_value);
+		//Log("type = 0x%x	name=%s	value=0x%x" ,type, strtab + symtab[i].st_name, symtab[i].st_value);
 		if(type != 0x2 || type != 0x0 || symtab[i].st_value > value) continue;
-		Log("HIT");
+		//Log("HIT");
 		if(value - symtab[i].st_value < temp){
 			Log("HIeeT");
 			ret = i;
