@@ -80,7 +80,6 @@ void init_cond() {
 
 	/* Load the program. */
 	uint32_t eip = loader();
-	panic("WWWW");
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Read data in the video memory to check whether 
 	 * the test data is written sucessfully.
