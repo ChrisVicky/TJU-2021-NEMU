@@ -359,11 +359,11 @@ static int cmd_bt(char * args){
 		return 0;
 	}
 	while(esp!=0){
-		SUCCESS("CURRENT EIP\n");
+		SUCCESS("CURRENT EIP\t");
 		PRINT("0x%x\n" ,eip);
 		int offset = 1, address=0;
 		char * func_name = get_func_name_by_address(eip, &offset, &address);
-		SUCCESS("FUNC NAME\n");
+		SUCCESS("FUNC NAME\t");
 		if(strlen(func_name)==0) PRINT("0x%08x <Unknown Func Name>\n", address);
 		else  PRINT("0x%08x <%s>\n" ,address ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
