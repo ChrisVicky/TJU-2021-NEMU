@@ -360,7 +360,7 @@ static int cmd_bt(char * args){
 	}
 	while(esp!=0){
 		SUCCESS("CURRENT eip\n");
-		SUCCESS("0x%x" ,eip);
+		PRINT("0x%x\n" ,eip);
 		char * func_name = get_func_name_by_address(eip);
 		SUCCESS("FUNCTION NAME\n");
 		PRINT("%s\n" ,func_name);
