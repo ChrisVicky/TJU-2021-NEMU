@@ -358,7 +358,7 @@ static int cmd_bt(char * args){
 		ERROR("Stack Top (esp=0x%x) is currently outside of the physical memory!\n", esp);
 		return 0;
 	}
-	while(esp!=0){
+	while(ebp!=0){
 		SUCCESS("CURRENT eip\n");
 		PRINT("0x%x\n" ,eip);
 		char * func_name = get_func_name_by_address(eip);
@@ -366,19 +366,19 @@ static int cmd_bt(char * args){
 		PRINT("%s\n" ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
 		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
-		int i,x;
+		int i,x, temp_ebp=ebp;
 		SUCCESS("%-12s%-12s%-12s%-12s\n" ,"val1","val2","val3","val4");
-		for(i=0;i<4;i++,esp+=4){
-			x = swaddr_read(esp, 4);
+		for(i=0;i<4&&temp_ebp>=esp;i++,temp_ebp-=4){
+			x = swaddr_read(temp_ebp, 4);
 			PRINT("0x%-10x" ,x);
 		}
-		printf("\n");
+		printf("\n\n");
 		if(ebp==0){
 			return 0;
 		}
 		esp = ebp;
-		ebp = swaddr_read(ebp, 4);
-		eip = swaddr_read(ebp+4, 4);
+		ebp = swaddr_read(esp, 4);
+		eip = swaddr_read(esp+4, 4);
 	}
 	return 0;
 }
