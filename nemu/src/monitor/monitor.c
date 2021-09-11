@@ -1,7 +1,7 @@
 #include "nemu.h"
 
-// #define ENTRY_START 0x100000
-#define ENTRY_START 0x800000
+#define ENTRY_START 0x100000
+// #define ENTRY_START 0x800000
 
 extern uint8_t entry [];
 extern uint32_t entry_len;
@@ -31,28 +31,27 @@ void init_monitor(int argc, char *argv[]) {
 
 	/* Open the log file. */
 	init_log();
-	Log("EIP=0x%x\n" ,cpu.eip);
+
 	/* Load the string table and symbol table from the ELF file for future use. */
 	load_elf_tables(argc, argv);
-	Log("EIP=0x%x\n" ,cpu.eip);
+	
 	load_elf_variables();
-	Log("EIP=0x%x\n" ,cpu.eip);
+	
 
 	/* Compile the regular expressions. */
 	init_regex();
-	Log("EIP=0x%x\n" ,cpu.eip);
+	
 
 	/* Initialize the watchpoint pool. */
 	init_wp_pool();
-	Log("EIP=0x%x\n" ,cpu.eip);
-
+	
 	/* Initialize the breakpoint pool*/
 	init_bp_pool();
-	Log("EIP=0x%x\n" ,cpu.eip);
+	
 
 	/* Display welcome message. */
 	welcome();
-	Log("EIP=0x%x\n" ,cpu.eip);
+	
 }
 
 #ifdef USE_RAMDISK
