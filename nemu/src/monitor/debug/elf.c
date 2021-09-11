@@ -118,7 +118,7 @@ bool is_variable(char * name){
 	return false;
 }
 
-char * get_func_name_by_address(int value, int * offset){
+char * get_func_name_by_address(int value, int * offset, int * address){
 	int i;
 	int temp = 0xffffff;
 	int ret = 0;
@@ -132,6 +132,7 @@ char * get_func_name_by_address(int value, int * offset){
 		}
 	}
 	* offset = temp;
+	* address = symtab[ret].st_value;
 	return strtab + symtab[ret].st_name;
 }
 

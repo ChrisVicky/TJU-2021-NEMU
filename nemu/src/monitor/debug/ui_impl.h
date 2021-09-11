@@ -25,7 +25,7 @@ static int cmd_w(char *args);
 static int cmd_b(char *args);
 static int cmd_d(char *args);
 static int cmd_bt(char *args);
-char * get_func_name_by_address(int, int*);
+char * get_func_name_by_address(int, int*, int *);
 
 static struct
 {
@@ -361,11 +361,11 @@ static int cmd_bt(char * args){
 	while(esp!=0){
 		SUCCESS("CURRENT EIP\n");
 		PRINT("0x%x\n" ,eip);
-		int offset = 1;
-		char * func_name = get_func_name_by_address(eip, &offset);
+		int offset = 1, address=0;
+		char * func_name = get_func_name_by_address(eip, &offset, &address);
 		SUCCESS("FUNC NAME\n");
 		if(strlen(func_name)==0) PRINT("Unknown Func Name\n");
-		else  PRINT("%s\n" ,func_name);
+		else  PRINT("0x%08x<%s>\n" ,address ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
 		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
 		int i,x, temp_ebp=ebp;
