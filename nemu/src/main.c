@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 
 	/* Test the implementation of the `CPU_state' structure. */
 	reg_test();
-
+	
 	/* Initialize the virtual computer system. */
 	restart();
 
