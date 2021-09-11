@@ -382,6 +382,9 @@ static int cmd_bt(char * args){
 			esp = ebp;
 			ebp = swaddr_read(esp, 4);
 			eip = swaddr_read(esp+4, 4);
+		}else if(offset==1){
+			ebp = swaddr_read(esp, 4);
+			eip = swaddr_read(esp + 4, 4);
 		}else{
 			eip = swaddr_read(esp, 4);
 		}
