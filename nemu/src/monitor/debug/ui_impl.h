@@ -114,7 +114,7 @@ static int cmd_help(char *args){
 				return 0;
 			}
 		}
-		printf("\033[1;31mUnknown command '%s'\33[0m\n", arg);
+		ERROR("Unknown command '%s'\n" ,arg);
 	}
 	return 0;
 }
@@ -196,26 +196,26 @@ static int cmd_x(char *args)
 {
 	if (args == NULL)
 	{
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	char *args1 = strtok(args, " ");
 	int t1 = strtol(args1, NULL, 10);
 	char *args2 = args1 + strlen(args1) + 1;
 	if(strlen(args2)==0){
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	bool flag = true;
 	int t2 = expr(args2, &flag);
 	if (!flag)
 	{
-		// printf("Wrong Expression %s\n", args2);
 		return 0;
 	}
 	int i = 0, j;
 	if(t1==0){
-		printf("\33[1;31mInvalid Argument '%s' \33[0m\n" ,args1);
+		ERROR("Invalid Argument '%s' \n" ,args1);
+		return 0;
 	}
 	while (i < t1)
 	{
@@ -233,7 +233,7 @@ static int cmd_p(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
@@ -251,7 +251,7 @@ static int cmd_w(char *args)
 	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	int ans = expr(args, &flag);
@@ -280,7 +280,7 @@ static int cmd_b(char *args)
 //	bool flag = true;
 	if (args == NULL)
 	{
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	int ans = strtol(args, NULL, 16);
@@ -303,7 +303,7 @@ static int cmd_d(char *args)
 		printf("\033[47;30mArguments required\033[0m");
 		printf("\n");
 		*/
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 
@@ -311,13 +311,13 @@ static int cmd_d(char *args)
 	
 	if (args1 == NULL)
 	{
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	args = args + strlen(args1) + 1;
 	char *args2 = strtok(args, " ");
 	if(args2 == NULL){
-		printf("\33[1;31mArguments required\33[0m\n");
+		ERROR("Arguments required\n");
 		return 0;
 	}
 	if (strcmp("w", args1) == 0){
@@ -325,7 +325,7 @@ static int cmd_d(char *args)
 		number = strtol(args1, NULL, 10);
 		if (!number && strcmp("0", args1))
 		{
-			printf("\033[1;31mInvalid Argument '%s'\033[0m\n", args1);
+			ERROR("Undified info command '%s'\n" ,args1);
 			return 0;
 		}
 		delete_wp(number);
@@ -335,13 +335,13 @@ static int cmd_d(char *args)
 		number = strtol(args1, NULL, 10);
 		if (!number && strcmp("0", args1))
 		{
-			printf("\033[1;31mInvalid Argument '%s'\033[0m\n", args1);
+			ERROR("Undified info command '%s'\n" ,args1);
 			return 0;
 		}
 		delete_bp(number);
 		return 0;
 	}else{
-		printf("\033[1;31mUndified info command '%s'\33[0m\n", args1);
+		ERROR("Undified info command '%s'\n" ,args1);
 	return 0;
 	}
 }
@@ -359,10 +359,8 @@ static int cmd_bt(char * args){
 		return 0;
 	}
 	while(ebp!=0){
-		SUCCESS("CURRENT eip\n");
-		PRINT("0x%x\n" ,eip);
 		char * func_name = get_func_name_by_address(eip);
-		SUCCESS("FUNCTION NAME\n");
+		SUCCESS("FUNC NAME\n");
 		PRINT("%s\n" ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
 		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
