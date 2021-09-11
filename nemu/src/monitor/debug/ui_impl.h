@@ -9,8 +9,6 @@
 #include <readline/history.h>
 
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
-#define IF_DEBUG 1
-
 #define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m",## __VA_ARGS__)
 #define ERROR(format, ...) printf("\33[1;31m" format "\33[0m", ## __VA_ARGS__)
 #define PRINT(format, ...) printf("\33[1;37m" format "\33[0m", ## __VA_ARGS__)
@@ -376,6 +374,9 @@ static int cmd_bt(char * args){
 		esp = ebp;
 		ebp = swaddr_read(ebp, 4);
 		SUCCESS("ebp = 0x%x\n" ,ebp);
+		if(ebp+4>=HW_MEM_SIZE){
+			return 0;
+		}
 		eip = swaddr_read(ebp+4, 4);
 	}
 	return 0;
