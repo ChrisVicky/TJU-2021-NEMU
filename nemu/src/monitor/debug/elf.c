@@ -127,7 +127,6 @@ char * get_func_name_by_address(int value){
 		if((type != 0x2 && type != 0x0) || symtab[i].st_value > value) continue;
 		//Log("HIT");
 		if(value - symtab[i].st_value < temp){
-			Log("HIeeT");
 			ret = i;
 			temp = value - symtab[i].st_value;
 		}
