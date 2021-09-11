@@ -6,12 +6,10 @@
 void ui_mainloop()
 {
 #if IF_DEBUG == 0
-	
 	SUCCESS("NO %s" ,"DEBUG");
 	cpu_exec(-1);
 	return ;
 #endif
-	ERROR("NOW EIP = 0x%x\n" ,cpu.eip);
 	SUCCESS("DEBUG\n");
 	while (1)
 	{

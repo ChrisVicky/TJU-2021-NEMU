@@ -85,8 +85,7 @@ void load_elf_variables(){
 	int i;
 	printf("\33[1;33m%-*s %-10s\33[0m\n",15,"name","value" );
 	for(i=0;i<nr_symtab_entry;i++){
-		if(symtab[i].st_info==17)
-			printf("%-*s %-10x\n" ,15,strtab+symtab[i].st_name ,symtab[i].st_value);
+		printf("%-*s 0x%-10x\n" ,15,strtab+symtab[i].st_name ,symtab[i].st_value);
 	}
 	return ;
 }
