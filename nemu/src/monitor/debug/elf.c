@@ -124,9 +124,7 @@ char * get_func_name_by_address(int value){
 	int ret = 0;
 	for(i=0;i<nr_symtab_entry;i++){
 		int type = symtab[i].st_info & 0xf;
-		Log("type = 0x%x	name = %s" ,type ,strtab + symtab[i].st_name);
-		if(type != 0x2 && type != 0x0 ) continue;
-		//if(symtab[i].st_value > value)
+		if((type != 0x2 && type != 0x0) || symtab[i].st_value > value) continue;
 		//Log("HIT");
 		if(value - symtab[i].st_value < temp){
 			Log("HIeeT");
