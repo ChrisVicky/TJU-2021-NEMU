@@ -12,8 +12,6 @@ void load_elf_tables(int argc, char *argv[]) {
 	int ret;
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
 	exec_file = argv[1];
-	Log("PRESENT EXE_FILE");
-	printf("exec_file=%s\n" ,exec_file);
 
 	FILE *fp = fopen(exec_file, "rb");
 	Assert(fp, "Can not open '%s'", exec_file);
@@ -85,8 +83,7 @@ void load_elf_tables(int argc, char *argv[]) {
 
 void load_elf_variables(){
 	int i;
-	printf("nr_symtab=	%d\n" ,nr_symtab_entry);
-	printf("%-*s %-10s\n",15,"name","value" );
+	printf("\33[1;33m%-*s %-10s\33[0m\n",15,"name","value" );
 	for(i=0;i<nr_symtab_entry;i++){
 		if(symtab[i].st_info==17)
 			printf("%-*s %-10x\n" ,15,strtab+symtab[i].st_name ,symtab[i].st_value);
@@ -120,5 +117,25 @@ bool is_variable(char * name){
 		if(temp!=NULL && strncmp(name, temp, strlen(temp))==0) return strlen(temp);
 	}
 	return false;
+}
+
+char * get_func_name_by_address(int value){
+	int i;
+	int temp = 0xffffff;
+	int ret = 0;
+/* #define STT_FUNC	2		Symbol is a code object */ 
+	Log("Current Value 0x%x" ,value );
+	for(i=0;i<nr_symtab_entry;i++){
+		int type = symtab[i].st_info & 0xf;
+		Log("type = 0x%x	name=%s	value=0x%x" ,type, strtab + symtab[i].st_name, symtab[i].st_value);
+		if(type != 0x2 || type != 0x0 || symtab[i].st_value > value) continue;
+		Log("HIT");
+		if(value - symtab[i].st_value < temp){
+			Log("HIeeT");
+			ret = i;
+			temp = value - symtab[i].st_value;
+		}
+	}
+	return strtab + symtab[ret].st_name;
 }
 
