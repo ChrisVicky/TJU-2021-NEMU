@@ -364,7 +364,7 @@ static int cmd_bt(char * args){
 		int offset = 1;
 		char * func_name = get_func_name_by_address(eip, &offset);
 		SUCCESS("FUNC NAME\n");
-		if(func_name==NULL) PRINT("Invalid Func Name\n");
+		if(strlen(func_name)==0) PRINT("Unknown Func Name\n");
 		else  PRINT("%s\n" ,func_name);
 		SUCCESS("%-12s%-12s\n" ,"ebp" ,"esp");
 		PRINT("0x%-10x0x%-10x\n" ,ebp, esp);
