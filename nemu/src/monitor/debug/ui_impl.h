@@ -358,7 +358,7 @@ static int cmd_bt(char * args){
 		ERROR("Stack Top (esp=0x%x) is currently outside of the physical memory!\n", esp);
 		return 0;
 	}
-	while(ebp!=0){
+	while(esp!=0){
 		char * func_name = get_func_name_by_address(eip);
 		SUCCESS("FUNC NAME\n");
 		PRINT("%s\n" ,func_name);
