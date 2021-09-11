@@ -382,7 +382,6 @@ static int cmd_bt(char * args){
 			ebp = swaddr_read(esp, 4);
 			eip = swaddr_read(esp+4, 4);
 		}else{
-			esp = ebp;
 			ebp = eip = swaddr_read(esp, 4);
 		}
 	}
