@@ -383,6 +383,7 @@ static int cmd_bt(char * args){
 			ebp = swaddr_read(esp, 4);
 			eip = swaddr_read(esp+4, 4);
 		}else if(offset==1){
+			SUCCESS("Break point just at the push method\n");
 			ebp = swaddr_read(esp, 4);
 			eip = swaddr_read(esp + 4, 4);
 		}else{
