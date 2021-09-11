@@ -47,9 +47,11 @@ void init_monitor(int argc, char *argv[]) {
 
 	/* Initialize the breakpoint pool*/
 	init_bp_pool();
+	Log("EIP=0x%x\n" ,cpu.eip);
 
 	/* Display welcome message. */
 	welcome();
+	Log("EIP=0x%x\n" ,cpu.eip);
 }
 
 #ifdef USE_RAMDISK
