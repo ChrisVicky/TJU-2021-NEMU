@@ -101,7 +101,7 @@ void restart() {
 
 	/* Read the entry code into memory. */
 	load_entry();
-
+	Log("HOU");
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
 
