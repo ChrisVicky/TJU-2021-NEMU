@@ -30,17 +30,21 @@ void init_monitor(int argc, char *argv[]) {
 
 	/* Open the log file. */
 	init_log();
-
+	Log("EIP=0x%x\n" ,cpu.eip);
 	/* Load the string table and symbol table from the ELF file for future use. */
 	load_elf_tables(argc, argv);
+	Log("EIP=0x%x\n" ,cpu.eip);
 	load_elf_variables();
+	Log("EIP=0x%x\n" ,cpu.eip);
 
 	/* Compile the regular expressions. */
 	init_regex();
+	Log("EIP=0x%x\n" ,cpu.eip);
 
 	/* Initialize the watchpoint pool. */
 	init_wp_pool();
-	
+	Log("EIP=0x%x\n" ,cpu.eip);
+
 	/* Initialize the breakpoint pool*/
 	init_bp_pool();
 
