@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "FLOAT.h"
+#include <sys/mman.h>
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
-void swaddr_write(unsigned int addr, unsigned long len, unsigned int data);
-int get_address_by_name(char *);
+// extern void swaddr_write(unsigned int addr, unsigned long len, unsigned int data);
+// extern int get_address_by_name(char *);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	/* TODO: Format a FLOAT argument `f' and write the formating
@@ -24,10 +25,13 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 }
 
 static void modify_vfprintf() {
-	
-	int address_vfprintf = get_address_by_name("_vfprintf_internal");
-	int call_address = address_vfprintf + (0x80497f9 - 0x80494f3);
-	swaddr_write(call_address + 1, 4, 0xd2f8ffff);
+	unsigned int call_address = _vfprintf_internal + (0x80497f9 - 0x80494f3);
+	mprotect((void *)((call_address-100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	int * call_pointer = (int *) call_address;
+	call_pointer[1] = 0xd2;
+	call_pointer[2] = 0xf8;
+	call_pointer[3] = 0xff;
+	call_pointer[4] = 0xff;
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
