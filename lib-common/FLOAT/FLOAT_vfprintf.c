@@ -24,16 +24,21 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	return __stdio_fwrite(buf, len, stream);
 }
 
-static void modify_vfprintf() {
+static unsigned int reverse(unsigned int offset){
+	return ((offset & 0xff)<<(6*4)) + ((offset & 0xff00)<<(2*4)) + ((offset & 0xff0000)>>(2*4)) + ((offset & 0xff000000) >> (6*4));
+}
 
-/*	unsigned int call_address = _vfprintf_internal + (0x80497f9 - 0x80494f3);
-	mprotect((void *)((call_address-100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
-	int * call_pointer = (int *) call_address;
-	call_pointer[1] = 0xd2;
-	call_pointer[2] = 0xf8;
-	call_pointer[3] = 0xff;
-	call_pointer[4] = 0xff;
-*/
+static void modify_vfprintf() {
+	/* Change the call destination. */
+	unsigned int addr_vfp = &_vfprintf_internal;
+	unsigned int addr_format = &format_FLOAT;
+	unsigned int addr_fpmax = &_fpmaxtostr;
+	unsigned int call_address = addr_vfp + (0x80497f9 - 0x80494f3) + 1;
+	mprotect((void *)((call_address - 100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	int * call_pointer = call_address;
+	unsigned int offset = addr_format - addr_fpmax;
+	unsigned int new_destination = offset + (*call_pointer);
+	*(call_pointer) = new_destination;
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
