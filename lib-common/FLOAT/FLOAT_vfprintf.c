@@ -39,6 +39,10 @@ static void modify_vfprintf() {
 	unsigned int offset = addr_format - addr_fpmax;
 	unsigned int new_destination = offset + (*call_pointer);
 	*(call_pointer) = new_destination;
+
+	/* Change push */
+	unsigned push_addr = addr_vfp + (0x8049e2f - 0x8049b33);
+	
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
