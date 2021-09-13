@@ -6,6 +6,9 @@ extern char _vfprintf_internal;
 extern char _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
+void swaddr_write(unsigned int addr, unsigned long len, unsigned int data);
+int get_address_by_name(char *);
+
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	/* TODO: Format a FLOAT argument `f' and write the formating
 	 * result to `stream'. Keep the precision of the formating
@@ -21,6 +24,10 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 }
 
 static void modify_vfprintf() {
+	
+	int address_vfprintf = get_address_by_name("_vfprintf_internal");
+	int call_address = address_vfprintf + (0x80497f9 - 0x80494f3);
+	swaddr_write(call_address + 1, 4, 0xd2f8ffff);
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
