@@ -25,13 +25,15 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 }
 
 static void modify_vfprintf() {
-	unsigned int call_address = _vfprintf_internal + (0x80497f9 - 0x80494f3);
+
+/*	unsigned int call_address = _vfprintf_internal + (0x80497f9 - 0x80494f3);
 	mprotect((void *)((call_address-100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
 	int * call_pointer = (int *) call_address;
 	call_pointer[1] = 0xd2;
 	call_pointer[2] = 0xf8;
 	call_pointer[3] = 0xff;
 	call_pointer[4] = 0xff;
+*/
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
