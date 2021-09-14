@@ -85,7 +85,8 @@ int cache_read(int address, int len){
         int temp = cache.read(&cache, address+i);        
         ret = temp<<(i*8);
     }
-   printf("address=%x   ret = %x\n" ,address,ret);
+    int ret1 = dram_read(address, len);
+    printf("0x08%x 0x%08x 0x%08x\n" ,address,ret,ret1);
     return ret;
 }
 void initialize_cache(){
