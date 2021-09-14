@@ -92,7 +92,6 @@ void initialize_cache(){
     cache.read = read;
     int i;
     for(i=0;i<128;i++){
-        printf("inil\n");
         _cache_set_ set = cache.set[i];
         int j;
         for(j=0;j<8;j++){

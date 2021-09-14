@@ -11,6 +11,7 @@ void ui_mainloop()
 	return ;
 #endif
 	SUCCESS("DEBUG\n");
+	SUCCESS("WH");
 	while (1)
 	{
 		int i;
