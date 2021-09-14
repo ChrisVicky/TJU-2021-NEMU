@@ -12,8 +12,10 @@ void ui_mainloop()
 #endif
 	
 	while (1)
-	{SUCCESS("DEBUG\n");
+	{
+		SUCCESS("DEBUG\n");
 		int i;
+		SUCCESS("DD");
 		/*HIST_ENTRY **list = history_list();
 		for (i = 0; i < history_length; i++)
 		{
