@@ -70,7 +70,7 @@ char read(_cache_ *this, int addr){
             return temp_line.line[block_offset];
         }
     }
-    int ret = dram_read(addr, 1);
+    char ret = dram_read(addr, 1);
     
     printf("SEEKING DRAM    0x%x\n" ,ret);
     for(i=0;i<7;i++){
