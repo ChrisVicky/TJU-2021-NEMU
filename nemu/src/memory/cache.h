@@ -72,19 +72,19 @@ char read(_cache_ *this, int addr){
 _cache_ cache;
 
 void cache_write(int address, char content){
-    printf("cache write\n");
+    //printf("cache write\n");
     return cache.add(&cache, address, content);
 }
 
 int cache_read(int address, int len){
-    printf("cache read\n");
+   // printf("cache read\n");
     int i;
     int ret = 0;
     for(i=0;i<len;i++){
         int temp = cache.read(&cache, address+i);        
         ret = temp<<(i*8);
     }
-    printf("ret = %x\n" ,ret);
+   // printf("ret = %x\n" ,ret);
     return ret;
 }
 void initialize_cache(){
