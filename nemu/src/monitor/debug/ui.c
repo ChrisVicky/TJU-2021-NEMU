@@ -10,8 +10,7 @@ void ui_mainloop()
 	cpu_exec(-1);
 	return ;
 #endif
-	//SUCCESS("DEBUG\n");
-	SUCCESS("WH");
+	SUCCESS("DEBUG\n");
 	while (1)
 	{
 		int i;
