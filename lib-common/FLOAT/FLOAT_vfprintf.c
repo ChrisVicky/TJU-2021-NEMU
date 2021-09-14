@@ -29,19 +29,37 @@ static unsigned int reverse(unsigned int offset){
 }
 
 static void modify_vfprintf() {
-	/* Change the call destination. */
 	unsigned int addr_vfp = &_vfprintf_internal;
 	unsigned int addr_format = &format_FLOAT;
 	unsigned int addr_fpmax = &_fpmaxtostr;
 	unsigned int call_address = addr_vfp + (0x80497f9 - 0x80494f3) + 1;
+	unsigned int push_addr = addr_vfp + (0x8049e2f - 0x8049b33);
+	unsigned int sub_addr = addr_vfp + (0x8049e03 - 0x8049b0a);
+	// 开锁
 	mprotect((void *)((call_address - 100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	
+	/* Change the call destination. */
 	int * call_pointer = call_address;
 	unsigned int offset = addr_format - addr_fpmax;
 	unsigned int new_destination = offset + (*call_pointer);
 	*(call_pointer) = new_destination;
 
 	/* Change push */
-	unsigned push_addr = addr_vfp + (0x8049e2f - 0x8049b33);
+	int * push_pointer = (int *)push_addr;
+	printf("Target_addr = %x\nTarget_valu = %x\n" ,push_addr,*(push_pointer));
+	unsigned int saved_bit = *push_pointer & 0xff000000;
+	unsigned int change_bit = *push_pointer & 0x00ffffff;
+//	change_bit = 0xff90
+
+	/* Change Stack */
+	int * sub_pointer = (int *)sub_addr;
+	printf("change sub = %x\nchange sub = %x\n" ,sub_pointer, *sub_pointer);
+	saved_bit = *sub_pointer & 0xff00ffff;
+	change_bit = *sub_pointer & 0x00ff0000;
+	change_bit -= (0x4 << (4*4));
+	*(sub_pointer) = change_bit + saved_bit;
+	
+
 	
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
