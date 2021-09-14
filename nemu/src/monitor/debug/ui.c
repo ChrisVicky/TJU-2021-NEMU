@@ -19,6 +19,7 @@ void ui_mainloop()
 		{
 			printf("\033[40;34m history_list[%d]: line: '%s' timestap: '%s' \n\033[0m", i, list[i]->line, list[i]->timestamp);
 		}*/
+		printf("EWRWE");
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
