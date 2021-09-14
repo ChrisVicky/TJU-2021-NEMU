@@ -10,9 +10,9 @@ void ui_mainloop()
 	cpu_exec(-1);
 	return ;
 #endif
-	SUCCESS("DEBUG\n");
+	
 	while (1)
-	{
+	{SUCCESS("DEBUG\n");
 		int i;
 		/*HIST_ENTRY **list = history_list();
 		for (i = 0; i < history_length; i++)
