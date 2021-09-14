@@ -82,6 +82,7 @@ int cache_read(int address, int len){
         int temp = cache.op2(&cache, address+i);        
         ret = temp<<(i*8);
     }
+    printf("ret = %x\n" ,ret);
     return ret;
 }
 void initialize_cache(){
