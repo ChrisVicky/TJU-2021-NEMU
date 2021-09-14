@@ -8,7 +8,7 @@ void dram_write(unsigned int, long unsigned int, unsigned int);
 typedef struct _cache_block_ {
     int valid;
     unsigned int tag;
-    unsigned char line[64];
+    unsigned int line[64];
 } _cache_block_;
 
 typedef struct _cache_set_ {
@@ -18,11 +18,11 @@ typedef struct _cache_set_ {
 typedef struct _cache_ {
     _cache_set_ set [128];
 
-    void (* add) (struct _cache_ *this, int addr, char content);
-    char (* read) (struct _cache_ *this, int addr);    
+    void (* add) (struct _cache_ *this, int addr, int content);
+    int (* read) (struct _cache_ *this, int addr);    
 } _cache_;
 
-void add(_cache_ *this, int addr, char content){
+void add(_cache_ *this, int addr, int content){
     dram_write(addr, 1, content);
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
@@ -57,7 +57,7 @@ void add(_cache_ *this, int addr, char content){
     return ;
 }
 
-char read(_cache_ *this, int addr){
+int read(_cache_ *this, int addr){
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
@@ -70,7 +70,7 @@ char read(_cache_ *this, int addr){
             return temp_line.line[block_offset];
         }
     }
-    char ret = dram_read(addr, 1);
+    int ret = dram_read(addr, 1);
     
     printf("SEEKING DRAM    0x%x\n" ,ret);
     for(i=0;i<7;i++){
