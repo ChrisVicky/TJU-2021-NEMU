@@ -1,7 +1,7 @@
 #include "common.h"
 #include "cache.h"
-uint32_t dram_read(hwaddr_t, size_t);
-void dram_write(hwaddr_t, size_t, uint32_t);
+//uint32_t dram_read(hwaddr_t, size_t);
+//void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 
@@ -10,7 +10,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	printf("WER\n");
 	return cache_read(addr, len) & (~0u >> ((4 - len) << 3));
 	*/
-	 return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 	~0u : ~unsigned int 0 = 0xffff;
 	 *	取低地址的数据：如要取全部，应使得len = 4;
 		len = 1 : 右移 3 字节 取高 1 位
