@@ -84,7 +84,7 @@ int cache_read(int address, int len){
     int ret = 0;
     for(i=0;i<len;i++){
         int temp = cache.read(&cache, address+i);    
-
+        printf("temp=%x\n" ,temp);
         ret += temp<<(i*8);
         printf("ret = %x\n" ,ret);    
     }
