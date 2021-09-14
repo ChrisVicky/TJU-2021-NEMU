@@ -13,6 +13,7 @@ void init_regex();
 void init_wp_pool();
 void init_bp_pool();
 void init_ddr3();
+void initialize_cache();
 
 FILE *log_fp = NULL;
 
@@ -96,6 +97,10 @@ void restart() {
 	/* Read the file with name `argv[1]' into ramdisk. */
 	init_ramdisk();
 #endif
+
+	/* Initialize cache */
+	initialize_cache();
+	
 	/* Initialize e-flags */
 	init_eflags();
 
