@@ -6,11 +6,9 @@
 /* Memory accessing interfaces */
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	/*
 	printf("WER\n");
 	return cache_read(addr, len) & (~0u >> ((4 - len) << 3));
-	*/
-	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 	~0u : ~unsigned int 0 = 0xffff;
 	 *	取低地址的数据：如要取全部，应使得len = 4;
 		len = 1 : 右移 3 字节 取高 1 位
@@ -20,14 +18,13 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	/*
 	printf("hwaddr_write\n");
 	int i;
 	for(i=0;i<len;i++){
 		int temp_data = (data>>i) & 0xff;
 		cache_write(addr+i, temp_data);
-	}*/
-	dram_write(addr, len, data);
+	}
+	// dram_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
