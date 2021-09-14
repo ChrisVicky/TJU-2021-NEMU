@@ -82,7 +82,8 @@ int cache_read(int address, int len){
     int i;
     int ret = 0;
     for(i=0;i<len;i++){
-        int temp = cache.read(&cache, address+i);        
+        int temp = cache.read(&cache, address+i);    
+        printf("ret = %x\n" ,ret);    
         ret += temp<<(i*8);
     }
     int ret1 = dram_read(address, len);
