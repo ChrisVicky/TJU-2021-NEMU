@@ -1,7 +1,7 @@
 #include "ui_impl.h"
 
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
-#define IF_DEBUG 1
+#define IF_DEBUG 0
 
 void ui_mainloop()
 {
