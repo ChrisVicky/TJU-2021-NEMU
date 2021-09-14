@@ -16,8 +16,8 @@ typedef struct _cache_set_ {
 typedef struct _cache_ {
     _cache_set_ set [128];
 
-    void (* op1) (struct _cache_ *this, int addr, char content);
-    char (* op2) (struct _cache_ *this, int addr);    
+    void (* add) (struct _cache_ *this, int addr, char content);
+    char (* read) (struct _cache_ *this, int addr);    
 } _cache_;
 
 void add(_cache_ *this, int addr, char content){
@@ -72,24 +72,27 @@ char read(_cache_ *this, int addr){
 _cache_ cache;
 
 void cache_write(int address, char content){
-    return cache.op1(&cache, address, content);
+    printf("cache write\n");
+    return cache.add(&cache, address, content);
 }
 
 int cache_read(int address, int len){
+    printf("cache read\n");
     int i;
     int ret = 0;
     for(i=0;i<len;i++){
-        int temp = cache.op2(&cache, address+i);        
+        int temp = cache.read(&cache, address+i);        
         ret = temp<<(i*8);
     }
     printf("ret = %x\n" ,ret);
     return ret;
 }
 void initialize_cache(){
-    cache.op1 = add;
-    cache.op2 = read;
+    cache.add = add;
+    cache.read = read;
     int i;
     for(i=0;i<128;i++){
+        printf("inil\n");
         _cache_set_ set = cache.set[i];
         int j;
         for(j=0;j<8;j++){
