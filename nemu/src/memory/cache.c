@@ -70,7 +70,7 @@ char read(_cache_ *this, int addr){
         }
     }
     printf("SEEKING DRAM\n");
-    return dram_read(addr, 1);
+    return dram_read(addr, 3);
 }
 
 _cache_ cache;
