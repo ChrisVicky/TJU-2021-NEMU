@@ -58,7 +58,7 @@ void ui_mainloop()
 		}
 		if (i == NR_CMD)
 		{
-			printf("\033[1;31mUnknown command '%s'\033[0m\n", cmd);
+			ERROR("Unknown command '%s'\n" ,cmd);
 		}
 	}
 }
