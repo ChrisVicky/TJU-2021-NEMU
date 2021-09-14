@@ -1,6 +1,7 @@
 #include "burst.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 unsigned int dram_read(unsigned int, long unsigned int);
 void dram_write(unsigned int, long unsigned int, unsigned int);
@@ -39,16 +40,21 @@ void add(_cache_ *this, int addr, int content){
         }
     }
     if(flag) return;
-    for(i=0;i<7;i++){
+        for(i=0;i<7;i++){
         _cache_block_ temp_line = temp_set.lines[i];
         if(!temp_line.valid){
-            temp_line.line[block_offset] = content;
+            temp_line.valid = 1;
+            temp_line.tag = tag;
+            for(block_offset=0;block_offset<64;block_offset++){
+               temp_line.line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
+            }
             flag = 1;
             break;
         }
     }
     if(flag) return;
-    int j=4; /* random */
+    srand((unsigned)time(NULL));
+    int j = rand()%7;
      _cache_block_ temp_line = temp_set.lines[j];
     for(i=0;i<63;i++){
         unsigned int hd_addr = (tag<<13)+(set_offset<<6)+i;
@@ -72,13 +78,17 @@ int read(_cache_ *this, int addr){
     }
     int ret = dram_read(addr, 1);
     
-    printf("SEEKING DRAM    0x%x\n" ,ret);
+    // printf("SEEKING DRAM    0x%x\n" ,ret);
     for(i=0;i<7;i++){
         _cache_block_ temp_line = temp_set.lines[i];
-        temp_line.valid = 1;
-        temp_line.tag = tag;
-        for(block_offset=0;block_offset<64;block_offset++){
-            temp_line.line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
+        if(!temp_line.valid){
+            temp_line.valid = 1;
+            temp_line.tag = tag;
+            for(block_offset=0;block_offset<64;block_offset++){
+               temp_line.line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
+               
+            }
+            return ret;
         }
     }
     return ret;
