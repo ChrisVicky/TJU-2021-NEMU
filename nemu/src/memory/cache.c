@@ -66,6 +66,7 @@ char read(_cache_ *this, int addr){
     for(i=0;i<7;i++){
         _cache_block_ temp_line = temp_set.lines[i];
         if(temp_line.valid && temp_line.tag==tag){
+            printf("FOUND IN BLOCK\n");
             return temp_line.line[block_offset];
         }
     }
