@@ -51,6 +51,7 @@ static struct
 
 char *rl_gets()
 {
+	printf("ERWER");
 	static char *line_read = NULL;
 
 	if (line_read)
