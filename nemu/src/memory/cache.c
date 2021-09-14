@@ -69,6 +69,7 @@ char read(_cache_ *this, int addr){
             return temp_line.line[block_offset];
         }
     }
+    printf("SEEKING DRAM\n");
     return dram_read(addr, 1);
 }
 
