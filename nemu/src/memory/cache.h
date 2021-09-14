@@ -88,7 +88,6 @@ int cache_read(int address, int len){
 void initialize_cache(){
     cache.op1 = add;
     cache.op2 = read;
-    printf("Initialize");
     int i;
     for(i=0;i<128;i++){
         _cache_set_ set = cache.set[i];
