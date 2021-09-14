@@ -10,17 +10,10 @@ void ui_mainloop()
 	cpu_exec(-1);
 	return ;
 #endif
-	
+	SUCCESS("DEBUG\n");
 	while (1)
 	{
-		SUCCESS("DEBUG\n");
 		int i;
-		SUCCESS("DD");
-		/*HIST_ENTRY **list = history_list();
-		for (i = 0; i < history_length; i++)
-		{
-			printf("\033[40;34m history_list[%d]: line: '%s' timestap: '%s' \n\033[0m", i, list[i]->line, list[i]->timestamp);
-		}*/
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 		/* extract the first token as the command */
@@ -29,9 +22,6 @@ void ui_mainloop()
 		{
 			continue;
 		}
-		/*Log("str: '%s'", str);
-		Log("str_end: '%s'", str_end);
-		Log("cmd: '%s'", cmd);*/
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
@@ -40,13 +30,10 @@ void ui_mainloop()
 		{
 			args = NULL;
 		}
-		/* Log("args: %s", args); */
-
 #ifdef HAS_DEVICE
 		extern void sdl_clear_event_queue(void);
 		sdl_clear_event_queue();
 #endif
-
 		for (i = 0; i < NR_CMD; i++)
 		{
 			if (strcmp(cmd, cmd_table[i].name) == 0)
