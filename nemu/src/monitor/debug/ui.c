@@ -1,13 +1,13 @@
 #include "ui_impl.h"
 
 /* IF_DEBUG==1 时启动ui_loop, 否则直接执行cpu_exec(-1); */
-#define IF_DEBUG 0
+#define IF_DEBUG 1
 
 void ui_mainloop()
 {
 #if IF_DEBUG == 0
 	SUCCESS("NO %s" ,"DEBUG");
-	cpu_exec(10);
+	cpu_exec(-1);
 	return ;
 #endif
 	SUCCESS("DEBUG\n");
