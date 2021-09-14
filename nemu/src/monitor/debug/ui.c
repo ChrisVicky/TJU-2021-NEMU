@@ -7,7 +7,7 @@ void ui_mainloop()
 {
 #if IF_DEBUG == 0
 	SUCCESS("NO %s" ,"DEBUG");
-	cpu_exec(3);
+	cpu_exec(10);
 	return ;
 #endif
 	SUCCESS("DEBUG\n");
