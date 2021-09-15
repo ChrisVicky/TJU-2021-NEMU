@@ -3,7 +3,7 @@
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 
-void cache_write(int, int);
+void cache_write(int, int, int);
 int cache_read(int, int);
 
 extern int nemu_state;
@@ -30,12 +30,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	/*
-	int i;
-	for(i=0;i<len;i++){
-		int temp_data = (data>>(i*8)) & 0xff;
-		cache_write(addr+i, temp_data);
-	}*/
+	cache_write(addr, len, data);
 	dram_write(addr, len, data);
 }
 

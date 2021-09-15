@@ -98,7 +98,7 @@ int cache_read(int address, int len){
 }
 
 
-void cache_write(int address, int content, int len){
+void cache_write(int address, int len, int content){
     int i;
     for(i=0;i<len;i++){
         int data = (content >> (i * 8)) & 0xff;
