@@ -86,8 +86,12 @@ static char read(int addr){
     return ret;
 }
 
-void cache_write(int address, char content){
-    cache.write(address, content);
+void cache_write(int address, int content, int len){
+    int i;
+    for(i=0;i<len;i++){
+        int data = (content >> (i * 8)) & 0xff;
+        cache.write(address+i, data);        
+    }
     return;
 }
 
