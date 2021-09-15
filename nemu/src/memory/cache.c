@@ -38,7 +38,7 @@ static void write(int addr, int content){
             return;
         }
     }
-    /* Else: Update all cache */
+    /* Else: Update all cache.set.block */
     for(i=0;i<8;i++){
         if(!cache.set[set_offset][i].valid){
             cache.set[set_offset][i].valid = 1;
@@ -49,7 +49,7 @@ static void write(int addr, int content){
             return;
         }
     }
-    /* No free cache -> random choose a cache to set. */
+    /* No free cache -> random choose a cache.set.block to set. */
     srand((unsigned)time(NULL));
     int line = rand()%7;
     for(block_offset=0;block_offset<64;block_offset++){
@@ -76,12 +76,18 @@ static char read(int addr){
             cache.set[set_offset][i].valid = 1;
             cache.set[set_offset][i].tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
-                int address = make_addr(tag, set_offset, block_offset);
-                cache.set[set_offset][i].block[block_offset] = dram_read(address, 1);
+                cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
             }
-            break;
+            return ret;
         }
     }
+    srand((unsigned)time(NULL));
+    int line = rand()%7;
+    for(block_offset=0;block_offset<64;block_offset++){
+        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
+        cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
+    }
+    cache.set[set_offset][line].tag = tag;
     return ret;
 }
 
