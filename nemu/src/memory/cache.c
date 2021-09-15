@@ -53,6 +53,7 @@ static void write(int addr, int content){
     srand((unsigned)time(NULL));
     int line = rand()%7;
     for(block_offset=0;block_offset<64;block_offset++){
+        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
         cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
     }
     cache.set[set_offset][line].tag = tag;
@@ -97,7 +98,7 @@ int cache_read(int address, int len){
 
 
 void cache_write(int address, int len, int content){
-    dram_write(address, len, content);
+//    dram_write(address, len, content);
     int i;
     for(i=0;i<len;i++){
         cache.write(address+i, ((content >> (i * 8)) & 0xff));        
