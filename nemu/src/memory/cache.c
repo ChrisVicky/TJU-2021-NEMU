@@ -40,6 +40,7 @@ static void write(int addr, int content){
     }
     /* Else: Update all cache.set.block */
     dram_write(addr, 1, content);
+    return;
     for(i=0;i<8;i++){
         if(!cache.set[set_offset][i].valid){
             cache.set[set_offset][i].valid = 1;
