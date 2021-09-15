@@ -59,7 +59,7 @@ clean: clean-cpp
 # USERPROG := obj/testcase/pascal
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/hello-str
-USERPROG := obj/testcase/struct
+USERPROG := obj/testcase/matrix-mul
 # ENTRY := $(USERPROG)
 ENTRY := $(kernel_BIN)
 
