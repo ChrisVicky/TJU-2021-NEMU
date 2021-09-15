@@ -10,7 +10,7 @@ extern int nemu_state;
 typedef struct _cache_block_ {
     int valid;
     unsigned int tag;
-    unsigned char line[64];
+    unsigned char block[64];
    
 } _cache_block_;
 
@@ -39,7 +39,7 @@ static void add(_cache_ *this, int addr, int content){
     for(i=0;i<7;i++){
         _cache_block_ temp_line = temp_set.lines[i];
         if(temp_line.valid && temp_line.tag==tag){
-            temp_line.line[block_offset] = content;
+            temp_line.block[block_offset] = content;
             flag = 1;
             break;
         }
@@ -51,7 +51,7 @@ static void add(_cache_ *this, int addr, int content){
             temp_line.valid = 1;
             temp_line.tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
-               temp_line.line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
+               temp_line.block[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
             }
             flag = 1;
             break;
@@ -63,7 +63,7 @@ static void add(_cache_ *this, int addr, int content){
      _cache_block_ temp_line = temp_set.lines[j];
     for(i=0;i<63;i++){
         unsigned int hd_addr = (tag<<13)+(set_offset<<6)+i;
-        dram_write(hd_addr, 1, temp_line.line[i]);
+        dram_write(hd_addr, 1, temp_line.block[i]);
     }
     return ;
 }
@@ -84,8 +84,8 @@ static void SEEK_CACHE(_cache_ *this){
                 for(k=0;k<64;k++){
                     int addr = make_addr(tag, j, k);
                     int dram = dram_read(addr, 1) & 0xff;
-                    if(dram!=block[j].line[k]){
-                        printf("%x\t%x\n" ,block[j].line[k] ,dram);
+                    if(dram!=block[j].block[k]){
+                        printf("%x\t%x\n" ,block[j].block[k] ,dram);
                         nemu_state = 0;
                     }
                 }
@@ -105,7 +105,7 @@ static char read(_cache_ *this, int addr){
         _cache_block_ *temp_line = &(*temp_set).lines[i];
         if(temp_line->valid && temp_line->tag==tag){
             // printf("FOUND IN BLOCK\n");
-            return (*temp_line).line[block_offset];
+            return (*temp_line).block[block_offset];
         }
     }
     int ret = dram_read(addr, 1);
@@ -119,7 +119,7 @@ static char read(_cache_ *this, int addr){
             //printf("temp_line.valid=%x\n",temp_line->valid);
             temp_line->tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
-               temp_line->line[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
+               temp_line->block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
                
             }
             break;
