@@ -32,56 +32,33 @@ static void write(int addr, int content){
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
     int i;
-    int flag = 0;
     /* If found in cache */
-    for(i=0;i<7;i++){
+    for(i=0;i<8;i++){
         if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag==tag){
             cache.set[set_offset][i].block[block_offset] = content;
-            flag = 1;
-            break;
+            return;
         }
     }
     /* Else: Update all cache */
-    if(flag) return;
-    for(i=0;i<7;i++){
+    for(i=0;i<8;i++){
         if(!cache.set[set_offset][i].valid){
             cache.set[set_offset][i].valid = 1;
             cache.set[set_offset][i].tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
                cache.set[set_offset][i].block[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
             }
-            flag = 1;
-            break;
+            return;
         }
     }
-    if(flag) return;
     srand((unsigned)time(NULL));
     int old_block_offset = rand()%7;
     int old_tag = cache.set[set_offset][old_block_offset].tag;
-    for(i=0;i<63;i++){
+    for(i=0;i<64;i++){
         dram_write(make_addr(old_tag, set_offset, old_block_offset), 1, cache.set[set_offset][old_block_offset].block[i]);
         cache.set[set_offset][old_block_offset].block[i] = dram_read(make_addr(tag, set_offset, i), 1);
     }
     cache.set[set_offset][old_block_offset].tag = tag;
     return ;
-}
-static void SEEK_CACHE(){
-    int i=0;
-    for(i=0;i<128;i++){
-        int j;
-        for(j=0;j<8;j++){
-            if(cache.set[i][j].valid){
-                int k;
-                for(k=0;k<64;k++){
-                    int dram = dram_read(make_addr(cache.set[i][j].tag, i, k), 1)&0xff;
-                    int cache_ram = cache.set[i][j].block[k];
-                    if(dram!=cache_ram){
-                       // printf("address: %x\tcache: %x\tdram: %x\n",make_addr(cache.set[i][j].tag, i, k),cache_ram, dram);
-                    }
-                }
-            }
-        }
-    }
 }
 
 static char read(int addr){
@@ -89,13 +66,13 @@ static char read(int addr){
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
     int i;
-    for(i=0;i<7;i++){
+    for(i=0;i<8;i++){
         if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag == tag){
             return cache.set[set_offset][i].block[block_offset];
         }
     }
     int ret = dram_read(addr, 1);
-    for(i=0;i<7;i++){
+    for(i=0;i<8;i++){
         if(!cache.set[set_offset][i].valid){
             cache.set[set_offset][i].valid = 1;
             cache.set[set_offset][i].tag = tag;
@@ -106,36 +83,6 @@ static char read(int addr){
             break;
         }
     }
-    SEEK_CACHE();
-    return ret;
-}
-
-static char check_read(int addr){
-    unsigned int block_offset = addr & 0x3f;
-    unsigned int set_offset = (addr>>6) & 0x7f;
-    unsigned int tag = (addr>>13) & 0x7fffff;
-    int i;
-    for(i=0;i<7;i++){
-        if(cache.set[set_offset][i].valid){
-            //printf("cache: %s\t " ,cache.set[set_offset][i].block);
-        }
-        //qprintf("\n");
-        if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag == tag){
-            return cache.set[set_offset][i].block[block_offset];
-        }
-    }
-    int ret = dram_read(addr, 1);
-    for(i=0;i<7;i++){
-        if(!cache.set[set_offset][i].valid){
-            cache.set[set_offset][i].valid = 1;
-            cache.set[set_offset][i].tag = tag;
-            for(block_offset=0;block_offset<64;block_offset++){
-                cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
-            }
-            break;
-        }
-    }
-    SEEK_CACHE();
     return ret;
 }
 
@@ -149,14 +96,8 @@ int cache_read(int address, int len){
     int ret = 0;
     for(i=0;i<len;i++){
         int temp = cache.read(address+i) & 0xff;
-        int dram = dram_read(address+i, 1) & 0xff;
-        if(dram != temp){
-           // printf("address: %x\t   dram: %x\t  temp: %x\n" ,address+i ,dram, temp);
-            check_read(address+i);
-        }    
         ret += temp<<(i*8);
     }
-  //  printf("\n");
     return ret;
 }
 void initialize_cache(){
@@ -176,3 +117,25 @@ void initialize_cache(){
         }
     }
 }
+
+/*
+DEBUG
+static void SEEK_CACHE(){
+    int i=0;
+    for(i=0;i<128;i++){
+        int j;
+        for(j=0;j<8;j++){
+            if(cache.set[i][j].valid){
+                int k;
+                for(k=0;k<64;k++){
+                    int dram = dram_read(make_addr(cache.set[i][j].tag, i, k), 1)&0xff;
+                    int cache_ram = cache.set[i][j].block[k];
+                    if(dram!=cache_ram){
+                       // printf("address: %x\tcache: %x\tdram: %x\n",make_addr(cache.set[i][j].tag, i, k),cache_ram, dram);
+                    }
+                }
+            }
+        }
+    }
+}
+*/
