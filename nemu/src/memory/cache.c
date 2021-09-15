@@ -136,6 +136,7 @@ int cache_read(int address, int len){
     for(i=0;i<len;i++){
         char temp = cache.read(&cache, address+i) & 0xff;    
         ret += temp<<(i*8);  
+        printf("ret = %08x\n" ,ret);
     }
 //    int ret1 = dram_read(address, len);
    // printf("0x08%x 0x%x 0x%x\n" ,address,ret,ret1);
