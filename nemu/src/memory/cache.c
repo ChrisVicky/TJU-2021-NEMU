@@ -23,7 +23,7 @@ typedef struct _cache_ {
     int (* read) (struct _cache_ *this, int addr);    
 } _cache_;
 
-void add(_cache_ *this, int addr, int content){
+static void add(_cache_ *this, int addr, int content){
     dram_write(addr, 1, content);
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
@@ -63,7 +63,7 @@ void add(_cache_ *this, int addr, int content){
     return ;
 }
 
-int read(_cache_ *this, int addr){
+static int read(_cache_ *this, int addr){
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
