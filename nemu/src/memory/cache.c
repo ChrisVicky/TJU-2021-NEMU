@@ -83,7 +83,7 @@ static void SEEK_CACHE(_cache_ *this){
                 for(k=0;k<64;k++){
                     int addr = make_addr(tag, j, k);
                     int dram = dram_read(addr, 1) & 0xff;
-                    printf("%x  dram= %x\n" ,block[j].line[k] ,dram);
+                    printf("%x\t%x\n" ,block[j].line[k] ,dram);
                 }
             }
         }
