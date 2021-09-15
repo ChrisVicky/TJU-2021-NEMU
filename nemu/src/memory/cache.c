@@ -49,6 +49,7 @@ static void write(int addr, int content){
             return;
         }
     }
+    return ;
     srand((unsigned)time(NULL));
     printf("RANDOM\n");
     int old_block_offset = rand()%7;
