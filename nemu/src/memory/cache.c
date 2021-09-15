@@ -89,6 +89,44 @@ static int read(_cache_ *this, int addr){
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
     printf("Looking for tag=%x\n" ,tag);
+    _cache_set_ *temp_set = &(*this).set[set_offset];
+    int i;
+    for(i=0;i<7;i++){
+        _cache_block_ *temp_line = &(*temp_set).lines[i];
+        if(temp_line->valid && temp_line->tag==tag){
+            printf("FOUND IN BLOCK\n");
+            return (*temp_line).line[block_offset];
+        }
+    }
+    int ret = dram_read(addr, 1);
+    
+    // printf("SEEKING DRAM    0x%x\n" ,ret);
+    for(i=0;i<7;i++){
+        _cache_block_ *temp_line = &temp_set->lines[i];
+        if(!temp_line->valid){
+            printf("Update tag = %x i=%x\n" ,tag,i);
+            temp_line->valid = 1;
+            printf("temp_line.valid=%x\n",temp_line->valid);
+            temp_line->tag = tag;
+            for(block_offset=0;block_offset<64;block_offset++){
+               temp_line->line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
+               
+            }
+            break;
+        }
+    }
+    for(i=0;i<7;i++){ 
+        printf("%x\t" ,temp_set->lines[i].valid);
+    }
+    SEEK_CACHE(this);
+    return ret;
+}
+/*
+static int read(_cache_ *this, int addr){
+    unsigned int block_offset = addr & 0x3f;
+    unsigned int set_offset = (addr>>6) & 0x7f;
+    unsigned int tag = (addr>>13) & 0x7fffff;
+    printf("Looking for tag=%x\n" ,tag);
     _cache_set_ temp_set = (*this).set[set_offset];
     int i;
     for(i=0;i<7;i++){
@@ -122,7 +160,7 @@ static int read(_cache_ *this, int addr){
     SEEK_CACHE(this);
     return ret;
 }
-
+*/
 
 void cache_write(int address, char content){
     return cache.add(&cache, address, content);
