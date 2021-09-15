@@ -18,17 +18,20 @@ typedef struct _cache_set_ {
 
 typedef struct _cache_ {
     _cache_set_ set [128];
-
+    int id;
     void (* add) (struct _cache_ *this, int addr, int content);
     int (* read) (struct _cache_ *this, int addr);    
 } _cache_;
+
+_cache_ cache;
 
 static void add(_cache_ *this, int addr, int content){
     dram_write(addr, 1, content);
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
-    _cache_set_ temp_set = this->set[set_offset];
+    //_cache_set_ temp_set = this->set[set_offset];
+    _cache_set_ temp_set = cache.set[set_offset];
     int i;
     int flag = 0;
     for(i=0;i<7;i++){
@@ -111,11 +114,11 @@ static int read(_cache_ *this, int addr){
             break;
         }
     }
+    printf("Updated cache_addr = %x \n" ,(*this).id);
     SEEK_CACHE(this);
     return ret;
 }
 
-_cache_ cache;
 
 void cache_write(int address, char content){
     return cache.add(&cache, address, content);
@@ -135,6 +138,7 @@ int cache_read(int address, int len){
 void initialize_cache(){
     cache.add = add;
     cache.read = read;
+    cache.id = 123;
     int i;
     for(i=0;i<128;i++){
         _cache_set_ set = cache.set[i];
