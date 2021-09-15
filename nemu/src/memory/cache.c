@@ -101,9 +101,6 @@ static char read(int addr){
             cache.set[set_offset][i].tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
                 int address = make_addr(tag, set_offset, block_offset);
-                if(address == 0x7ffffd8){
-                    printf("address: %x\t dram: %x\n" ,address ,dram_read(address, 1));
-                }
                 cache.set[set_offset][i].block[block_offset] = dram_read(address, 1);
             }
             break;
