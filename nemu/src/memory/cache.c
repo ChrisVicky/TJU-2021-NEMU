@@ -104,8 +104,8 @@ void cache_write(int address, int len, int content){
         int data = (content >> (i * 8)) & 0xff;
         cache.write(address+i, data);        
     }
-    dram_write(address, len, content);
     int cache_data = cache_read(address, len);
+    dram_write(address, len, content);
     int dram_data = dram_read(address, len) & (~0u >> ((4 - len) << 3));
     if(cache_data != dram_data){
         nemu_state = 0;
