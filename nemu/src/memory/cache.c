@@ -17,7 +17,7 @@ typedef struct _cache_block_ {
 typedef struct _cache_ {
     _cache_block_ set [128][8];
     int id;
-    void (* add) (int addr, int content);
+    void (* write) (int addr, int content);
     char (* read) (int addr);    
 } _cache_;
 
@@ -26,7 +26,7 @@ _cache_ cache;
 unsigned int make_addr(int tag, int set_offset, int block_offset){
     return (tag<<13)+(set_offset<<6)+(block_offset);
 }
-static void add(int addr, int content){
+static void write(int addr, int content){
     dram_write(addr, 1, content);
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
@@ -59,8 +59,7 @@ static void add(int addr, int content){
     int old_block_offset = rand()%7;
     int old_tag = cache.set[set_offset][old_block_offset].tag;
     for(i=0;i<63;i++){
-        unsigned int hd_addr = make_addr(old_tag, set_offset, old_block_offset);
-        dram_write(hd_addr, 1, cache.set[set_offset][old_block_offset].block[i]);
+        dram_write(make_addr(old_tag, set_offset, old_block_offset), 1, cache.set[set_offset][old_block_offset].block[i]);
         cache.set[set_offset][old_block_offset].block[i] = dram_read(make_addr(tag, set_offset, i), 1);
     }
     cache.set[set_offset][old_block_offset].tag = tag;
@@ -77,7 +76,7 @@ static void SEEK_CACHE(){
                     int dram = dram_read(make_addr(cache.set[i][j].tag, i, k), 1)&0xff;
                     int cache_ram = cache.set[i][j].block[k];
                     if(dram!=cache_ram){
-                        printf("address: %x\tcache: %x\tdram: %x\n",make_addr(cache.set[i][j].tag, i, k),cache_ram, dram);
+                       // printf("address: %x\tcache: %x\tdram: %x\n",make_addr(cache.set[i][j].tag, i, k),cache_ram, dram);
                     }
                 }
             }
@@ -111,20 +110,24 @@ static char read(int addr){
 }
 
 void cache_write(int address, char content){
-    return cache.add(address, content);
+    return cache.write(address, content);
 }
 
 int cache_read(int address, int len){
     int i;
     int ret = 0;
     for(i=0;i<len;i++){
-        int temp = cache.read(address+i) & 0xff;    
+        int temp = cache.read(address+i) & 0xff;
+        int dram = dram_read(address+i, 1) & 0xff;
+        if(dram != temp){
+            printf("dram: %x\t  temp: %x\n" ,dram, temp);
+        }    
         ret += temp<<(i*8);
     }
     return ret;
 }
 void initialize_cache(){
-    cache.add = add;
+    cache.write = write;
     cache.read = read;
     cache.id = 123;
     int i;
