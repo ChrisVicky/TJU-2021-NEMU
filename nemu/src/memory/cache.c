@@ -50,7 +50,7 @@ static void write(int addr, int content){
         }
     }
     srand((unsigned)time(NULL));
-    printf("RANDOM\n");
+    //printf("RANDOM\n");
     int line = rand()%7;
     for(block_offset=0;block_offset<64;block_offset++){
         cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
