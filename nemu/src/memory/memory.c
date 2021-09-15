@@ -10,9 +10,9 @@ int cache_read(int, int);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
-	// unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
+	unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
 	unsigned int dram = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
-	// printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
+	printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
 	return dram;
 		/* 	~0u : ~unsigned int 0 = 0xffff;
 	 *	取低地址的数据：如要取全部，应使得len = 4;
@@ -24,14 +24,14 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	//printf("hwaddr_write\n");
-	
+	/*
 	int i;
 	for(i=0;i<len;i++){
 		int temp_data = (data>>i) & 0xff;
 		cache_write(addr+i, temp_data);
 	}
-	
-	// dram_write(addr, len, data);
+	*/
+	dram_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
