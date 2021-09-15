@@ -97,7 +97,7 @@ int cache_read(int address, int len){
     }
     int temp_ret = dram_read(address, len)& (~0u >> ((4 - len) << 3));
     if(temp_ret != ret) printf("temp_ret = %x\t ret = %x\n" ,temp_ret, ret);
-    return temp_ret;
+    return ret;
 }
 
 
