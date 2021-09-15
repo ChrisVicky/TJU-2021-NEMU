@@ -104,7 +104,7 @@ static int read(_cache_ *this, int addr){
     for(i=0;i<7;i++){
         _cache_block_ temp_line = temp_set.lines[i];
         if(!temp_line.valid){
-            printf("Update tag = %x\n" ,tag);
+            printf("Update tag = %x i=%x\n" ,tag,i);
             temp_line.valid = 1;
             temp_line.tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
@@ -114,7 +114,10 @@ static int read(_cache_ *this, int addr){
             break;
         }
     }
-    printf("Updated cache_addr = %x \n" ,(*this).id);
+    for(i=0;i<7;i++){
+        _cache_block_ temp_line = temp_set.lines[i];
+        printf("%x\t" ,temp_line.valid);
+    }
     SEEK_CACHE(this);
     return ret;
 }
