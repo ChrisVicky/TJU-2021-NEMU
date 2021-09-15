@@ -100,7 +100,7 @@ int cache_read(int address, int len){
 
 
 void cache_write(int address, int len, int content){
-    //dram_write(address, len, content);
+    dram_write(address, len, content);
     int i;
     for(i=0;i<len;i++){
         cache.write(address+i, ((content >> (i * 8)) & 0xff));        
