@@ -86,14 +86,6 @@ static char read(int addr){
     return ret;
 }
 
-void cache_write(int address, int content, int len){
-    int i;
-    for(i=0;i<len;i++){
-        int data = (content >> (i * 8)) & 0xff;
-        cache.write(address+i, data);        
-    }
-    return;
-}
 
 int cache_read(int address, int len){
     int i;
@@ -104,6 +96,23 @@ int cache_read(int address, int len){
     }
     return ret;
 }
+
+
+void cache_write(int address, int content, int len){
+    int i;
+    for(i=0;i<len;i++){
+        int data = (content >> (i * 8)) & 0xff;
+        cache.write(address+i, data);        
+    }
+    int cache_data = cache_read(address, len);
+    int dram_data = dram_read(address, len) & (~0u >> ((4 - len) << 3));
+    if(cache_data != dram_data){
+        nemu_state = 0;
+        printf("ERROR\n");
+    }   
+    return;
+}
+
 void initialize_cache(){
     cache.write = write;
     cache.read = read;
