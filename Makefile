@@ -60,8 +60,8 @@ clean: clean-cpp
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/hello-str
 USERPROG := obj/testcase/struct
-ENTRY := $(USERPROG)
-# ENTRY := $(kernel_BIN)
+# ENTRY := $(USERPROG)
+ENTRY := $(kernel_BIN)
 
 
 define count_lines
