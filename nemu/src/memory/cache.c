@@ -120,7 +120,7 @@ int cache_read(int address, int len){
         int temp = cache.read(address+i) & 0xff;
         int dram = dram_read(address+i, 1) & 0xff;
         if(dram != temp){
-            printf("dram: %x\t  temp: %x\n" ,dram, temp);
+            printf("address: %x\t   dram: %x\t  temp: %x\n" ,address+i ,dram, temp);
         }    
         ret += temp<<(i*8);
     }
