@@ -67,6 +67,7 @@ static int read(_cache_ *this, int addr){
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
+    printf("Looking for tag=%x\n" ,tag);
     _cache_set_ temp_set = (*this).set[set_offset];
     int i;
     for(i=0;i<7;i++){
