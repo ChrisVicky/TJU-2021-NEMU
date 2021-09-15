@@ -15,7 +15,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	unsigned int dram = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	if(dram!=cache){
 		printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
-		nemu_state = 0;
+		//nemu_state = 0;
 	}
 	//nemu_state = 0;
 //	return cache;
