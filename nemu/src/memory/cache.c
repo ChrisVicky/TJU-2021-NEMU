@@ -39,7 +39,7 @@ static void write(int addr, int content){
         }
     }
     /* Else: Update all cache.set.block */
-    //dram_write(addr, 1, content);
+    dram_write(addr, 1, content);
     for(i=0;i<8;i++){
         if(!cache.set[set_offset][i].valid){
             cache.set[set_offset][i].valid = 1;
@@ -107,7 +107,7 @@ int cache_read(int address, int len){
 
 
 void cache_write(int address, int len, int content){
-    dram_write(address, len, content);
+   // dram_write(address, len, content);
     int i;
     for(i=0;i<len;i++){
         cache.write(address+i, ((content >> (i * 8)) & 0xff));        

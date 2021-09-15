@@ -11,8 +11,7 @@ extern int nemu_state;
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
-	unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
-	return cache;
+	return cache_read(addr, len) & (~0u >> ((4 - len) << 3));
 	
 	//return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 	~0u : ~unsigned int 0 = 0xffff;
