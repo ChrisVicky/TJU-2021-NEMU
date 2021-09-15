@@ -7,15 +7,18 @@ unsigned int dram_read(unsigned int, long unsigned int);
 void dram_write(unsigned int, long unsigned int, unsigned int);
 extern int nemu_state;
 
-typedef struct _cache_block_ {
+#define cache_1_block 64
+#define cache_1_set 128
+#define cache_1_line 8
+
+typedef struct _cache_1_block_ {
     int valid;
     unsigned int tag;
-    unsigned char block[64];
-   
-} _cache_block_;
+    unsigned char block[cache_1_block];
+} _cache_1_block_;
 
 typedef struct _cache_ {
-    _cache_block_ set [128][8];
+    _cache_1_block_ set [cache_1_set][cache_1_line];
     int id;
     void (* write) (int addr, int content);
     char (* read) (int addr);    
@@ -25,6 +28,27 @@ _cache_ cache;
 
 unsigned int make_addr(int tag, int set_offset, int block_offset){
     return (tag<<13)+(set_offset<<6)+(block_offset);
+}
+static void update_cache(int tag, int set_offset, int block_offset){
+    int i;
+    for(i=0;i<cache_1_line;i++){
+        if(!cache.set[set_offset][i].valid){
+            cache.set[set_offset][i].valid = 1;
+            cache.set[set_offset][i].tag = tag;
+            for(block_offset=0;block_offset<cache_1_block;block_offset++){
+                cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
+            }
+            return;
+        }
+    }
+    srand((unsigned)time(NULL));
+    int line = rand()%7;
+    for(block_offset=0;block_offset<cache_1_block;block_offset++){
+        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
+        cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
+    }
+    cache.set[set_offset][line].tag = tag;
+    return;
 }
 static void write(int addr, int content){
     unsigned int block_offset = addr & 0x3f;
@@ -38,57 +62,22 @@ static void write(int addr, int content){
             return;
         }
     }
-    /* Else: Update all cache.set.block */
     dram_write(addr, 1, content);
-    for(i=0;i<8;i++){
-        if(!cache.set[set_offset][i].valid){
-            cache.set[set_offset][i].valid = 1;
-            cache.set[set_offset][i].tag = tag;
-            for(block_offset=0;block_offset<64;block_offset++){
-               cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
-            }
-            return;
-        }
-    }
-    /* No free cache -> random choose a cache.set.block to set. */
-    srand((unsigned)time(NULL));
-    int line = rand()%7;
-    for(block_offset=0;block_offset<64;block_offset++){
-        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
-        cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
-    }
-    cache.set[set_offset][line].tag = tag;
-    return ;
+    update_cache(tag, set_offset, block_offset);
+    return;
 }
-
 static char read(int addr){
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
     int i;
-    for(i=0;i<8;i++){
+    for(i=0;i<cache_1_line;i++){
         if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag == tag){
             return cache.set[set_offset][i].block[block_offset];
         }
     }
     int ret = dram_read(addr, 1);
-    for(i=0;i<8;i++){
-        if(!cache.set[set_offset][i].valid){
-            cache.set[set_offset][i].valid = 1;
-            cache.set[set_offset][i].tag = tag;
-            for(block_offset=0;block_offset<64;block_offset++){
-                cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
-            }
-            return ret;
-        }
-    }
-    srand((unsigned)time(NULL));
-    int line = rand()%7;
-    for(block_offset=0;block_offset<64;block_offset++){
-        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
-        cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
-    }
-    cache.set[set_offset][line].tag = tag;
+    update_cache(tag, set_offset, block_offset);
     return ret;
 }
 
@@ -100,14 +89,11 @@ int cache_read(int address, int len){
         int temp = cache.read(address+i) & 0xff;
         ret += temp<<(i*8);
     }
-    //int temp_ret = dram_read(address, len)& (~0u >> ((4 - len) << 3));
-    //if(temp_ret != ret) printf("temp_ret = %x\t ret = %x\n" ,temp_ret, ret);
     return ret;
 }
 
 
 void cache_write(int address, int len, int content){
-   // dram_write(address, len, content);
     int i;
     for(i=0;i<len;i++){
         cache.write(address+i, ((content >> (i * 8)) & 0xff));        
@@ -120,13 +106,13 @@ void initialize_cache(){
     cache.read = read;
     cache.id = 123;
     int i;
-    for(i=0;i<128;i++){
+    for(i=0;i<cache_1_set;i++){
         int j;
-        for(j=0;j<8;j++){
+        for(j=0;j<cache_1_line;j++){
             int k;
             cache.set[i][j].valid = 0;
             cache.set[i][j].tag = 0;
-            for(k=0;k<64;k++){
+            for(k=0;k<cache_1_block;k++){
                 cache.set[i][j].block[k] = 0;
             }
         }
