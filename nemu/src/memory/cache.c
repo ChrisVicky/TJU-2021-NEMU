@@ -100,7 +100,11 @@ static char read(int addr){
             cache.set[set_offset][i].valid = 1;
             cache.set[set_offset][i].tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
-                cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
+                int address = make_addr(tag, set_offset, block_offset);
+                if(address == 0x7ffffd8){
+                    printf("dram: %x\n" ,dram_read(address, 1));
+                }
+                cache.set[set_offset][i].block[block_offset] = dram_read(address, 1);
             }
             break;
         }
@@ -154,7 +158,7 @@ int cache_read(int address, int len){
         }    
         ret += temp<<(i*8);
     }
-    printf("\n");
+  //  printf("\n");
     return ret;
 }
 void initialize_cache(){
