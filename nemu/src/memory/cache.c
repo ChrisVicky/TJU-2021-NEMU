@@ -124,6 +124,7 @@ int cache_read(int address, int len){
         }    
         ret += temp<<(i*8);
     }
+    printf("\n");
     return ret;
 }
 void initialize_cache(){
