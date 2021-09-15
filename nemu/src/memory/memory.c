@@ -30,12 +30,13 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
+	/*
 	int i;
 	for(i=0;i<len;i++){
 		int temp_data = (data>>(i*8)) & 0xff;
 		cache_write(addr+i, temp_data);
-	}
-	//dram_write(addr, len, data);
+	}*/
+	dram_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
