@@ -101,8 +101,9 @@ static int read(_cache_ *this, int addr){
     int ret = dram_read(addr, 1);
     
     // printf("SEEKING DRAM    0x%x\n" ,ret);
+    _cache_block_ temp_line;
     for(i=0;i<7;i++){
-        _cache_block_ temp_line = temp_set.lines[i];
+        temp_line = temp_set.lines[i];
         if(!temp_line.valid){
             printf("Update tag = %x i=%x\n" ,tag,i);
             temp_line.valid = 1;
@@ -116,7 +117,7 @@ static int read(_cache_ *this, int addr){
         }
     }
     for(i=0;i<7;i++){
-        _cache_block_ temp_line = temp_set.lines[i];
+        //_cache_block_ temp_line = temp_set.lines[i];
         printf("%x\t" ,temp_line.valid);
     }
     SEEK_CACHE(this);
