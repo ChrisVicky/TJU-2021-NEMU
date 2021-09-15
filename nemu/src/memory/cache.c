@@ -140,7 +140,8 @@ static char check_read(int addr){
 }
 
 void cache_write(int address, char content){
-    return cache.write(address, content);
+    cache.write(address, content);
+    return;
 }
 
 int cache_read(int address, int len){
