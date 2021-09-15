@@ -109,6 +109,32 @@ static char read(int addr){
     return ret;
 }
 
+static char check_read(int addr){
+    unsigned int block_offset = addr & 0x3f;
+    unsigned int set_offset = (addr>>6) & 0x7f;
+    unsigned int tag = (addr>>13) & 0x7fffff;
+    int i;
+    printf("tag: %x\t set_offset: %x\t block_offset: %x\n" ,tag, set_offset, block_offset);
+    for(i=0;i<7;i++){
+        if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag == tag){
+            return cache.set[set_offset][i].block[block_offset];
+        }
+    }
+    int ret = dram_read(addr, 1);
+    for(i=0;i<7;i++){
+        if(!cache.set[set_offset][i].valid){
+            cache.set[set_offset][i].valid = 1;
+            cache.set[set_offset][i].tag = tag;
+            for(block_offset=0;block_offset<64;block_offset++){
+                cache.set[set_offset][i].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
+            }
+            break;
+        }
+    }
+    SEEK_CACHE();
+    return ret;
+}
+
 void cache_write(int address, char content){
     return cache.write(address, content);
 }
@@ -121,6 +147,7 @@ int cache_read(int address, int len){
         int dram = dram_read(address+i, 1) & 0xff;
         if(dram != temp){
             printf("address: %x\t   dram: %x\t  temp: %x\n" ,address+i ,dram, temp);
+            check_read(address+i);
         }    
         ret += temp<<(i*8);
     }
