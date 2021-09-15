@@ -120,7 +120,7 @@ static char check_read(int addr){
     int i;
     for(i=0;i<7;i++){
         if(cache.set[set_offset][i].valid){
-            printf("cache: %s\t " ,cache.set[set_offset][i].block);
+            //printf("cache: %s\t " ,cache.set[set_offset][i].block);
         }
         printf("\n");
         if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag == tag){
