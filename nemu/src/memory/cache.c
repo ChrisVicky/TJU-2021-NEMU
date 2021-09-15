@@ -66,7 +66,9 @@ static void add(_cache_ *this, int addr, int content){
     }
     return ;
 }
-
+unsigned int make_addr(int tag, int set_offset, int block_offset){
+    return (tag<<13)+(set_offset<<6)+(block_offset);
+}
 static void SEEK_CACHE(_cache_ *this){
     _cache_set_ *set = (*this).set;
     int i=0;
@@ -74,12 +76,14 @@ static void SEEK_CACHE(_cache_ *this){
         _cache_block_ *block = set[i].lines;
         int j;
         for(j=0;j<8;j++){
-//            int tag = block[j].tag;
+            int tag = block[j].tag;
             if(block[j].valid){
                 int k;
                 printf("block[%x]\n" ,j);
                 for(k=0;k<64;k++){
-                    printf("%x\n" ,block[j].line[k]);
+                    int addr = make_addr(tag, j, k);
+                    int dram = dram_read(addr, 1);
+                    printf("%x  dram= %x\n" ,block[j].line[k] ,dram);
                 }
             }
         }
@@ -111,7 +115,7 @@ static char read(_cache_ *this, int addr){
             printf("temp_line.valid=%x\n",temp_line->valid);
             temp_line->tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
-               temp_line->line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
+               temp_line->line[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
                
             }
             break;
