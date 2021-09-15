@@ -49,16 +49,13 @@ static void write(int addr, int content){
             return;
         }
     }
-    return ;
     srand((unsigned)time(NULL));
     printf("RANDOM\n");
-    int old_block_offset = rand()%7;
-    int old_tag = cache.set[set_offset][old_block_offset].tag;
-    for(i=0;i<64;i++){
-        dram_write(make_addr(old_tag, set_offset, old_block_offset), 1, cache.set[set_offset][old_block_offset].block[i]);
-        cache.set[set_offset][old_block_offset].block[i] = dram_read(make_addr(tag, set_offset, i), 1);
+    int line = rand()%7;
+    for(block_offset=0;block_offset<64;block_offset++){
+        cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
     }
-    cache.set[set_offset][old_block_offset].tag = tag;
+    cache.set[set_offset][line].tag = tag;
     return ;
 }
 
