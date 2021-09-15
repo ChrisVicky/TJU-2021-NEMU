@@ -5,6 +5,7 @@
 
 unsigned int dram_read(unsigned int, long unsigned int);
 void dram_write(unsigned int, long unsigned int, unsigned int);
+extern int nemu_state;
 
 typedef struct _cache_block_ {
     int valid;
@@ -83,8 +84,10 @@ static void SEEK_CACHE(_cache_ *this){
                 for(k=0;k<64;k++){
                     int addr = make_addr(tag, j, k);
                     int dram = dram_read(addr, 1) & 0xff;
-                    if(dram!=block[j].line[k])
+                    if(dram!=block[j].line[k]){
                         printf("%x\t%x\n" ,block[j].line[k] ,dram);
+                        nemu_state = 0;
+                    }
                 }
             }
         }
