@@ -117,8 +117,7 @@ static int read(_cache_ *this, int addr){
         }
     }
     for(i=0;i<7;i++){
-        //_cache_block_ temp_line = temp_set.lines[i];
-        printf("%x\t" ,temp_line.valid);
+        printf("%x\t" ,temp_set.lines[i].valid);
     }
     SEEK_CACHE(this);
     return ret;
