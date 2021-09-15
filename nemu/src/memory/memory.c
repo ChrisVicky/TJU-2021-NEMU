@@ -17,7 +17,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 		printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
 		nemu_state = 0;
 	}
-	//nemu_state = 0;
+	nemu_state = 0;
 	return cache;
 		/* 	~0u : ~unsigned int 0 = 0xffff;
 	 *	取低地址的数据：如要取全部，应使得len = 4;
