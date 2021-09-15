@@ -114,8 +114,11 @@ static char check_read(int addr){
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
     int i;
-    printf("tag: %x\t set_offset: %x\t block_offset: %x\n" ,tag, set_offset, block_offset);
     for(i=0;i<7;i++){
+        if(cache.set[set_offset][i].valid){
+            printf("cache: %s\t " ,cache.set[set_offset][i].block);
+        }
+        printf("\n");
         if(cache.set[set_offset][i].valid && cache.set[set_offset][i].tag == tag){
             return cache.set[set_offset][i].block[block_offset];
         }
