@@ -106,6 +106,7 @@ static int read(_cache_ *this, int addr){
         if(!temp_line.valid){
             printf("Update tag = %x i=%x\n" ,tag,i);
             temp_line.valid = 1;
+            printf("temp_line.valid=%x\n",temp_line.valid);
             temp_line.tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
                temp_line.line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
