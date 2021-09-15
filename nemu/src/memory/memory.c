@@ -7,9 +7,9 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
-	unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
+	// unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
 	unsigned int dram = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
-	printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
+	// printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
 	return dram;
 		/* 	~0u : ~unsigned int 0 = 0xffff;
 	 *	取低地址的数据：如要取全部，应使得len = 4;
