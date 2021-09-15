@@ -83,7 +83,8 @@ static void SEEK_CACHE(_cache_ *this){
                 for(k=0;k<64;k++){
                     int addr = make_addr(tag, j, k);
                     int dram = dram_read(addr, 1) & 0xff;
-                    printf("%x\t%x\n" ,block[j].line[k] ,dram);
+                    if(dram!=block[j].line[k])
+                        printf("%x\t%x\n" ,block[j].line[k] ,dram);
                 }
             }
         }
@@ -94,13 +95,13 @@ static char read(_cache_ *this, int addr){
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
     unsigned int tag = (addr>>13) & 0x7fffff;
-    printf("Looking for tag=%x\n" ,tag);
+   // printf("Looking for tag=%x\n" ,tag);
     _cache_set_ *temp_set = &(*this).set[set_offset];
     int i;
     for(i=0;i<7;i++){
         _cache_block_ *temp_line = &(*temp_set).lines[i];
         if(temp_line->valid && temp_line->tag==tag){
-            printf("FOUND IN BLOCK\n");
+            // printf("FOUND IN BLOCK\n");
             return (*temp_line).line[block_offset];
         }
     }
@@ -110,9 +111,9 @@ static char read(_cache_ *this, int addr){
     for(i=0;i<7;i++){
         _cache_block_ *temp_line = &temp_set->lines[i];
         if(!temp_line->valid){
-            printf("Update tag = %x i=%x\n" ,tag,i);
+           // printf("Update tag = %x i=%x\n" ,tag,i);
             temp_line->valid = 1;
-            printf("temp_line.valid=%x\n",temp_line->valid);
+            //printf("temp_line.valid=%x\n",temp_line->valid);
             temp_line->tag = tag;
             for(block_offset=0;block_offset<64;block_offset++){
                temp_line->line[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
