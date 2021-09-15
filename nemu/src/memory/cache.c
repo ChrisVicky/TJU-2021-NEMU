@@ -52,9 +52,8 @@ static void write(int addr, int content){
     /* No free cache -> random choose a cache to set. */
     srand((unsigned)time(NULL));
     int line = rand()%7;
- //   printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>line = %x\n" ,line);
     for(block_offset=0;block_offset<64;block_offset++){
-//        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
+        dram_write(make_addr(cache.set[set_offset][line].tag, set_offset, block_offset), 1, cache.set[set_offset][line].block[block_offset]);
         cache.set[set_offset][line].block[block_offset] = dram_read(make_addr(tag, set_offset, block_offset), 1);
     }
     cache.set[set_offset][line].tag = tag;
