@@ -49,6 +49,7 @@ static void write(int addr, int content){
             return;
         }
     }
+    return;
     /* No free cache -> random choose a cache to set. */
     srand((unsigned)time(NULL));
     int line = rand()%7;
