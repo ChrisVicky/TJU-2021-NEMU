@@ -63,6 +63,24 @@ static void add(_cache_ *this, int addr, int content){
     return ;
 }
 
+static void SEEK_CACHE(_cache_ *this){
+    _cache_set_ *set = (*this).set;
+    int i=0;
+    for(i=0;i<128;i++){
+        _cache_block_ *block = set[i].lines;
+        int j;
+        for(j=0;j<8;j++){
+            if(block[j].valid){
+                int k;
+                printf("block[%x]\n" ,j);
+                for(k=0;k<64;k++){
+                    printf("%x\n" ,block[j].line[k]);
+                }
+            }
+        }
+    }
+}
+
 static int read(_cache_ *this, int addr){
     unsigned int block_offset = addr & 0x3f;
     unsigned int set_offset = (addr>>6) & 0x7f;
@@ -90,9 +108,10 @@ static int read(_cache_ *this, int addr){
                temp_line.line[block_offset] = dram_read((tag<<13)+(set_offset<<6)+(block_offset), 1);
                
             }
-            return ret;
+            break;
         }
     }
+    SEEK_CACHE(this);
     return ret;
 }
 
