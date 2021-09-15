@@ -29,7 +29,6 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	printf("hwaddr_write\n");
 	int i;
 	for(i=0;i<len;i++){
 
