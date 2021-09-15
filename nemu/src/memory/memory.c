@@ -11,15 +11,18 @@ extern int nemu_state;
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
-	//unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
+	unsigned int cache = cache_read(addr, len) & (~0u >> ((4 - len) << 3));
+	return cache;
 	/*if(dram!=cache){
 		printf("address = %x\tlen = %x\tcache = %x\tdram = %x\n" ,addr, (int)len,cache, dram);
 		nemu_state = 0;
 	}*/
 	
 	//nemu_state = 0;
+	/*
 	unsigned int dram = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	return dram;
+	*/
 	//return ;
 		/* 	~0u : ~unsigned int 0 = 0xffff;
 	 *	取低地址的数据：如要取全部，应使得len = 4;
@@ -30,8 +33,8 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	// cache_write(addr, len, data);
-	dram_write(addr, len, data);
+	 cache_write(addr, len, data);
+	//dram_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
