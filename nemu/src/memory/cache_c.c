@@ -77,7 +77,7 @@ static void SEEK_CACHE(){
                     int dram = dram_read(make_addr(cache.set[i][j].tag, i, k), 1)&0xff;
                     int cache_ram = cache.set[i][j].block[k];
                     if(dram!=cache_ram){
-                        printf("cache: %x\tdram: %x\n",cache_ram, dram);
+                        printf("address: %x\tcache: %x\tdram: %x\n",make_addr(cache.set[i][j].tag, i, k),cache_ram, dram);
                     }
                 }
             }
