@@ -35,6 +35,7 @@ static void modify_vfprintf() {
 	unsigned int call_address = addr_vfp + (0x8049e18 - 0x08049b12) + 1;
 	unsigned int push_addr = addr_vfp + (0x8049e0e - 0x08049b12);
 	unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
+	unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
 	// 开锁
 	mprotect((void *)((call_address - 100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
 	
@@ -43,30 +44,37 @@ static void modify_vfprintf() {
 	unsigned int offset = addr_format - addr_fpmax;
 	unsigned int new_destination = offset + (*call_pointer);
 	*(call_pointer) = new_destination;
+	printf("%x: %x\n" ,call_pointer,*(call_pointer));
 	/* done */
 
 	/* Change push */
 	int * push_pointer = (int *)push_addr;
-	printf("Target_addr = %x\tTarget_valu = %x\n" ,push_addr,*(push_pointer));
 	unsigned int saved_bit = *push_pointer & 0xff000000;
 	unsigned int change_bit = *push_pointer & 0x00ffffff;
-	change_bit = 0x909050;
-	change_bit = 0x909051;
-	change_bit = 0x909053;
+	
+	//change_bit = 0x909050;
+	//change_bit = 0x909051;
+	change_bit = 0x909052;
+	//change_bit = 0x909053; // slitely different;
+	//change_bit = 0x909054;
+	//change_bit = 0x909055;
+	//change_bit = 0x909056;
+	//change_bit = 0x909057;
+	//change_bit = 0x909058; // TOTALLY WRONG
+	//change_bit = 0x909090;
+	
+	//change_bit = 0x90076a;
+	//change_bit = 0x0477ff;
+	change_bit = 0x0072ff;
 	*(push_pointer) = saved_bit + change_bit;
-	printf("Target_addr = %x\tTarget_valu = %x\n" ,push_addr,*(push_pointer));
 //	change_bit = 0xff90
 
 	/* Change Stack */
 	int * sub_pointer = (int *)sub_addr;
-	printf("change sub = %x\tchange sub = %x\n" ,sub_pointer, *sub_pointer);
-	printf("EEWREWR\n");
 	saved_bit = *sub_pointer & 0xff00ffff;
 	change_bit = *sub_pointer & 0x00ff0000;
 	change_bit -= (0x4 << (4*4));
 	*(sub_pointer) = change_bit + saved_bit;
-	printf("change sub = %x\tchange sub = %x\n" ,sub_pointer, *sub_pointer);
-
 	
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
