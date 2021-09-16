@@ -52,6 +52,7 @@ static void modify_vfprintf() {
 	unsigned int change_bit = *push_pointer & 0x00ffffff;
 	change_bit = 0x909050;
 	change_bit = 0x909051;
+	change_bit = 0x909053;
 	*(push_pointer) = saved_bit + change_bit;
 	printf("Target_addr = %x\tTarget_valu = %x\n" ,push_addr,*(push_pointer));
 //	change_bit = 0xff90
@@ -71,7 +72,6 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
