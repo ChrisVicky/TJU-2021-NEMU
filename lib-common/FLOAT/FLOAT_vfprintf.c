@@ -60,6 +60,7 @@ static void modify_vfprintf() {
 	/* Change Stack */
 	int * sub_pointer = (int *)sub_addr;
 	printf("change sub = %x\tchange sub = %x\n" ,sub_pointer, *sub_pointer);
+	printf("EEWREWR\n");
 	saved_bit = *sub_pointer & 0xff00ffff;
 	change_bit = *sub_pointer & 0x00ff0000;
 	change_bit -= (0x4 << (4*4));
