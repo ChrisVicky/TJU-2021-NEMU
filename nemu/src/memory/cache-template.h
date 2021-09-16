@@ -17,17 +17,57 @@ typedef struct concat3(_cache_,level,_) {
     void (* write) (int addr, int content);
     char (* read) (int addr);    
 } concat3(_cache_,level,_);
-concat3(_cache_,level,_) cache;
+concat3(_cache_,level,_) concat(cache_,level);
 
 unsigned int concat(make_addr_,level)(int tag, int set_offset, int block_offset){
     return (tag<<(max_set_offset+max_block_offset))+(set_offset<<max_block_offset)+(block_offset);
 }
 
 static void concat(write_, level)(int addr, int content){
-    unsigned int block_offset = addr & 0x3f;
-    unsigned int set_offset = (addr>>6) & 0x7f;
-    unsigned int tag = (addr>>13) & 0x7fffff;
+    unsigned int block_offset = addr & ((1<<max_block_offset)-1);
+    unsigned int set_offset = (addr>>max_block_offset) & ((1<<max_set_offset)-1);
+    unsigned int tag = (addr>>(32-max_block_offset-max_set_offset)) & ((1<<(32-max_block_offset-max_set_offset))-1);
+    int i;
+#if level == 1:
+    dram_write(addr, 1, content);
+#endif
+    for(i=0;i<line_size;i++){
+        if(concat(cache_,level).set[set_offset][i].valid && concat(cache_,level).set[set_offset][i].tag==tag){
+            concat(cache_,level).set[set_offset][i].block[block_offset] = content;
+    #if level==2:
+            concat(cache_,level).set[set_offset][i].dirty = 1;
+    #endif 
+            return;
+        }
+    }
+#if level==1:
+    write_2(addr, content);
+#elif level==2:
+    dram_write(addr, 1, content);
+    // write-back
+    int target_line = 0;
+    for(i=0;i<cache_line;i++){
+        if(!cache.set[set_offset][i].valid){
+            target_line = i;
+            break;
+        }
+    }
+    if(target = 0){
+        srand((unsigned)tiem(NULL));
+        target_line = rand()%(line_size-1);
+    }
+    if(concat(cache_,level).set[set_offset][target_line].dirty){
+        for(block_offset=0;block_offset<(1<<max_block_offset);block_offset++){
+            dram_write(concat(make_addr_,level)(concat(cache_,level).set[set_offset][target_line].tag, set_offset, block_offset), 1, concat(cache_,level).set[set_offset][target_line].block[block_offset]);          
+        }
+    }
+    for(block_offset=0;block_offset<(1<<max_block_offset);block_offset++){
+        concat(cache_, level).set[set_offset][target_line].block[block_offset] = dram_read(concat(make_addr_,level)(concat(cache_,level).set[set_offset][target_line].tag, set_offset, block_offset),1);
+    }
+#endif
 }
+
+
 
 
 

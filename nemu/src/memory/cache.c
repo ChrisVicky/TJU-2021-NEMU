@@ -10,8 +10,10 @@ extern int nemu_state;
 #define max_set_offset 7
 #define cache_line 8
 #define max_block_offset 6
+#define line_size 8
 #define level 1
 #include "cache-template.h"
+#undef line_size
 #undef max_set_offset
 #undef cache_line
 #undef max_block_offset
