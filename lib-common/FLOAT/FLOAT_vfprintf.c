@@ -35,14 +35,12 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
   }
   len_float = sprintf(buf + len_int, "%d", w);
   int len = len_int + 6;
-  if (len_float > 6) {
-    buf[len] = '\0';
-  } else if (len_float < 6) {
+  if (len_float < 6) {
     for (i = len_float; i < 6; i++) {
       buf[len_int + i] = '0';
     }
-    buf[len] = '\0';
   }
+  buf[len] = '\0';
   // len += sprintf(buf + len, " 0x%08x", temp_f);
   return __stdio_fwrite(buf, len, stream);
 }
