@@ -18,10 +18,32 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
    */
 
   char buf[80];
+  int temp_f = f;
   int len_int = sprintf(buf, "%d", F2int(f));
   buf[len_int++] = '.';
-  len_int += sprintf(buf + len_int, "%d", (f & 0xffff));
-  return __stdio_fwrite(buf, len_int, stream);
+  char temp_buf[80];
+  int len_float = 4 * 4;
+  f = f & 0xffff;
+  int i;
+  int w = 0, head = 5 * (100000000);
+  for (i = 0; i < len_float; i++) {
+    if (f & (1 << len_float - i - 1)) {
+      w += head;
+    }
+    head /= 2;
+  }
+  len_float = sprintf(buf + len_int, "%d", w);
+  int len = len_int + 6;
+  if (len_float > 6) {
+    buf[len] = '\0';
+  } else if (len_float < 6) {
+    for (i = len_float; i < 6; i++) {
+      buf[len_int + i] = '0';
+    }
+    buf[len] = '\0';
+  }
+  // len += sprintf(buf + len, " 0x%08x", temp_f);
+  return __stdio_fwrite(buf, len, stream);
 }
 
 static unsigned int reverse(unsigned int offset) {
