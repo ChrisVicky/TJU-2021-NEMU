@@ -60,6 +60,7 @@ static void modify_vfprintf() {
   unsigned int push_addr = addr_vfp + (0x8049e0e - 0x08049b12);
   unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
   unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
+  unsigned int nop_addr = addr_vfp + (0x800e66 - 0x800b7e);
   // 开锁
   /*  mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
              PROT_READ | PROT_WRITE | PROT_EXEC);*/
@@ -88,6 +89,11 @@ static void modify_vfprintf() {
   change_bit -= (0x4 << (4 * 4));
   *(sub_pointer) = change_bit + saved_bit;
 
+	/* Change Nop */
+	int * nop_pointer = (int *)nop_addr;
+	saved_bit = *(nop_pointer) &0xffff;
+	change_bit = 0x9090;
+	*(nop_pointer) = change_bit + saved_bit;
   /* TODO: Implement this function to hijack the formating of "%f"
    * argument during the execution of `_vfprintf_internal'. Below
    * is the code section in _vfprintf_internal() relative to the
