@@ -138,8 +138,10 @@ static void modify_ppfs_setargs() {
 	unsigned int jmp_cal_addr = ppfs_addr + (0x801144 - 0x8010d3);
 	int rel = (destination_addr - jmp_cal_addr) & 0xff;
 	
+	int rel1 = (0x8011d8 - 0x801251) & 0xff;
 	int * jmp_pointer = (int *) jmp_addr;
-	*(jmp_pointer) = *(jmp_pointer) & 0xff000000 + (rel<<8) + 0xeb + (0x90 << 16);
+	*(jmp_pointer) = 0xeb8790 + *(jmp_pointer) & 0xff000000;
+//	*(jmp_pointer) = *(jmp_pointer) & 0xff000000 + (rel1<<8) + 0xeb + (0x90 << 16);
   /* TODO: Implement this function to modify the action of preparing
    * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
    * Below is the code section in _vfprintf_internal() relative to
