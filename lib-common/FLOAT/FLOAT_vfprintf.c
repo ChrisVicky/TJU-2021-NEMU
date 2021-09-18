@@ -91,7 +91,7 @@ static void modify_vfprintf() {
 
 	/* Change Nop */
 	int * nop_pointer = (int *)nop_addr;
-	saved_bit = *(nop_pointer) &0xffff;
+	saved_bit = *(nop_pointer) &0xffff0000;
 	change_bit = 0x9090;
 	*(nop_pointer) = change_bit + saved_bit;
   /* TODO: Implement this function to hijack the formating of "%f"
