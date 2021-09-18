@@ -28,25 +28,27 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	  offset = 1;
 	  len_int = 1;
   }
-  len_int += sprintf(buf+offset, "%d", F2int(f));
+  len_int += sprintf(buf + offset, "%d", F2int(f));
   buf[len_int++] = '.';
   char temp_buf[80];
   int len_float = 4 * 4;
   f = f & 0xffff;
   int i;
-  int w = 0, head = 5 * (100000000);
+  int w = 0, head = 5 * (10000000);
   for (i = 0; i < len_float; i++) {
     w += head * ((f & (1 << len_float - i - 1))!=0);
 //	if(f & (1 << len_float - i - 1)) w+=head;
     head /= 2;
   }
-  len_float = sprintf(buf + len_int + offset, "%d", w);
+  len_float = sprintf(buf + len_int, "%d", w);
+
   int len = len_int + 6;
   if (len_float < 6) {
     for (i = len_float; i < 6; i++) {
       buf[len_int + i] = '0';
     }
   }
+
   buf[len] = '\0';
   // len += sprintf(buf + len, " 0x%08x", temp_f);
   return __stdio_fwrite(buf, len, stream);
@@ -67,8 +69,8 @@ static void modify_vfprintf() {
   unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
   unsigned int nop_addr = addr_vfp + (0x800e66 - 0x800b7e);
   // 开锁
-	/*mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
-             PROT_READ | PROT_WRITE | PROT_EXEC);*/
+//	mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
+  //           PROT_READ | PROT_WRITE | PROT_EXEC);
 
   /* Change the call destination. */
   int *call_pointer = call_address;
@@ -143,7 +145,7 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
-	
+
 	unsigned int ppfs_addr = &_ppfs_setargs;
 	unsigned int jmp_addr = ppfs_addr + (0x801157 - 0x8010e3);
 	unsigned int destination_addr = ppfs_addr + (0x801101 - 0x8010e3);
