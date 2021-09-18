@@ -1,86 +1,76 @@
-#include <stdio.h>
 #include <stdint.h>
-#include "FLOAT.h"
+#include <stdio.h>
 #include <sys/mman.h>
+
+#include "FLOAT.h"
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
-// extern void swaddr_write(unsigned int addr, unsigned long len, unsigned int data);
-// extern int get_address_by_name(char *);
+// extern void swaddr_write(unsigned int addr, unsigned long len, unsigned int
+// data); extern int get_address_by_name(char *);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
-	/* TODO: Format a FLOAT argument `f' and write the formating
-	 * result to `stream'. Keep the precision of the formating
-	 * result with 6 by truncating. For example:
-	 *              f          result
-	 *         0x00010000    "1.000000"
-	 *         0x00013333    "1.199996"
-	 */
+  /* TODO: Format a FLOAT argument `f' and write the formating
+   * result to `stream'. Keep the precision of the formating
+   * result with 6 by truncating. For example:
+   *              f          result
+   *         0x00010000    "1.000000"
+   *         0x00013333    "1.199996"
+   */
 
-	char buf[80];
-	int len = sprintf(buf, "0x%08x", f);
-	return __stdio_fwrite(buf, len, stream);
+  char buf[80];
+  int len = sprintf(buf, "0x%08x", f);
+  return __stdio_fwrite(buf, len, stream);
 }
 
-static unsigned int reverse(unsigned int offset){
-	return ((offset & 0xff)<<(6*4)) + ((offset & 0xff00)<<(2*4)) + ((offset & 0xff0000)>>(2*4)) + ((offset & 0xff000000) >> (6*4));
+static unsigned int reverse(unsigned int offset) {
+  return ((offset & 0xff) << (6 * 4)) + ((offset & 0xff00) << (2 * 4)) +
+         ((offset & 0xff0000) >> (2 * 4)) + ((offset & 0xff000000) >> (6 * 4));
 }
 
 static void modify_vfprintf() {
-	unsigned int addr_vfp = &_vfprintf_internal;
-	unsigned int addr_format = &format_FLOAT;
-	unsigned int addr_fpmax = &_fpmaxtostr;
-	unsigned int call_address = addr_vfp + (0x8049e18 - 0x08049b12) + 1;
-	unsigned int push_addr = addr_vfp + (0x8049e0e - 0x08049b12);
-	unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
-	unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
-	// 开锁
-	mprotect((void *)((call_address - 100)&0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
-	
-	/* Change the call destination. */
-	int * call_pointer = call_address;
-	unsigned int offset = addr_format - addr_fpmax;
-	unsigned int new_destination = offset + (*call_pointer);
-	*(call_pointer) = new_destination;
-	printf("%x: %x\n" ,call_pointer,*(call_pointer));
-	/* done */
+  unsigned int addr_vfp = &_vfprintf_internal;
+  unsigned int addr_format = &format_FLOAT;
+  unsigned int addr_fpmax = &_fpmaxtostr;
+  unsigned int call_address = addr_vfp + (0x8049e18 - 0x08049b12) + 1;
+  unsigned int push_addr = addr_vfp + (0x8049e0e - 0x08049b12);
+  unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
+  unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
+  // 开锁
+  mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
+           PROT_READ | PROT_WRITE | PROT_EXEC);
 
-	/* Change push */
-	int * push_pointer = (int *)push_addr;
-	unsigned int saved_bit = *push_pointer & 0xff000000;
-	unsigned int change_bit = *push_pointer & 0x00ffffff;
-	
-	//change_bit = 0x909050;
-	//change_bit = 0x909051;
-	change_bit = 0x909052;
-	//change_bit = 0x909053; // slitely different;
-	//change_bit = 0x909054;
-	//change_bit = 0x909055;
-	//change_bit = 0x909056;
-	//change_bit = 0x909057;
-	//change_bit = 0x909058; // TOTALLY WRONG
-	//change_bit = 0x909090;
-	
-	//change_bit = 0x90076a;
-	//change_bit = 0x0477ff;
-	change_bit = 0x0072ff;
-	*(push_pointer) = saved_bit + change_bit;
-//	change_bit = 0xff90
+  /* Change the call destination. */
+  int *call_pointer = call_address;
+  unsigned int offset = addr_format - addr_fpmax;
+  unsigned int new_destination = offset + (*call_pointer);
+  *(call_pointer) = new_destination;
+  printf("%x: %x\n", call_pointer, *(call_pointer));
+  /* done */
 
-	/* Change Stack */
-	int * sub_pointer = (int *)sub_addr;
-	saved_bit = *sub_pointer & 0xff00ffff;
-	change_bit = *sub_pointer & 0x00ff0000;
-	change_bit -= (0x4 << (4*4));
-	*(sub_pointer) = change_bit + saved_bit;
-	
-	/* TODO: Implement this function to hijack the formating of "%f"
-	 * argument during the execution of `_vfprintf_internal'. Below
-	 * is the code section in _vfprintf_internal() relative to the
-	 * hijack.
-	 */
+  /* Change push */
+  int *push_pointer = (int *)push_addr;
+  unsigned int saved_bit = *push_pointer & 0xff000000;
+  unsigned int change_bit = *push_pointer & 0x00ffffff;
+
+  change_bit = 0x0072ff;
+  *(push_pointer) = saved_bit + change_bit;
+  //	change_bit = 0xff90
+
+  /* Change Stack */
+  int *sub_pointer = (int *)sub_addr;
+  saved_bit = *sub_pointer & 0xff00ffff;
+  change_bit = *sub_pointer & 0x00ff0000;
+  change_bit -= (0x4 << (4 * 4));
+  *(sub_pointer) = change_bit + saved_bit;
+
+  /* TODO: Implement this function to hijack the formating of "%f"
+   * argument during the execution of `_vfprintf_internal'. Below
+   * is the code section in _vfprintf_internal() relative to the
+   * hijack.
+   */
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
@@ -99,11 +89,11 @@ static void modify_vfprintf() {
 	} else if (ppfs->conv_num <= CONV_S) {  /* wide char or string */
 #endif
 
-	/* You should modify the run-time binary to let the code above
-	 * call `format_FLOAT' defined in this source file, instead of
-	 * `_fpmaxtostr'. When this function returns, the action of the
-	 * code above should do the following:
-	 */
+  /* You should modify the run-time binary to let the code above
+   * call `format_FLOAT' defined in this source file, instead of
+   * `_fpmaxtostr'. When this function returns, the action of the
+   * code above should do the following:
+   */
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
@@ -117,15 +107,14 @@ static void modify_vfprintf() {
 		return 0;
 	} else if (ppfs->conv_num <= CONV_S) {  /* wide char or string */
 #endif
-
 }
 
 static void modify_ppfs_setargs() {
-	/* TODO: Implement this function to modify the action of preparing
-	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
-	 * Below is the code section in _vfprintf_internal() relative to
-	 * the modification.
-	 */
+  /* TODO: Implement this function to modify the action of preparing
+   * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
+   * Below is the code section in _vfprintf_internal() relative to
+   * the modification.
+   */
 
 #if 0
 	enum {                          /* C type: */
@@ -143,13 +132,13 @@ static void modify_ppfs_setargs() {
 
 	/* Flag bits that can be set in a type returned by `parse_printf_format'.  */
 	/* WARNING -- These differ in value from what glibc uses. */
-#define PA_FLAG_MASK		(0xff00)
-#define __PA_FLAG_CHAR		(0x0100) /* non-gnu -- to deal with hh */
-#define PA_FLAG_SHORT		(0x0200)
-#define PA_FLAG_LONG		(0x0400)
-#define PA_FLAG_LONG_LONG	(0x0800)
-#define PA_FLAG_LONG_DOUBLE	PA_FLAG_LONG_LONG
-#define PA_FLAG_PTR		(0x1000) /* TODO -- make dynamic??? */
+#define PA_FLAG_MASK (0xff00)
+#define __PA_FLAG_CHAR (0x0100) /* non-gnu -- to deal with hh */
+#define PA_FLAG_SHORT (0x0200)
+#define PA_FLAG_LONG (0x0400)
+#define PA_FLAG_LONG_LONG (0x0800)
+#define PA_FLAG_LONG_DOUBLE PA_FLAG_LONG_LONG
+#define PA_FLAG_PTR (0x1000) /* TODO -- make dynamic??? */
 
 	while (i < ppfs->num_data_args) {
 		switch(ppfs->argtype[i++]) {
@@ -192,13 +181,13 @@ static void modify_ppfs_setargs() {
 	}
 #endif
 
-	/* You should modify the run-time binary to let the `PA_DOUBLE'
-	 * branch execute the code in the `(PA_INT|PA_FLAG_LONG_LONG)'
-	 * branch. Comparing to the original `PA_DOUBLE' branch, the
-	 * target branch will also prepare a 64-bit argument, without
-	 * introducing floating point instructions. When this function
-	 * returns, the action of the code above should do the following:
-	 */
+  /* You should modify the run-time binary to let the `PA_DOUBLE'
+   * branch execute the code in the `(PA_INT|PA_FLAG_LONG_LONG)'
+   * branch. Comparing to the original `PA_DOUBLE' branch, the
+   * target branch will also prepare a 64-bit argument, without
+   * introducing floating point instructions. When this function
+   * returns, the action of the code above should do the following:
+   */
 
 #if 0
 	while (i < ppfs->num_data_args) {
@@ -218,10 +207,9 @@ static void modify_ppfs_setargs() {
 		++p;
 	}
 #endif
-
 }
 
 void init_FLOAT_vfprintf() {
-	modify_vfprintf();
-	modify_ppfs_setargs();
+  modify_vfprintf();
+  modify_ppfs_setargs();
 }
