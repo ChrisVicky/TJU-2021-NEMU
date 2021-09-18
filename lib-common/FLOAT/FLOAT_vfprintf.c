@@ -8,9 +8,6 @@ extern char _vfprintf_internal;
 extern char _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
-// extern void swaddr_write(unsigned int addr, unsigned long len, unsigned int
-// data); extern int get_address_by_name(char *);
-
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
   /* TODO: Format a FLOAT argument `f' and write the formating
    * result to `stream'. Keep the precision of the formating
@@ -21,8 +18,10 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
    */
 
   char buf[80];
-  int len = sprintf(buf, "0x%08x", f);
-  return __stdio_fwrite(buf, len, stream);
+  int len_int = sprintf(buf, "%d", F2int(f));
+  buf[len_int++] = '.';
+  len_int += sprintf(buf + len_int, "%d", (f & 0xffff));
+  return __stdio_fwrite(buf, len_int, stream);
 }
 
 static unsigned int reverse(unsigned int offset) {
@@ -47,7 +46,7 @@ static void modify_vfprintf() {
   unsigned int offset = addr_format - addr_fpmax;
   unsigned int new_destination = offset + (*call_pointer);
   *(call_pointer) = new_destination;
-  printf("%x: %x\n", call_pointer, *(call_pointer));
+  //  printf("%x: %x\n", call_pointer, *(call_pointer));
   /* done */
 
   /* Change push */
