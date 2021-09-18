@@ -59,8 +59,8 @@ static void modify_vfprintf() {
   unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
   unsigned int nop_addr = addr_vfp + (0x800e66 - 0x800b7e);
   // 开锁
-    mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
-             PROT_READ | PROT_WRITE | PROT_EXEC);
+   /* mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
+             PROT_READ | PROT_WRITE | PROT_EXEC);*/
 
   /* Change the call destination. */
   int *call_pointer = call_address;
@@ -135,7 +135,7 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
-	/*
+	
 	unsigned int ppfs_addr = &_ppfs_setargs;
 	unsigned int jmp_addr = ppfs_addr + (0x801157 - 0x8010e3);
 	unsigned int destination_addr = ppfs_addr + (0x801101 - 0x8010e3);
@@ -144,7 +144,7 @@ static void modify_ppfs_setargs() {
 	//(0x801186 - 0x801159)
 	// *(jmp_pointer) = 0x90a8eb + saved_bit;
 	*(jmp_pointer) = 0x902deb + saved_bit;
-	*/
+	
 //	*(jmp_pointer) = *(jmp_pointer) & 0xff000000 + (rel1<<8) + 0xeb + (0x90 << 16);
   /* TODO: Implement this function to modify the action of preparing
    * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
