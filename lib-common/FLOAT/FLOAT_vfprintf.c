@@ -60,8 +60,8 @@ static void modify_vfprintf() {
   unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
   unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
   // 开锁
-  mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
-           PROT_READ | PROT_WRITE | PROT_EXEC);
+  /*  mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
+             PROT_READ | PROT_WRITE | PROT_EXEC);*/
 
   /* Change the call destination. */
   int *call_pointer = call_address;
