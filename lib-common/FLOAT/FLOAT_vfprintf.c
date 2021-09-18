@@ -136,12 +136,13 @@ static void modify_ppfs_setargs() {
 	unsigned int jmp_addr = ppfs_addr + (0x801144 - 0x8010d3);
 	unsigned int destination_addr = ppfs_addr + (0x8010f1 - 0x8010d3);
 	unsigned int jmp_cal_addr = ppfs_addr + (0x801144 - 0x8010d3);
+	printf("jmp_addr = %x\n" ,jmp_addr);
 	int rel = (destination_addr - jmp_cal_addr) & 0xff;
 	
 	int * jmp_pointer = (int *) jmp_addr;
-
+	printf("Origin: %x\n" ,*(jmp_pointer));
 	*(jmp_pointer) = *(jmp_pointer) & 0xff000000 + (rel<<8) + 0xeb + (0x90 << 16);
-
+	printf("After: %x\n" ,*(jmp_pointer));
   /* TODO: Implement this function to modify the action of preparing
    * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
    * Below is the code section in _vfprintf_internal() relative to
