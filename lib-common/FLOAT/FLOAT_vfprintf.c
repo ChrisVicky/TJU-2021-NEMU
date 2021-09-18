@@ -22,7 +22,6 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
   int temp_f = f;
   int offset = 0;
   int len_int = 0;
-  printf("0x%08x\n" ,f);
   if(f<0){
 	  f = ~f + 1;
 	  *buf = '-';
