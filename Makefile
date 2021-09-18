@@ -54,12 +54,12 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 # USERPROG := obj/testcase/mov
-# USERPROG := obj/testcase/mov-c
+USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/sum
 # USERPROG := obj/testcase/pascal
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/hello-str
-USERPROG := obj/testcase/matrix-mul
+# USERPROG := obj/testcase/matrix-mul
 # ENTRY := $(USERPROG)
 ENTRY := $(kernel_BIN)
 
