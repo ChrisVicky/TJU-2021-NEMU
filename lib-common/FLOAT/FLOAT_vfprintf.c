@@ -28,9 +28,9 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
   int i;
   int w = 0, head = 5 * (100000000);
   for (i = 0; i < len_float; i++) {
-    if (f & (1 << len_float - i - 1)) {
+  //  if (f & (1 << len_float - i - 1)) {
       w += head;
-    }
+//    }
     head /= 2;
   }
   len_float = sprintf(buf + len_int, "%d", w);
