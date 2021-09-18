@@ -7,6 +7,7 @@
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
+extern char _ppfs_setargs;
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
   /* TODO: Format a FLOAT argument `f' and write the formating
@@ -131,6 +132,16 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
+	unsigned int ppfs_addr = &_ppfs_setargs;
+	unsigned int jmp_addr = ppfs_addr + (0x801144 - 0x8010d3);
+	unsigned int destination_addr = ppfs_addr + (0x8010f1 - 0x8010d3);
+	unsigned int jmp_cal_addr = ppfs_addr + (0x801144 - 0x8010d3);
+	int rel = (destination_addr - jmp_cal_addr) & 0xff;
+	
+	int * jmp_pointer = (int *) jmp_addr;
+
+	*(jmp_pointer) = *(jmp_pointer) & 0xff000000 + (rel<<8) + 0xeb + (0x90 << 16);
+
   /* TODO: Implement this function to modify the action of preparing
    * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
    * Below is the code section in _vfprintf_internal() relative to
