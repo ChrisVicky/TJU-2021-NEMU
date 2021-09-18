@@ -20,7 +20,16 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 
   char buf[80];
   int temp_f = f;
-  int len_int = sprintf(buf, "%d", F2int(f));
+  int offset = 0;
+  int len_int = 0;
+  printf("0x%08x\n" ,f);
+  if(f<0){
+	  f = ~f + 1;
+	  *buf = '-';
+	  offset = 1;
+	  len_int = 1;
+  }
+  len_int += sprintf(buf+offset, "%d", F2int(f));
   buf[len_int++] = '.';
   char temp_buf[80];
   int len_float = 4 * 4;
@@ -32,7 +41,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 //	if(f & (1 << len_float - i - 1)) w+=head;
     head /= 2;
   }
-  len_float = sprintf(buf + len_int, "%d", w);
+  len_float = sprintf(buf + len_int + offset, "%d", w);
   int len = len_int + 6;
   if (len_float < 6) {
     for (i = len_float; i < 6; i++) {
@@ -59,7 +68,7 @@ static void modify_vfprintf() {
   unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
   unsigned int nop_addr = addr_vfp + (0x800e66 - 0x800b7e);
   // 开锁
-   /* mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
+	/*mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
              PROT_READ | PROT_WRITE | PROT_EXEC);*/
 
   /* Change the call destination. */
