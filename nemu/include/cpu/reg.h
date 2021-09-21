@@ -141,15 +141,7 @@ typedef struct
 		{
 			struct{
 				uint32_t base 	: 32;
-				uint32_t limit 	: 20;
-				uint32_t type : 4;
-				uint32_t segment_type : 1;
-				uint32_t privilege_level : 2;
-				uint32_t present : 1;
-				uint32_t soft_use : 1;
-				uint32_t operation_size : 1;
-				uint32_t pad0 : 1;
-				uint32_t granularity : 1;
+				uint32_t limit 	: 32;
 			}cache;
 			unsigned long long value : 64;
 		} invisible;
