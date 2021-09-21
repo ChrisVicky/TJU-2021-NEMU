@@ -43,6 +43,7 @@ void reg_test() {
 }
 
 void load_sreg(int sreg_index){
+	Log("Loading");
 	SegDesc * gdt = (SegDesc *) (uint64_t)cpu.GDTR.Base;
 	int index = cpu.sreg[sreg_index].visible.index;
 	Assert(index<=cpu.GDTR.Limit, "Invalid index '%x'" ,index);
