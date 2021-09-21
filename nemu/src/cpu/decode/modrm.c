@@ -110,7 +110,7 @@ int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg) {
 	}
 	else {
 		int instr_len = load_addr(eip, &m, rm);
-		Log("limit: %x" ,cpu.sreg[R_CS].invisible.cache.limit);
+		//Log("limit: %x" ,cpu.sreg[R_CS].invisible.cache.limit);
 		rm->val = swaddr_read(rm->addr, rm->size, R_CS);
 		return instr_len;
 	}
