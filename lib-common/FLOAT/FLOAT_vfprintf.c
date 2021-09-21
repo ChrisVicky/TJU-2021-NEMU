@@ -102,7 +102,7 @@ static void modify_vfprintf() {
 // 	saved_bit = *(nop_pointer) &0xffff0000;
 // 	change_bit = 0x9090;
 // 	*(nop_pointer) = change_bit + saved_bit;
- */  /* TODO: Implement this function to hijack the formating of "%f"
+ /* TODO: Implement this function to hijack the formating of "%f"
    * argument during the execution of `_vfprintf_internal'. Below
    * is the code section in _vfprintf_internal() relative to the
    * hijack.
