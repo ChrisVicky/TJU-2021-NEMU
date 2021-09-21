@@ -40,7 +40,7 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 
 make_helper(concat(mov_cr2r_, SUFFIX)){
 	REG(R_EAX) = cpu.CR0.val;
-	print_asm_template1();
+	print_asm_template2();
 	return 2;
 }
 #include "cpu/exec/template-end.h"

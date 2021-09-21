@@ -10,6 +10,7 @@ make_helper(concat(lgdt_, SUFFIX)) {
 #endif
     cpu.GDTR.Base = base;
     cpu.GDTR.Limit = limit;
+    print_asm_template1();
     return 6;
 }
 
