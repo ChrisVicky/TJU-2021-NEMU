@@ -135,7 +135,7 @@ typedef struct
 				uint32_t TI : 1;	 // table indicator
 				uint32_t index : 13; // index in gdtr
 			};
-			uint32_t val;
+			uint16_t val;
 		} visible;
 		union
 		{
