@@ -45,9 +45,10 @@ void reg_test() {
 void load_sreg(int sreg_index){
 	SegDesc * gdt = (SegDesc *) (uint64_t)cpu.GDTR.Base;
 	int index = cpu.sreg[sreg_index].visible.index;
-	Assert(index>=cpu.GDTR.Limit, "Invalid index '%x'" ,index);
+	Assert(index<cpu.GDTR.Limit, "Invalid index '%x'" ,index);
 	cpu.sreg[sreg_index].invisible.cache.base = gdt[index].base_15_0 + (gdt[index].base_23_16<<16) + (gdt[index].base_31_24<<24);
 	cpu.sreg[sreg_index].invisible.cache.limit = gdt[index].limit_15_0 + (gdt[index].limit_19_16<<16);
+	/*
 	cpu.sreg[sreg_index].invisible.cache.granularity = gdt[index].granularity;
 	cpu.sreg[sreg_index].invisible.cache.operation_size = gdt[index].operation_size;
 	cpu.sreg[sreg_index].invisible.cache.pad0 = gdt[index].pad0;
@@ -56,5 +57,6 @@ void load_sreg(int sreg_index){
 	cpu.sreg[sreg_index].invisible.cache.segment_type = gdt[index].segment_type;
 	cpu.sreg[sreg_index].invisible.cache.soft_use = gdt[index].soft_use;
 	cpu.sreg[sreg_index].invisible.cache.type = gdt[index].type;
+	*/
 	Log("Value: %llx " ,cpu.sreg[sreg_index].invisible.value);
 }
