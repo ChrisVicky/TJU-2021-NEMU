@@ -39,6 +39,7 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 	src = src & 0xfff;
 #endif
 	cpu.CR0.val = src;
+	Log("eax = %x	protection_enable = %x" ,cpu.eax ,cpu.CR0.protect_enable);
 	print_asm(str(instr) " %%%s, %%rc0" ,REG_NAME(m.R_M));
 	return 2;
 }
