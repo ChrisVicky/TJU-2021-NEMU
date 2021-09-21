@@ -28,6 +28,20 @@ make_helper(jmp_rm_w) {
 	print_asm(str(instr) " *%s", op_src->str);
 	return len + 1;
 }
+
+make_helper(ljmp_w) {
+	op_src->val = instr_fetch(eip+1, 2);
+	op_src->type = OP_TYPE_IMM;
+	op_dest->val = instr_fetch(eip+5, 2);
+	op_dest->type = OP_TYPE_IMM;
+	cpu.sreg.sg[R_CS].visible.val = op_dest->val;
+	cpu.sreg.sg[R_CS].cache.base_15_0 = 0;
+	cpu.sreg.sg[R_CS].cache.base_23_16 = 0;
+	cpu.sreg.sg[R_CS].cache.limit_15_0 = 0xffff;
+	cpu.sreg.sg[R_CS].cache.limit_19_16 = 0xf;
+	cpu.eip = op_src->val - 5;
+	return 5;
+}
 #endif
 
 #if DATA_BYTE == 4
@@ -36,6 +50,20 @@ make_helper(jmp_rm_l) {
 	cpu.eip = op_src->val - (len + 1);
 	print_asm(str(instr) " *%s", op_src->str);
 	return len + 1;
+}
+
+make_helper(ljmp_l) {
+	op_src->val = instr_fetch(eip+1, 4);
+	op_src->type = OP_TYPE_IMM;
+	op_dest->val = instr_fetch(eip+5, 2);
+	op_dest->type = OP_TYPE_IMM;
+	cpu.sreg.sg[R_CS].visible.val = op_dest->val;
+	cpu.sreg.sg[R_CS].cache.base_15_0 = 0;
+	cpu.sreg.sg[R_CS].cache.base_23_16 = 0;
+	cpu.sreg.sg[R_CS].cache.limit_15_0 = 0xffff;
+	cpu.sreg.sg[R_CS].cache.limit_19_16 = 0xf;
+	cpu.eip = op_src->val - 7;
+	return 7;
 }
 #endif
 #include "cpu/exec/template-end.h"
