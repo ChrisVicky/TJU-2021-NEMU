@@ -14,13 +14,13 @@ void ui_mainloop()
 	while (1)
 	{
 		/* Print out the SEGMENT_REG */
-		int ii = 0;
+		/*int ii = 0;
 		char *SN[] = {"ES","CS","SS","DS"};
 		Log("Current eip = %x" ,cpu.eip);
 		Log("%-10s%-10s%-10s" ,"Name","visible","base");
 		for(ii=0;ii<4;ii++){
 			Log("%-10s%-10x%-16x" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.cache.base);
-		}
+		}*/
 
 		int i;
 		char *str = rl_gets();
