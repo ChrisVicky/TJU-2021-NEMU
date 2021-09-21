@@ -42,22 +42,14 @@ void reg_test() {
 	assert(eip_sample == cpu.eip);
 }
 
-void load_sreg(int sreg_index){
-	SegDesc * gdt = (SegDesc *) (uint64_t)cpu.GDTR.Base;
-	int index = cpu.sreg[sreg_index].visible.index;
-	Assert(index<cpu.GDTR.Limit, "Invalid index '%x'" ,index);
-	Log("gdt = %x" ,gdt[index].base_15_0);
-	//cpu.sreg[sreg_index].invisible.cache.base = gdt[index].base_15_0 + (gdt[index].base_23_16<<16) + (gdt[index].base_31_24<<24);
-	//cpu.sreg[sreg_index].invisible.cache.limit = gdt[index].limit_15_0 + (gdt[index].limit_19_16<<16);
-	/*
-	cpu.sreg[sreg_index].invisible.cache.granularity = gdt[index].granularity;
-	cpu.sreg[sreg_index].invisible.cache.operation_size = gdt[index].operation_size;
-	cpu.sreg[sreg_index].invisible.cache.pad0 = gdt[index].pad0;
-	cpu.sreg[sreg_index].invisible.cache.present = gdt[index].present;
-	cpu.sreg[sreg_index].invisible.cache.privilege_level = gdt[index].privilege_level;
-	cpu.sreg[sreg_index].invisible.cache.segment_type = gdt[index].segment_type;
-	cpu.sreg[sreg_index].invisible.cache.soft_use = gdt[index].soft_use;
-	cpu.sreg[sreg_index].invisible.cache.type = gdt[index].type;
-	*/
+void load_sreg(uint8_t sreg_index){
+	uint32_t gdt = cpu.GDTR.Base;
+	gdt += cpu.sreg[sreg_index].visible.index<<3;
+	SegDesc temp;
+	temp.first_val = lnaddr_read(gdt, 4);
+	temp.second_val = lnaddr_read(gdt + 4, 4);
+	cpu.sreg[sreg_index].invisible.cache.base = temp.base_15_0 | (temp.base_23_16<<16) | (temp.base_31_24<<24);
+	cpu.sreg[sreg_index].invisible.cache.limit = (temp.limit_19_16 << 16) | temp.limit_15_0;
+	if(temp.granularity) cpu.sreg[sreg_index].invisible.cache.limit = cpu.sreg[sreg_index].invisible.cache.limit<<12;
 	Log("Value: %llx " ,cpu.sreg[sreg_index].invisible.value);
 }
