@@ -10,7 +10,7 @@
 
 /* Instruction Fetched */
 static inline uint32_t instr_fetch(swaddr_t addr, size_t len) {
-	Log("Show : limit : %x" ,cpu.sreg[R_CS].invisible.cache.limit);
+	//Log("Show : limit : %x" ,cpu.sreg[R_CS].invisible.cache.limit);
 	return swaddr_read(addr, len, R_CS);
 }
 
