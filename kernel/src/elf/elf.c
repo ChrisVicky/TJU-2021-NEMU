@@ -47,7 +47,7 @@ uint32_t loader() {
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 			ramdisk_read((void*) ph->p_vaddr, ph->p_offset, ph->p_filesz);		 
-			 
+			 Log("addr = %x	offset = %x file_size = %x" ,ph -> p_vaddr,ph -> p_offset,ph -> p_filesz);
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
