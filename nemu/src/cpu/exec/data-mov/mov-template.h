@@ -45,8 +45,8 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
 	REG(m.R_M) = cpu.CR0.val;
+	Log("Mov cr0 to eax");
 	print_asm(str(instr) " rc0, %s" ,REG_NAME(m.R_M));
-	print_asm_template1();
 	return 2;
 }
 #if DATA_BYTE == 1
