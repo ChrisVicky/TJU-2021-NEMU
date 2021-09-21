@@ -35,8 +35,9 @@ make_helper(ljmp_w) {
 	op_dest->val = instr_fetch(eip+5, 2);
 	op_dest->type = OP_TYPE_IMM;
 	cpu.sreg[R_CS].visible.val = op_dest->val;
-	cpu.sreg[R_CS].invisible.cache.base = 0;
-	cpu.sreg[R_CS].invisible.cache.limit = 0xfffff;
+	/*cpu.sreg[R_CS].invisible.cache.base = 0;
+	cpu.sreg[R_CS].invisible.cache.limit = 0xfffff;*/
+	load_sreg(R_CS);
 	cpu.eip = op_src->val - 5;
 	return 5;
 }
