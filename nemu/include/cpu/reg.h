@@ -80,7 +80,7 @@ typedef struct {
 		uint32_t val;
 	} CR0;
 
-	union {
+	struct {
 		struct {
 			uint32_t RPL 	:2;		// requestor's privilege level
 			uint32_t TI 	:1;		// table indicator
