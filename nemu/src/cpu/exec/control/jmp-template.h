@@ -30,14 +30,7 @@ make_helper(jmp_rm_w) {
 }
 
 make_helper(ljmp_w) {
-	/* Print out the SEGMENT_REG */
-		int ii = 0;
-		char *SN[] = {"ES","CS","SS","DS"};
-		Log("Current eip = %x" ,cpu.eip);
-		Log("%-10s%-10s%-10s" ,"Name","visible","limit");
-		for(ii=0;ii<4;ii++){
-			Log("%-10s%-10x%-16x" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.cache.limit);
-		}
+	
 	Log("Now fetching");
 	op_src->val = instr_fetch(eip+1, 2);
 	op_src->type = OP_TYPE_IMM;
