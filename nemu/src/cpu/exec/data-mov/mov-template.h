@@ -51,8 +51,8 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 	print_asm(str(instr) " %%rc0, %%%s" ,REG_NAME(m.R_M));
 	return 2;
 }
-#if DATA_BYTE == 1
-make_helper(mov_sr2r_b){
+#if DATA_BYTE == 2
+make_helper(mov_seg){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
 	cpu.sreg[m.reg].visible.val = REG(m.R_M);
