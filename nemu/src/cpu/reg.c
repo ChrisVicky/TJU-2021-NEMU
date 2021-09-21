@@ -53,5 +53,5 @@ void load_sreg(uint8_t sreg_index){
 	uint32_t limit = (temp.limit_19_16 << 16) | temp.limit_15_0;
 	if(temp.granularity) limit = (limit << 12);
 	cpu.sreg[sreg_index].invisible.cache.limit = limit;
-//	Log("base = %x limit = %x\n" ,cpu.sreg[sreg_index].invisible.cache.base,cpu.sreg[sreg_index].invisible.cache.limit);
+	Log("base = %x limit = %x\n" ,cpu.sreg[sreg_index].invisible.cache.base,cpu.sreg[sreg_index].invisible.cache.limit);
 }
