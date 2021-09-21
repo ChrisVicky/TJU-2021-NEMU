@@ -55,6 +55,8 @@ make_helper(mov_sr2r_b){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
 	cpu.sreg.sg[m.reg].visible.val = REG(m.R_M);
+	char *SN[] = {"es","cs","ss","ds"};
+	print_asm(str(instr) "%%%s, %%%s" ,REG_NAME(m.R_M),SN[m.reg]);
 	return 2;
 }
 #endif
