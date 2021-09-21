@@ -51,4 +51,5 @@ void load_sreg(uint8_t sreg_index){
 	cpu.sreg[sreg_index].invisible.cache.base = temp.base_15_0 | (temp.base_23_16<<16) | (temp.base_31_24<<24);
 	cpu.sreg[sreg_index].invisible.cache.limit = (temp.limit_19_16 << 16) | temp.limit_15_0;
 	if(temp.granularity) cpu.sreg[sreg_index].invisible.cache.limit = cpu.sreg[sreg_index].invisible.cache.limit<<12;
+	Log("base = %x limit = %x\n" ,cpu.sreg[sreg_index].invisible.cache.base,cpu.sreg[sreg_index].invisible.cache.limit);
 }
