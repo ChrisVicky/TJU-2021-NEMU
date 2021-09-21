@@ -54,8 +54,11 @@ make_helper(jmp_rm_l) {
 }
 
 make_helper(ljmp_l) {
+	Log("fetch1");
 	op_src->val = instr_fetch(eip+1, 4);
 	op_src->type = OP_TYPE_IMM;
+	
+	Log("fetch2");
 	op_dest->val = instr_fetch(eip+5, 2);
 	op_dest->type = OP_TYPE_IMM;
 	cpu.sreg[R_CS].visible.val = op_dest->val;
