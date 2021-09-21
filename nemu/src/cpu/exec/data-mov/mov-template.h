@@ -34,11 +34,11 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 	src = src & 0xfff;
 #endif
 	cpu.CR0.val = src;
-	return 1;
+	return 2;
 }
 
 make_helper(concat(mov_cr2r_, SUFFIX)){
 	REG(R_EAX) = cpu.CR0.val;
-	return 1;
+	return 2;
 }
 #include "cpu/exec/template-end.h"
