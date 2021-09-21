@@ -50,7 +50,9 @@ void load_sreg(uint8_t sreg_index){
 	temp.second_val = lnaddr_read(gdt + 4, 4);
 	cpu.sreg[sreg_index].invisible.cache.base = ((uint32_t)temp.base_15_0) | (((uint32_t)temp.base_23_16)<<16) | (((uint32_t)temp.base_31_24)<<24);
 	uint32_t limit = (((uint32_t)temp.limit_19_16) << 16) | ((uint32_t)temp.limit_15_0);
+	Log("LIMIT : %x" ,limit);
 	if(temp.granularity) limit = (limit << 12);
+	Log("FINAL LIMIT : %x" ,limit);
 	cpu.sreg[sreg_index].invisible.cache.limit = limit;
 	Log("base = %x limit = %x\n" ,cpu.sreg[sreg_index].invisible.cache.base,cpu.sreg[sreg_index].invisible.cache.limit);
 }

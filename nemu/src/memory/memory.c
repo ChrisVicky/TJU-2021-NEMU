@@ -11,8 +11,8 @@ extern int nemu_state;
 
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 	if(!cpu.CR0.protect_enable) return addr;
-	Log("addr: %x\tlen: %x\tsreg: %x" ,addr,(int) len ,sreg);
-	Log("limit: %x" ,cpu.sreg[sreg].invisible.cache.limit);
+	//Log("addr: %x\tlen: %x\tsreg: %x" ,addr,(int) len ,sreg);
+	//Log("limit: %x" ,cpu.sreg[sreg].invisible.cache.limit);
 	Assert(addr+len < cpu.sreg[sreg].invisible.cache.limit, "Segmentation Fault.");
 	return cpu.sreg[sreg].invisible.cache.base + addr;
 //	return addr + t
