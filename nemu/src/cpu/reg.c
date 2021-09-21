@@ -47,7 +47,7 @@ void load_sreg(int sreg_index){
 	SegDesc * gdt = (SegDesc *) (uint64_t)cpu.GDTR.Base;
 	Log("Longing");
 	int index = cpu.sreg[sreg_index].visible.index;
-	Assert(index<=cpu.GDTR.Limit, "Invalid index '%x'" ,index);
+	Assert(index>=cpu.GDTR.Limit, "Invalid index '%x'" ,index);
 	cpu.sreg[sreg_index].invisible.cache.base = gdt[index].base_15_0 + (gdt[index].base_23_16<<16) + (gdt[index].base_31_24<<24);
 	cpu.sreg[sreg_index].invisible.cache.limit = gdt[index].limit_15_0 + (gdt[index].limit_19_16<<16);
 	cpu.sreg[sreg_index].invisible.cache.granularity = gdt[index].granularity;
