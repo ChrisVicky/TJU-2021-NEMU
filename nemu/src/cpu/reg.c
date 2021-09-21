@@ -44,7 +44,6 @@ void reg_test() {
 
 void load_sreg(uint8_t sreg_index){
 	uint32_t gdt = cpu.GDTR.Base;
-	//Log("gdt_base = %x\n" ,cpu.GDTR.Base);
 	gdt += cpu.sreg[sreg_index].visible.index<<3;
 	SegDesc temp;
 	temp.first_val = lnaddr_read(gdt, 4);
