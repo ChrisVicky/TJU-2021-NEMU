@@ -12,7 +12,7 @@ extern int nemu_state;
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 	if(!cpu.CR0.protect_enable) return addr;
 	Assert(sreg<=3,"Invalid Segment Register Index '%d'" ,sreg);
-	return cpu.sreg[sreg].invisible.cache.base_15_0 + (cpu.sreg[sreg].invisible.cache.base_23_16<<16) + (cpu.sreg[sreg].invisible.cache.base_31_24<<24) + addr;
+	return cpu.sreg[sreg].invisible.cache.base + addr;
 //	return addr + t
 }
 
