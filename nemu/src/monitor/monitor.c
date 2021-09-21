@@ -98,7 +98,7 @@ static void init_CR0(){
 static void init_cs(){
 	cpu.sreg[R_CS].visible.val = 0;
 	cpu.sreg[R_CS].invisible.value = 0;
-	cpu.sreg[R_CS].invisible.cache.limit = 0xfffff;
+	cpu.sreg[R_CS].invisible.cache.limit = 0xffffffff;
 }
 
 void restart() {
