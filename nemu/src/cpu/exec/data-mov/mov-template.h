@@ -42,7 +42,10 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 }
 
 make_helper(concat(mov_cr2r_, SUFFIX)){
-	REG(R_EAX) = cpu.CR0.val;
+	ModR_M m;
+	m.val = instr_fetch(eip+1, 1);
+	REG(m.R_M) = cpu.CR0.val;
+	print_asm(str(instr) " rc0, %s" ,REG_NAME(m.R_M));
 	print_asm_template1();
 	return 2;
 }
