@@ -39,7 +39,7 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 	src = src & 0xfff;
 #endif
 	cpu.CR0.val = src;
-	print_asm(str(instr) " %%%s, rc0" ,REG_NAME(m.R_M));
+	print_asm(str(instr) " %%%s, %%rc0" ,REG_NAME(m.R_M));
 	return 2;
 }
 
@@ -47,7 +47,8 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
 	REG(m.R_M) = cpu.CR0.val;
-	print_asm(str(instr) " rc0, %%%s" ,REG_NAME(m.R_M));
+	Log("eax = %x	protection_enable = %x" ,cpu.eax ,cpu.CR0.protect_enable);
+	print_asm(str(instr) " %%rc0, %%%s" ,REG_NAME(m.R_M));
 	return 2;
 }
 #if DATA_BYTE == 1
