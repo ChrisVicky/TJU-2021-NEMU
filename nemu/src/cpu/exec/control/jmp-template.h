@@ -30,6 +30,7 @@ make_helper(jmp_rm_w) {
 }
 
 make_helper(ljmp_w) {
+	Log("Now fetching");
 	op_src->val = instr_fetch(eip+1, 2);
 	op_src->type = OP_TYPE_IMM;
 	op_dest->val = instr_fetch(eip+5, 2);
