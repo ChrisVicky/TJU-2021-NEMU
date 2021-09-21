@@ -54,10 +54,10 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 make_helper(mov_sr2r_b){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
-	Log("mov %x, %x" ,m.reg, m.R_M);
+	//Log("mov %x, %x" ,m.reg, m.R_M);
 	cpu.sreg[m.reg].visible.val = REG(m.R_M);
-	Log("cpu.sreg[%x].visible.val = %x" ,m.reg,REG(m.R_M));
-	Log("Now index = %x	RPL = %x	TI = %x" ,cpu.sreg[m.reg].visible.index, cpu.sreg[m.reg].visible.RPL, cpu.sreg[m.reg].visible.TI);
+	//Log("cpu.sreg[%x].visible.val = %x" ,m.reg,REG(m.R_M));
+	//Log("Now index = %x	RPL = %x	TI = %x" ,cpu.sreg[m.reg].visible.index, cpu.sreg[m.reg].visible.RPL, cpu.sreg[m.reg].visible.TI);
 	load_sreg(m.reg);
 	char *SN[] = {"es","cs","ss","ds"};
 	print_asm(str(instr) " %%%s, %%%s" ,REG_NAME(m.R_M),SN[m.reg]);
