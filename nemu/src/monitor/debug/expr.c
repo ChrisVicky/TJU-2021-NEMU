@@ -368,7 +368,7 @@ static uint32_t exe(int q, int p, bool *flag)
 				data = ~val2 + 1;
 				break;
 			case ADDRESS_SIGN: // "*"
-				data = swaddr_read(val2, 4);
+				data = swaddr_read(val2, 4, R_DS);
 				break;
 			case REVERSE_SIGN: // "~"
 				data = ~val2;

@@ -6,6 +6,7 @@
 enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
 enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
+enum { R_ES, R_CS, R_SS, R_DS };
 
 /* TODO: Re-organize the `CPU_state' structure to match the register
  * encoding scheme in i386 instruction format. For example, if we
@@ -55,6 +56,7 @@ typedef struct {
 		struct{
 			uint32_t Base	:32;
 			uint32_t Limit 	:16;
+			
 		};
 	}GDTR;
 
@@ -79,15 +81,29 @@ typedef struct {
 	} CR0;
 
 	union {
-		struct{
+		struct {
 			uint32_t RPL 	:2;		// requestor's privilege level
 			uint32_t TI 	:1;		// table indicator
 			uint32_t index 	:13;	// index in gdtr
+			union{
+				struct {
+					uint32_t limit_15_0          : 16;
+					uint32_t base_15_0           : 16;
+					uint32_t base_23_16          : 8;
+					uint32_t type                : 4;
+					uint32_t segment_type        : 1;
+					uint32_t privilege_level     : 2;
+					uint32_t present             : 1;
+					uint32_t limit_19_16         : 4;
+					uint32_t soft_use            : 1;
+					uint32_t operation_size      : 1;
+					uint32_t pad0                : 1;
+					uint32_t granularity         : 1;
+					uint32_t base_31_24          : 8;
+				};
+			} cache;
 		}sg[4];
-		struct{
-			uint32_t CS, DS, ES, SS;
-		};
-	};
+	}sreg;
 
 
 } CPU_state;

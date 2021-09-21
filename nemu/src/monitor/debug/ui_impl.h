@@ -222,7 +222,7 @@ static int cmd_x(char *args)
 		printf("\33[1;37m0x%08x: \33[0m", t2);
 		for (j = 0; j < 4 && i < t1; i++, j++, t2 += 4)
 		{
-			printf("0x%08x ", swaddr_read(t2, 4));
+			printf("0x%08x ", swaddr_read(t2, 4, R_DS));
 		}
 		printf("\n");
 	}
@@ -371,7 +371,7 @@ static int cmd_bt(char * args){
 		int i,x, temp_ebp=ebp;
 		SUCCESS("%-12s%-12s%-12s%-12s\n" ,"val1","val2","val3","val4");
 		for(i=0;i<4&&temp_ebp>=esp;i++,temp_ebp-=4){
-			x = swaddr_read(temp_ebp, 4);
+			x = swaddr_read(temp_ebp, 4, R_SS);
 			PRINT("0x%-10x" ,x);
 		}
 		printf("\n\n");
@@ -380,13 +380,13 @@ static int cmd_bt(char * args){
 		}
 		if(offset>1){
 			esp = ebp;
-			ebp = swaddr_read(esp, 4);
-			eip = swaddr_read(esp+4, 4);
+			ebp = swaddr_read(esp, 4, R_SS);
+			eip = swaddr_read(esp+4, 4, R_SS);
 		}else if(offset==1){
-			ebp = swaddr_read(esp, 4);
-			eip = swaddr_read(esp + 4, 4);
+			ebp = swaddr_read(esp, 4, R_SS);
+			eip = swaddr_read(esp + 4, 4, R_SS);
 		}else{
-			eip = swaddr_read(esp, 4);
+			eip = swaddr_read(esp, 4, R_SS);
 		}
 	}
 	return 0;

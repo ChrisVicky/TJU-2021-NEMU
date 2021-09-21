@@ -3,9 +3,8 @@
 #define instr leave
 
 make_helper(concat(leave_, SUFFIX)){
-    // MEM_W(cpu.esp, cpu.ebp);
-    cpu.esp = REG(R_EBP);
-    REG(R_EBP) = MEM_R(cpu.esp);
+    cpu.esp = cpu.ebp;
+    cpu.ebp = MEM_R(cpu.esp, R_SS);
     cpu.esp += DATA_BYTE;
     print_asm(str(instr));
     return 1;
