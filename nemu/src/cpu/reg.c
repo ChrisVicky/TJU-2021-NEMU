@@ -49,8 +49,8 @@ void load_sreg(uint8_t sreg_index){
 	SegDesc temp;
 	temp.first_val = lnaddr_read(gdt, 4);
 	temp.second_val = lnaddr_read(gdt + 4, 4);
-	cpu.sreg[sreg_index].invisible.cache.base = temp.base_15_0 | (temp.base_23_16<<16) | (temp.base_31_24<<24);
-	uint32_t limit = (temp.limit_19_16 << 16) | temp.limit_15_0;
+	cpu.sreg[sreg_index].invisible.cache.base = ((uint32_t)temp.base_15_0) | (((uint32_t)temp.base_23_16)<<16) | (((uint32_t)temp.base_31_24)<<24);
+	uint32_t limit = (((uint32_t)temp.limit_19_16) << 16) | ((uint32_t)temp.limit_15_0);
 	if(temp.granularity) limit = (limit << 12);
 	cpu.sreg[sreg_index].invisible.cache.limit = limit;
 	Log("base = %x limit = %x\n" ,cpu.sreg[sreg_index].invisible.cache.base,cpu.sreg[sreg_index].invisible.cache.limit);
