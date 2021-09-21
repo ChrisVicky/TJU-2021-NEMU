@@ -14,14 +14,6 @@ void ui_mainloop()
 	while (1)
 	{
 		
-/* Print out the SEGMENT_REG */
-		int ii = 0;
-		char *SN[] = {"ES","CS","SS","DS"};
-		Log("Current eip = %x" ,cpu.eip);
-		Log("%-10s%-10s%-10s" ,"Name","visible","limit");
-		for(ii=0;ii<4;ii++){
-			Log("%-10s%-10x%-16x" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.cache.limit);
-		}
 		int i;
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
@@ -57,6 +49,15 @@ void ui_mainloop()
 		if (i == NR_CMD)
 		{
 			ERROR("Unknown command '%s'\n" ,cmd);
+		}
+
+/* Print out the SEGMENT_REG */
+		int ii = 0;
+		char *SN[] = {"ES","CS","SS","DS"};
+		Log("Current eip = %x" ,cpu.eip);
+		Log("%-10s%-10s%-10s" ,"Name","visible","limit");
+		for(ii=0;ii<4;ii++){
+			Log("%-10s%-10x%-16x" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.cache.limit);
 		}
 	}
 }
