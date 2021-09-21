@@ -48,7 +48,6 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 }
 #if DATA_BYTE == 1
 make_helper(mov_sr2r_b){
-	read_ModR_M(eip+1, op_src, op_dest);
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
 	cpu.sreg.sg[m.reg].visible.val = REG(m.R_M);
