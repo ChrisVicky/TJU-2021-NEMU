@@ -49,7 +49,7 @@ uint32_t loader() {
 			ramdisk_read((void*) ph->p_vaddr, ph->p_offset, ph->p_filesz);
 			int pointer = 0x801134;
 			int * addr =(int *) pointer;
-			assert(*(addr) == 0xc3);
+			assert(*(addr) == 0x45);
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
