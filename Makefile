@@ -54,8 +54,8 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 # USERPROG := obj/testcase/mov
-USERPROG := obj/testcase/mov-c
-# USERPROG := obj/testcase/sum
+# USERPROG := obj/testcase/mov-c
+USERPROG := obj/testcase/sum
 # USERPROG := obj/testcase/pascal
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/hello-str
