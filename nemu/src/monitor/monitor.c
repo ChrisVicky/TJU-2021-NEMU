@@ -93,6 +93,7 @@ static void init_eflags(){
 
 static void init_CR0(){
 	cpu.CR0.protect_enable = 0;
+	/* 0: Real Mode */
 }
 
 void restart() {
