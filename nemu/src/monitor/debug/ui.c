@@ -16,9 +16,9 @@ void ui_mainloop()
 		/* Print out the SEGMENT_REG */
 		int ii = 0;
 		char *SN[] = {"ES","CS","SS","DS"};
-		Log("%-10s%-10s%-4s" ,"Name","visible","invisible");
+		Log("%-10s%-10s%-10s" ,"Name","visible","base");
 		for(ii=0;ii<4;ii++){
-			Log("%-10s%-10x%-16llx" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.value);
+			Log("%-10s%-10x%-16x" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.cache.base);
 		}
 
 		int i;
