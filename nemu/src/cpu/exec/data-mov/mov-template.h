@@ -32,12 +32,14 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 }
 /* Not fully functioned */
 make_helper(concat(mov_r2cr_, SUFFIX)){
-	uint32_t src = cpu.eax;
+	ModR_M m;
+	m.val = instr_fetch(eip+1,1);
+	uint32_t src = REG(m.R_M);
 #if DATA_BYTE == 2
 	src = src & 0xfff;
 #endif
 	cpu.CR0.val = src;
-	print_asm_template1();
+	print_asm(str(instr) " %s, rc0" ,REG_NAME(m.R_M));
 	return 2;
 }
 
@@ -45,7 +47,6 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
 	REG(m.R_M) = cpu.CR0.val;
-	Log("Mov cr0 to eax");
 	print_asm(str(instr) " rc0, %s" ,REG_NAME(m.R_M));
 	return 2;
 }
