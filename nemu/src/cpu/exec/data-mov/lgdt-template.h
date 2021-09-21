@@ -11,7 +11,7 @@ make_helper(concat(lgdt_, SUFFIX)) {
     cpu.GDTR.Base = base;
     cpu.GDTR.Limit = limit;
     print_asm_template1();
-    print_asm(str(instr) " 0x%08x, 0x%08x", limit, base);
+    print_asm(str(instr) " 0x%04x, 0x%08x", limit, base);
     return 6;
 }
 
