@@ -53,8 +53,8 @@ typedef struct {
 
 	union{
 		struct{
-			uint32_t GDT_Addr	:32;
-			uint32_t GDT_len 	:32;
+			uint32_t Base	:32;
+			uint32_t Limit 	:16;
 		};
 	}GDTR;
 
