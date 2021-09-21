@@ -60,48 +60,49 @@ static unsigned int reverse(unsigned int offset) {
 }
 
 static void modify_vfprintf() {
-  unsigned int addr_vfp = &_vfprintf_internal;
-  unsigned int addr_format = &format_FLOAT;
-  unsigned int addr_fpmax = &_fpmaxtostr;
-  unsigned int call_address = addr_vfp + (0x8049e18 - 0x08049b12) + 1;
-  unsigned int push_addr = addr_vfp + (0x8049e0e - 0x08049b12);
-  unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
-  unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
-  unsigned int nop_addr = addr_vfp + (0x800e66 - 0x800b7e);
-  // 开锁
-//	mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
-  //           PROT_READ | PROT_WRITE | PROT_EXEC);
+// /* 
+//   unsigned int addr_vfp = &_vfprintf_internal;
+//   unsigned int addr_format = &format_FLOAT;
+//   unsigned int addr_fpmax = &_fpmaxtostr;
+//   unsigned int call_address = addr_vfp + (0x8049e18 - 0x08049b12) + 1;
+//   unsigned int push_addr = addr_vfp + (0x8049e0e - 0x08049b12);
+//   unsigned int sub_addr = addr_vfp + (0x8049e0b - 0x08049b12);
+//   unsigned int sub_push_addr = addr_vfp + (0x8049e66 - 0x08049b67);
+//   unsigned int nop_addr = addr_vfp + (0x800e66 - 0x800b7e);
+//   // 开锁
+// //	mprotect((void *)((call_address - 100) & 0xfffff000), 4096 * 2,
+//   //           PROT_READ | PROT_WRITE | PROT_EXEC);
 
-  /* Change the call destination. */
-  int *call_pointer = call_address;
-  unsigned int offset = addr_format - addr_fpmax;
-  unsigned int new_destination = offset + (*call_pointer);
-  *(call_pointer) = new_destination;
-  //  printf("%x: %x\n", call_pointer, *(call_pointer));
-  /* done */
+//   /* Change the call destination. */
+//   int *call_pointer = call_address;
+//   unsigned int offset = addr_format - addr_fpmax;
+//   unsigned int new_destination = offset + (*call_pointer);
+//   *(call_pointer) = new_destination;
+//   //  printf("%x: %x\n", call_pointer, *(call_pointer));
+//   /* done */
 
-  /* Change push */
-  int *push_pointer = (int *)push_addr;
-  unsigned int saved_bit = *push_pointer & 0xff000000;
-  unsigned int change_bit = *push_pointer & 0x00ffffff;
+//   /* Change push */
+//   int *push_pointer = (int *)push_addr;
+//   unsigned int saved_bit = *push_pointer & 0xff000000;
+//   unsigned int change_bit = *push_pointer & 0x00ffffff;
 
-  change_bit = 0x0072ff;
-  *(push_pointer) = saved_bit + change_bit;
-  //	change_bit = 0xff90
+//   change_bit = 0x0072ff;
+//   *(push_pointer) = saved_bit + change_bit;
+//   //	change_bit = 0xff90
 
-  /* Change Stack */
-  int *sub_pointer = (int *)sub_addr;
-  saved_bit = *sub_pointer & 0xff00ffff;
-  change_bit = *sub_pointer & 0x00ff0000;
-  change_bit -= (0x4 << (4 * 4));
-  *(sub_pointer) = change_bit + saved_bit;
+//   /* Change Stack */
+//   int *sub_pointer = (int *)sub_addr;
+//   saved_bit = *sub_pointer & 0xff00ffff;
+//   change_bit = *sub_pointer & 0x00ff0000;
+//   change_bit -= (0x4 << (4 * 4));
+//   *(sub_pointer) = change_bit + saved_bit;
 
-	/* Change Nop */
-	int * nop_pointer = (int *)nop_addr;
-	saved_bit = *(nop_pointer) &0xffff0000;
-	change_bit = 0x9090;
-	*(nop_pointer) = change_bit + saved_bit;
-  /* TODO: Implement this function to hijack the formating of "%f"
+// 	/* Change Nop */
+// 	int * nop_pointer = (int *)nop_addr;
+// 	saved_bit = *(nop_pointer) &0xffff0000;
+// 	change_bit = 0x9090;
+// 	*(nop_pointer) = change_bit + saved_bit;
+ */  /* TODO: Implement this function to hijack the formating of "%f"
    * argument during the execution of `_vfprintf_internal'. Below
    * is the code section in _vfprintf_internal() relative to the
    * hijack.
@@ -146,14 +147,14 @@ static void modify_vfprintf() {
 
 static void modify_ppfs_setargs() {
 
-	unsigned int ppfs_addr = &_ppfs_setargs;
-	unsigned int jmp_addr = ppfs_addr + (0x801157 - 0x8010e3);
-	unsigned int destination_addr = ppfs_addr + (0x801101 - 0x8010e3);
-	int * jmp_pointer = (int *) jmp_addr;
-	unsigned int saved_bit = *(jmp_pointer) & 0xff000000;
-	//(0x801186 - 0x801159)
-	// *(jmp_pointer) = 0x90a8eb + saved_bit;
-	*(jmp_pointer) = 0x902deb + saved_bit;
+	// unsigned int ppfs_addr = &_ppfs_setargs;
+	// unsigned int jmp_addr = ppfs_addr + (0x801157 - 0x8010e3);
+	// unsigned int destination_addr = ppfs_addr + (0x801101 - 0x8010e3);
+	// int * jmp_pointer = (int *) jmp_addr;
+	// unsigned int saved_bit = *(jmp_pointer) & 0xff000000;
+	// //(0x801186 - 0x801159)
+	// // *(jmp_pointer) = 0x90a8eb + saved_bit;
+	// *(jmp_pointer) = 0x902deb + saved_bit;
 	
 //	*(jmp_pointer) = *(jmp_pointer) & 0xff000000 + (rel1<<8) + 0xeb + (0x90 << 16);
   /* TODO: Implement this function to modify the action of preparing
