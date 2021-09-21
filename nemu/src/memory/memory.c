@@ -13,7 +13,7 @@ lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 	if(!cpu.CR0.protect_enable) return addr;
 	Assert(sreg<=3,"Invalid Segment Register Index '%d'" ,sreg);
 	return cpu.sreg.sg[sreg].cache.base_15_0 + (cpu.sreg.sg[sreg].cache.base_23_16<<16) + addr;
-//	return addr + 
+//	return addr + t
 }
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
