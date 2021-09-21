@@ -27,5 +27,18 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 	print_asm("mov" str(SUFFIX) " 0x%x,%%%s", addr, REG_NAME(R_EAX));
 	return 5;
 }
+/* Not fully functioned */
+make_helper(concat(mov_r2cr_, SUFFIX)){
+	uint32_t src = cpu.eax;
+#if DATA_BYTE == 2
+	src = src & 0xfff;
+#endif
+	cpu.CR0.val = src;
+	return 1;
+}
 
+make_helper(concat(mov_cr2r_, SUFFIX)){
+	REG(R_EAX) = cpu.CR0.val;
+	return 1;
+}
 #include "cpu/exec/template-end.h"
