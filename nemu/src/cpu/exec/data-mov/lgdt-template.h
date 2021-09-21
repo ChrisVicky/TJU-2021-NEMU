@@ -2,16 +2,20 @@
 
 #define instr lgdt
 
-make_helper(concat(lgdt_, SUFFIX)) {
-    uint16_t limit = instr_fetch(eip, 2);
-    uint32_t base = instr_fetch(eip+2, 4);
-#if DATA_BYTE == 2
-    base = base & 0xfff;
-#endif
-    cpu.GDTR.Base = base;
-    cpu.GDTR.Limit = limit;
-    print_asm(str(instr) " 0x%04x, 0x%08x", limit, base);
-    return 6;
+void do_execute() {
+    if (op_src->size == 2)
+    {
+        cpu.GDTR.Limit = lnaddr_read(op_src->addr, 2); // 16 bits
+        cpu.GDTR.Base = lnaddr_read(op_src->addr + 2, 3); // 24 bits
+    } else if(op_src->size == 4)
+    {
+        cpu.GDTR.Limit = lnaddr_read(op_src->addr, 2); // 16 bits
+        cpu.GDTR.Base = lnaddr_read(op_src->addr + 2, 4);
+    }
+    print_asm_template1();
+    
 }
+
+make_instr_helper(rm);
 
 #include "cpu/exec/template-end.h"
