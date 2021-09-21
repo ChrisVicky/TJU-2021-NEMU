@@ -92,8 +92,12 @@ static void init_eflags(){
 }
 
 static void init_CR0(){
-	cpu.CR0.protect_enable = 0;
+	cpu.CR0.val = 0;
 	/* 0: Real Mode */
+}
+static void init_cs(){
+	cpu.sreg[R_CS].visible.val = 0;
+	cpu.sreg[R_CS].invisible.value = 0;
 }
 
 void restart() {
@@ -111,6 +115,8 @@ void restart() {
 
 	/* init CR0 -> control register 0 */
 	init_CR0();
+
+	init_cs();
 
 	/* Read the entry code into memory. */
 	load_entry();
