@@ -32,14 +32,7 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 }
 /* Not fully functioned */
 make_helper(concat(mov_r2cr_, SUFFIX)){
-	/* Print out the SEGMENT_REG */
-		int ii = 0;
-		char *SN[] = {"ES","CS","SS","DS"};
-		Log("Current eip = %x" ,cpu.eip);
-		Log("%-10s%-10s%-10s" ,"Name","visible","limit");
-		for(ii=0;ii<4;ii++){
-			Log("%-10s%-10x%-16x" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.cache.limit);
-		}
+	
 	ModR_M m;
 	m.val = instr_fetch(eip+1,1);
 	uint32_t src = REG(m.R_M);
