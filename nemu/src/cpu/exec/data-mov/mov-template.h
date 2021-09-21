@@ -46,6 +46,7 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 make_helper(concat(mov_cr2r_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
+	Log("%x" ,m.val);
 	REG(m.R_M) = cpu.CR0.val;
 	print_asm(str(instr) " %%rc0, %%%s" ,REG_NAME(m.R_M));
 	return 2;
