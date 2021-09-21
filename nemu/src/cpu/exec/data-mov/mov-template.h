@@ -1,6 +1,9 @@
 #include "cpu/exec/template-start.h"
 
+#include "cpu/decode/modrm.h"
 #define instr mov
+
+
 
 static void do_execute() {
 	OPERAND_W(op_dest, op_src->val);
@@ -43,4 +46,11 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 	print_asm_template1();
 	return 2;
 }
+#if DATA_BYTE == 1
+make_helper(mov_sr2r_b){
+	read_ModR_M(eip+1, op_src, op_dest);
+	cpu.sreg.sg[op_dest->sreg].visible.val = REG(op_src->reg);
+	return 2;
+}
+#endif
 #include "cpu/exec/template-end.h"
