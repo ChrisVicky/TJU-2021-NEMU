@@ -56,14 +56,11 @@ make_helper(jmp_rm_l) {
 make_helper(ljmp_l) {
 	op_src->val = instr_fetch(eip+1, 4);
 	op_src->type = OP_TYPE_IMM;
-	
-	Log("fetch2");
 	op_dest->val = instr_fetch(eip+5, 2);
-	Log("fetch 2 end");
 	op_dest->type = OP_TYPE_IMM;
 	cpu.sreg[R_CS].visible.val = op_dest->val;
 	cpu.sreg[R_CS].invisible.cache.base = 0;
-	cpu.sreg[R_CS].invisible.cache.limit = 0xfffff;
+	cpu.sreg[R_CS].invisible.cache.limit = 0xfffff000;
 	cpu.eip = op_src->val - 7;
 	print_asm("ljmp" " %x: %x" ,op_src->val, op_dest->val);
 	return 7;
