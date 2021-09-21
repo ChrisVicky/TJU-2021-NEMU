@@ -34,6 +34,7 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 make_helper(concat(mov_r2cr_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1,1);
+	Log("%x" ,m.val);
 	uint32_t src = REG(m.R_M);
 #if DATA_BYTE == 2
 	src = src & 0xfff;
@@ -46,7 +47,6 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 make_helper(concat(mov_cr2r_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
-	Log("%x" ,m.val);
 	REG(m.R_M) = cpu.CR0.val;
 	print_asm(str(instr) " %%rc0, %%%s" ,REG_NAME(m.R_M));
 	return 2;
