@@ -18,7 +18,7 @@ void ui_mainloop()
 		char *SN[] = {"ES","CS","SS","DS"};
 		Log("%-10s%-10s%-4s" ,"Name","visible","invisible");
 		for(ii=0;ii<4;ii++){
-			Log("%-10s%-10x%-16llx" ,SN[ii],cpu.sreg.sg[ii].visible.val,cpu.sreg.sg[ii].invisible.value);
+			Log("%-10s%-10x%-16llx" ,SN[ii],cpu.sreg[ii].visible.val,cpu.sreg[ii].invisible.value);
 		}
 
 		int i;

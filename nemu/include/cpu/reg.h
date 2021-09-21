@@ -127,38 +127,37 @@ typedef struct
 
 	struct
 	{
-		struct
+		union
 		{
-			union{
-				struct
-				{
-					uint32_t RPL : 2;	 // requestor's privilege level
-					uint32_t TI : 1;	 // table indicator
-					uint32_t index : 13; // index in gdtr
-				};
-				uint32_t val;
-			}visible;
-			union{
-				struct
-				{
-					uint32_t limit_15_0 : 16;
-					uint32_t base_15_0 : 16;
-					uint32_t base_23_16 : 8;
-					uint32_t type : 4;
-					uint32_t segment_type : 1;
-					uint32_t privilege_level : 2;
-					uint32_t present : 1;
-					uint32_t limit_19_16 : 4;
-					uint32_t soft_use : 1;
-					uint32_t operation_size : 1;
-					uint32_t pad0 : 1;
-					uint32_t granularity : 1;
-					uint32_t base_31_24 : 8;
-				} cache;
-				unsigned long long value	:64;
-			}invisible;
-		} sg[4];
-	} sreg;
+			struct
+			{
+				uint32_t RPL : 2;	 // requestor's privilege level
+				uint32_t TI : 1;	 // table indicator
+				uint32_t index : 13; // index in gdtr
+			};
+			uint32_t val;
+		} visible;
+		union
+		{
+			struct
+			{
+				uint32_t limit_15_0 : 16;
+				uint32_t base_15_0 : 16;
+				uint32_t base_23_16 : 8;
+				uint32_t type : 4;
+				uint32_t segment_type : 1;
+				uint32_t privilege_level : 2;
+				uint32_t present : 1;
+				uint32_t limit_19_16 : 4;
+				uint32_t soft_use : 1;
+				uint32_t operation_size : 1;
+				uint32_t pad0 : 1;
+				uint32_t granularity : 1;
+				uint32_t base_31_24 : 8;
+			}cache;
+			unsigned long long value : 64;
+		} invisible;
+	} sreg[4];
 
 } CPU_state;
 
