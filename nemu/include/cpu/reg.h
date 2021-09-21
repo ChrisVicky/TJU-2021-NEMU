@@ -29,7 +29,7 @@ typedef struct {
 	};
 	swaddr_t eip;
      
-     union {
+    union {
 		struct {
 			uint32_t CF		:1;
 			uint32_t pad0	:1;
@@ -50,6 +50,45 @@ typedef struct {
 		};
 		uint32_t val;
 	}eflags;
+
+	union{
+		struct{
+			uint32_t GDT_Addr	:32;
+			uint32_t GDT_len 	:32;
+		};
+	}GDTR;
+
+	union {
+		struct {
+			uint32_t protect_enable      : 1;
+			uint32_t monitor_coprocessor : 1;
+			uint32_t emulation           : 1;
+			uint32_t task_switched       : 1;
+			uint32_t extension_type      : 1;
+			uint32_t numeric_error       : 1;
+			uint32_t pad0                : 10;
+			uint32_t write_protect       : 1; 
+			uint32_t pad1                : 1; 
+			uint32_t alignment_mask      : 1;
+			uint32_t pad2                : 10;
+			uint32_t no_write_through    : 1;
+			uint32_t cache_disable       : 1;
+			uint32_t paging              : 1;
+		};
+		uint32_t val;
+	} CR0;
+
+	union {
+		struct{
+			uint32_t RPL 	:2;		// requestor's privilege level
+			uint32_t TI 	:1;		// table indicator
+			uint32_t index 	:13;	// index in gdtr
+		}sg[4];
+		struct{
+			uint32_t CS, DS, ES, SS;
+		};
+	};
+
 
 } CPU_state;
 

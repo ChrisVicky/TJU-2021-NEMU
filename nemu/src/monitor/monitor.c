@@ -91,6 +91,10 @@ static void init_eflags(){
 	cpu.eflags.val = 2;
 }
 
+static void init_CR0(){
+	cpu.CR0.protect_enable = 0;
+}
+
 void restart() {
 	/* Perform some initialization to restart a program */
 #ifdef USE_RAMDISK
@@ -104,9 +108,12 @@ void restart() {
 	/* Initialize e-flags */
 	init_eflags();
 
+	/* init CR0 -> control register 0 */
+	init_CR0();
+
 	/* Read the entry code into memory. */
 	load_entry();
-	
+
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
 
