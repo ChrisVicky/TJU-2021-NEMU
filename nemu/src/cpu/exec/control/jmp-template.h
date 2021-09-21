@@ -35,10 +35,10 @@ make_helper(ljmp_w) {
 	op_dest->val = instr_fetch(eip+5, 2);
 	op_dest->type = OP_TYPE_IMM;
 	cpu.sreg.sg[R_CS].visible.val = op_dest->val;
-	cpu.sreg.sg[R_CS].cache.base_15_0 = 0;
-	cpu.sreg.sg[R_CS].cache.base_23_16 = 0;
-	cpu.sreg.sg[R_CS].cache.limit_15_0 = 0xffff;
-	cpu.sreg.sg[R_CS].cache.limit_19_16 = 0xf;
+	cpu.sreg.sg[R_CS].invisible.cache.base_15_0 = 0;
+	cpu.sreg.sg[R_CS].invisible.cache.base_23_16 = 0;
+	cpu.sreg.sg[R_CS].invisible.cache.limit_15_0 = 0xffff;
+	cpu.sreg.sg[R_CS].invisible.cache.limit_19_16 = 0xf;
 	cpu.eip = op_src->val - 5;
 	return 5;
 }
@@ -58,11 +58,11 @@ make_helper(ljmp_l) {
 	op_dest->val = instr_fetch(eip+5, 2);
 	op_dest->type = OP_TYPE_IMM;
 	cpu.sreg.sg[R_CS].visible.val = op_dest->val;
-	cpu.sreg.sg[R_CS].cache.base_15_0 = 0;
-	cpu.sreg.sg[R_CS].cache.base_23_16 = 0;
-	cpu.sreg.sg[R_CS].cache.base_31_24 = 0;
-	cpu.sreg.sg[R_CS].cache.limit_15_0 = 0xffff;
-	cpu.sreg.sg[R_CS].cache.limit_19_16 = 0xf;
+	cpu.sreg.sg[R_CS].invisible.cache.base_15_0 = 0;
+	cpu.sreg.sg[R_CS].invisible.cache.base_23_16 = 0;
+	cpu.sreg.sg[R_CS].invisible.cache.base_31_24 = 0;
+	cpu.sreg.sg[R_CS].invisible.cache.limit_15_0 = 0xffff;
+	cpu.sreg.sg[R_CS].invisible.cache.limit_19_16 = 0xf;
 	cpu.eip = op_src->val - 7;
 	print_asm("ljmp" " %x: %x" ,op_src->val, op_dest->val);
 	return 7;

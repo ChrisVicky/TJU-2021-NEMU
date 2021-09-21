@@ -156,7 +156,7 @@ typedef struct
 					uint32_t base_31_24 : 8;
 				} cache;
 				unsigned long long value	:64;
-			};
+			}invisible;
 		} sg[4];
 	} sreg;
 
