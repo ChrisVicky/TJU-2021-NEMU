@@ -3,18 +3,26 @@
 #define instr scas
 
 make_helper(concat(scas_, SUFFIX)) {
-	DATA_TYPE dest = REG(R_EAX);
-	DATA_TYPE src = MEM_R(REG(R_EDI), R_ES);
-	DATA_TYPE result = dest - src;
+    swaddr_t s1 = REG(R_EAX), s2 = swaddr_read(reg_l(R_EDI), DATA_BYTE, R_ES);
+    if (cpu.eflags.DF == 0)
+    {
+        reg_l(R_EDI) += DATA_BYTE;
+    } else {
+        reg_l(R_EDI) -= DATA_BYTE;
+    }
+	int len = (DATA_BYTE << 3) - 1;
+	cpu.eflags.SF = eip>>len;
+	cpu.eflags.ZF = !eip;
+	eip ^= eip >> 4;
+	eip ^= eip >> 2;
+	eip ^= eip >> 1;
+	cpu.eflags.PF = !(eip&1);
+    cpu.eflags.CF = s1<s2;
+    cpu.eflags.OF = (((s1>>len) != (s2>>len)) && ((s2>>len) == cpu.eflags.SF));
+    print_asm("scas%s", str(SUFFIX));
 
-	update_eflags_pf_zf_sf((DATA_TYPE_S)result);
-	cpu.eflags.CF = result > dest;
-	cpu.eflags.OF = MSB((dest ^ src) & (dest ^ result));
-
-	cpu.edi += (cpu.eflags.DF ? -DATA_BYTE : DATA_BYTE);
-
-	print_asm("scas" str(SUFFIX) " %%es:(%%edi),%%%s", REG_NAME(R_EAX));
-	return 1;
+    return 1;
+    
 }
 
 #include "cpu/exec/template-end.h"
