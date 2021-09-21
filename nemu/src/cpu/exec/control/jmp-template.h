@@ -60,9 +60,11 @@ make_helper(ljmp_l) {
 	cpu.sreg.sg[R_CS].visible.val = op_dest->val;
 	cpu.sreg.sg[R_CS].cache.base_15_0 = 0;
 	cpu.sreg.sg[R_CS].cache.base_23_16 = 0;
+	cpu.sreg.sg[R_CS].cache.base_31_24 = 0;
 	cpu.sreg.sg[R_CS].cache.limit_15_0 = 0xffff;
 	cpu.sreg.sg[R_CS].cache.limit_19_16 = 0xf;
 	cpu.eip = op_src->val - 7;
+	print_asm("ljmp" " %x: %x" ,op_src->val, op_dest->val);
 	return 7;
 }
 #endif
