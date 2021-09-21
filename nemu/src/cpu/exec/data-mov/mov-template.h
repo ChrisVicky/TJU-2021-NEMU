@@ -34,18 +34,13 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 	src = src & 0xfff;
 #endif
 	cpu.CR0.val = src;
-	print_asm_template2();
+	print_asm_template1();
 	return 2;
 }
 
 make_helper(concat(mov_cr2r_, SUFFIX)){
-	
-	op_src->val = cpu.CR0.val;
-	op_src->type = OP_TYPE_IMM;
-	op_dest->reg = REG(R_EAX);
-	op_dest->type = OP_TYPE_REG;
 	REG(R_EAX) = cpu.CR0.val;
-	print_asm_template2();
+	print_asm_template1();
 	return 2;
 }
 #include "cpu/exec/template-end.h"
