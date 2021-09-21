@@ -39,8 +39,6 @@ void ui_mainloop()
 		{
 			if (strcmp(cmd, cmd_table[i].name) == 0)
 			{
-
-		Log("INSTR");
 				if (cmd_table[i].handler(args) < 0)
 				{
 					return;
