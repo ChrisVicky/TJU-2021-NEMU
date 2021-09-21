@@ -54,6 +54,7 @@ make_helper(concat(mov_cr2r_, SUFFIX)){
 make_helper(mov_sr2r_b){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
+	Log("mov %x, %x" ,m.reg, m.R_M);
 	cpu.sreg[m.reg].visible.val = REG(m.R_M);
 	load_sreg(m.reg);
 	char *SN[] = {"es","cs","ss","ds"};
