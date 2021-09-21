@@ -26,7 +26,6 @@ void ui_mainloop()
 		/* treat the remaining string as the arguments,
 		 * which may need further parsing
 		 */
-		Log("INSTR");
 		char *args = cmd + strlen(cmd) + 1;
 		if (args >= str_end)
 		{
@@ -42,6 +41,8 @@ void ui_mainloop()
 			{
 				if (cmd_table[i].handler(args) < 0)
 				{
+
+		Log("INSTR");
 					return;
 				}
 				break;
