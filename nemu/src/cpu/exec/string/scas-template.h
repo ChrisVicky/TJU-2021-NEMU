@@ -4,7 +4,8 @@
 
 make_helper(concat(scas_, SUFFIX)) {
 	uint32_t dest = REG(R_EAX);
-	uint32_t src = MEM_R(REG(R_EDI), R_ES);
+//	uint32_t src = MEM_R(REG(R_EDI), R_ES);
+	uint32_t src = swaddr_read(reg_l(R_EDI), DATA_BYTE, R_ES);
 	uint32_t result = dest - src;
 	Log("%x - %x = %x" ,dest,src,result);
 	update_eflags_pf_zf_sf(result);
