@@ -10,7 +10,7 @@
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
-#define MAX_INSTR_TO_PRINT 0xffffffff
+#define MAX_INSTR_TO_PRINT 10
 
 int nemu_state = STOP;
 
@@ -66,8 +66,6 @@ void cpu_exec(volatile uint32_t n) {
 		int instr_len = exec(cpu.eip);
 
 		cpu.eip += instr_len;
-		if(cpu.eflags.CF)
-			Log("CF: %x" ,cpu.eflags.CF);
 
 #ifdef DEBUG
 		print_bin_instr(eip_temp, instr_len);

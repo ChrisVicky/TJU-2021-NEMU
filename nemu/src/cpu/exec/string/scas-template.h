@@ -15,16 +15,6 @@ make_helper(concat(scas_, SUFFIX)) {
 
 	print_asm("scas" str(SUFFIX) " %%es:(%%edi),%%%s", REG_NAME(R_EAX));
 	return 1;
-
-    // swaddr_t s1 = REG(R_EAX), s2 = swaddr_read(reg_l(R_EDI), DATA_BYTE, R_ES);
-    // uint32_t res = s1- s2;
-	// cpu.edi += (cpu.eflags.DF ? -DATA_BYTE : DATA_BYTE);
-    // update_eflags_pf_zf_sf(res);
-	// int len = (DATA_BYTE << 3) - 1;
-    // cpu.eflags.CF = s1<s2;
-    // cpu.eflags.OF = (((s1>>len) != (s2>>len)) && ((s2>>len) == cpu.eflags.SF));
-    print_asm("scas%s", str(SUFFIX));
-	return 1;
 }
 
 #include "cpu/exec/template-end.h"
