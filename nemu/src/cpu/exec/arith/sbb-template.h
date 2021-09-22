@@ -3,13 +3,13 @@
 #define instr sbb
 
 static void do_execute () {
-	    DATA_TYPE src = op_src->val;
+	DATA_TYPE_S src = op_src->val;
     if (op_src->size == 1 && op_dest->size !=1)
     {
         op_src->val = (int8_t)op_src->val;
     }
     src += cpu.eflags.CF;
-    DATA_TYPE result = op_dest->val - src;
+    DATA_TYPE_S result = op_dest->val - src;
     int len = (DATA_BYTE << 3) - 1;
     cpu.eflags.CF = op_dest->val < src;
     int s1, s2;
