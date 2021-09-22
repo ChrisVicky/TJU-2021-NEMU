@@ -8,7 +8,8 @@ make_helper(concat(scas_, SUFFIX)) {
 	uint32_t result = dest - src;
 
 	update_eflags_pf_zf_sf(result);
-	cpu.eflags.CF = result > dest;
+	//cpu.eflags.CF = result > dest;
+	cpu.eflags.CF = dest > src;
 	cpu.eflags.OF = MSB((dest ^ src) & (dest ^ result));
 
 	cpu.edi += (cpu.eflags.DF ? -DATA_BYTE : DATA_BYTE);
