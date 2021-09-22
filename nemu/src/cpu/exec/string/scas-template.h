@@ -25,8 +25,9 @@ make_helper(concat(scas_, SUFFIX)) {
     } else {
         reg_l(R_EDI) -= DATA_BYTE;
     }
-    concat(update_, SUFFIX) (res);
-    int len = (DATA_BYTE << 3) - 1;
+    //concat(update_, SUFFIX) (res);
+    update_eflags_pf_zf_sf(res);
+	int len = (DATA_BYTE << 3) - 1;
     cpu.eflags.CF = s1<s2;
     cpu.eflags.OF = (((s1>>len) != (s2>>len)) && ((s2>>len) == cpu.eflags.SF));
     print_asm("scas%s", str(SUFFIX));
