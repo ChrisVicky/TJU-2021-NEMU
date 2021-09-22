@@ -3,11 +3,11 @@
 #define instr scas
 
 make_helper(concat(scas_, SUFFIX)) {
-	DATA_TYPE dest = REG(R_EAX);
-	DATA_TYPE src = MEM_R(REG(R_EDI), R_ES);
-	DATA_TYPE result = dest - src;
+	uint32_t dest = REG(R_EAX);
+	uint32_t src = MEM_R(REG(R_EDI), R_ES);
+	uint32_t result = dest - src;
 
-	update_eflags_pf_zf_sf((DATA_TYPE_S)result);
+	update_eflags_pf_zf_sf(result);
 	cpu.eflags.CF = result > dest;
 	cpu.eflags.OF = MSB((dest ^ src) & (dest ^ result));
 
