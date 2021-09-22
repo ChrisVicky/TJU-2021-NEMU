@@ -3,6 +3,7 @@
 #define instr sbb
 
 static void do_execute () {
+    Log("sbb: CF-> %x" ,cpu.eflags.CF);
 	DATA_TYPE_S src = op_src->val;
     if (op_src->size == 1 && op_dest->size !=1)
     {
@@ -23,6 +24,7 @@ static void do_execute () {
     result ^= result >> 2;
     result ^= result >> 1;
     cpu.eflags.PF = !(result&1);
+    Log("after sbb: CF-> %x" ,cpu.eflags.CF);
     print_asm_template2();
 	
 	// DATA_TYPE result = op_dest->val - (op_src->val + cpu.eflags.CF);
