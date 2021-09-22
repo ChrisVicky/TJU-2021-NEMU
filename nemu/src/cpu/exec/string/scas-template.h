@@ -18,14 +18,14 @@ make_helper(concat(scas_, SUFFIX)) {
 
     swaddr_t s1 = REG(R_EAX), s2 = swaddr_read(reg_l(R_EDI), DATA_BYTE, R_ES);
     uint32_t res = s1- s2;
-	//Log("%x - %x = %x" ,s1,s2,res);
-    if (cpu.eflags.DF == 0)
-    {
-        reg_l(R_EDI) += DATA_BYTE;
-    } else {
-        reg_l(R_EDI) -= DATA_BYTE;
-    }
-    //concat(update_, SUFFIX) (res);
+	// //Log("%x - %x = %x" ,s1,s2,res);
+    // if (cpu.eflags.DF == 0)
+    // {
+    //     reg_l(R_EDI) += DATA_BYTE;
+    // } else {
+    //     reg_l(R_EDI) -= DATA_BYTE;
+    // }
+	cpu.edi += (cpu.eflags.DF ? -DATA_BYTE : DATA_BYTE);
     update_eflags_pf_zf_sf(res);
 	int len = (DATA_BYTE << 3) - 1;
     cpu.eflags.CF = s1<s2;
