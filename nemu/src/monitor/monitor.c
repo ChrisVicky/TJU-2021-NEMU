@@ -8,7 +8,7 @@ extern uint32_t entry_len;
 extern char *exec_file;
 
 void load_elf_tables(int, char *[]);
-void load_elf_variables();
+//void load_elf_variables();
 void init_regex();
 void init_wp_pool();
 void init_bp_pool();
@@ -36,7 +36,7 @@ void init_monitor(int argc, char *argv[]) {
 	/* Load the string table and symbol table from the ELF file for future use. */
 	load_elf_tables(argc, argv);
 	
-	load_elf_variables();
+	//load_elf_variables();
 	
 
 	/* Compile the regular expressions. */
