@@ -6,7 +6,7 @@ make_helper(concat(scas_, SUFFIX)) {
 	uint32_t dest = REG(R_EAX);
 	uint32_t src = MEM_R(REG(R_EDI), R_ES);
 	uint32_t result = dest - src;
-
+	Log("%x - %x = %x" ,dest,src,result);
 	update_eflags_pf_zf_sf(result);
 	//cpu.eflags.CF = result > dest;
 	cpu.eflags.CF = dest > src;
