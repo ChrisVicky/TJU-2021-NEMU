@@ -50,7 +50,6 @@ make_helper(repnz) {
 	while(cpu.ecx) {
 		exec(eip + 1);
 		count ++;
-		Log("cpu.ecx: %x" ,cpu.ecx);
 		cpu.ecx --;
 		assert(ops_decoded.opcode == 0xa6	// cmpsb
 				|| ops_decoded.opcode == 0xa7	// cmpsw
