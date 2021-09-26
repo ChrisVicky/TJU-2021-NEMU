@@ -59,11 +59,13 @@ void init_page(void) {
 	cr3.val = 0;
 	cr3.page_directory_base = ((uint32_t)pdir) >> 12;
 	write_cr3(cr3.val);
+	Log("cr3: %x\n" ,cr3.val);
 
 	/* set PG bit in CR0 to enable paging */
 	cr0.val = read_cr0();
 	cr0.paging = 1;
 	write_cr0(cr0.val);
+	Log("cr1: %x\n" ,cr1.val);
 }
 
 /* GDT in the kernel's memory, whose virtual memory is greater than 0xC0000000. */

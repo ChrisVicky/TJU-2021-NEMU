@@ -18,26 +18,7 @@ lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 //	return addr + t
 }
 
-hwaddr_t page_translate(lnaddr_t addr){
-	Log("addr = %x" ,addr);
-	uint32_t dir = (addr >> 21) & 0x7ff;
-	uint32_t page = (addr >> 11) & 0x7ff;
-	uint32_t offset = addr & 0xfff;
 
-	// Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
-	// Assert(page<NR_PTE, "page (0x%x) out of range ",page);
-
-	uint32_t page_directory_addr = cr3.page_directory_base<<12;
-	PDE * page_directory = (void *) (long) page_directory_addr;
-	Log("page_directory_addr  = %x" ,page_directory_addr);
-	uint32_t page_table_addr = page_directory[dir].page_frame<<12;
-	PTE * page_table = (void *) (long) page_table_addr;
-
-//	Assert(page_table[page].present, "present = %x" page_table[page].present);
-
-	uint32_t physical_addr = offset + (page_table[page].page_frame<<12);
-	return physical_addr;
-}
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
@@ -57,6 +38,36 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	//dram_write(addr, len, data);
 }
 
+hwaddr_t page_translate(lnaddr_t addr){
+	PTE dir;
+	PDE page;
+	dir.val = 0;
+	page.val = 0;
+	hwaddr_t hwaddr;
+	if(!cr0.paging||!cr0.protect_enable) return addr;
+	dir.val = hwaddr_read((cr3.page_directory_base<<12)+((addr>>22)<<2), 4);
+	Assert(dir.present, "page_value %x, eip: %x" ,dir.val, cpu.eip);
+	page.val = hwaddr_read((page.page_frame<<12)+(((addr>>12)&0x3ff)<<2), 4);
+	hwaddr = (page.page_frame << 12) + (addr & 0x3ff);
+	return hwaddr;
+	// uint32_t dir = (addr >> 21) & 0x7ff;
+	// uint32_t page = (addr >> 11) & 0x7ff;
+	// uint32_t offset = addr & 0xfff;
+
+	// // Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
+	// // Assert(page<NR_PTE, "page (0x%x) out of range ",page);
+
+	// uint32_t page_directory_addr = cr3.page_directory_base<<12;
+	// PDE * page_directory = (void *) (long) page_directory_addr;
+	// Log("page_directory_addr  = %x" ,page_directory_addr);
+	// uint32_t page_table_addr = page_directory[dir].page_frame<<12;
+	// PTE * page_table = (void *) (long) page_table_addr;
+
+//	Assert(page_table[page].present, "present = %x" page_table[page].present);
+
+	// uint32_t physical_addr = offset + (page_table[page].page_frame<<12);
+	// return physical_addr;
+}
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	assert(len==1 || len==2 || len==4);
 
