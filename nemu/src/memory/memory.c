@@ -19,9 +19,9 @@ lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 }
 
 hwaddr_t page_translate(lnaddr_t addr){
-	Log("addr = %x\n" ,addr);
-	uint32_t dir = (addr >> 21) & 0x3ff;
-	uint32_t page = (addr >> 11) & 0x3ff;
+	Log("addr = %x" ,addr);
+	uint32_t dir = (addr >> 21) & 0x7ff;
+	uint32_t page = (addr >> 11) & 0x7ff;
 	uint32_t offset = addr & 0xfff;
 
 	Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
