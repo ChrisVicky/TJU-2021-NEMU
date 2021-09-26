@@ -29,7 +29,7 @@
 	#	define KOFFSET 0xc0000000
 	#	define va_to_pa(x) (x - KOFFSET)
 	#else
-	#	define va_to_pa(x) (x)
+		define va_to_pa(x) (x)
 	#endif
 
 	.globl start
