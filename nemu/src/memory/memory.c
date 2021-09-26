@@ -18,6 +18,29 @@ lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 //	return addr + t
 }
 
+hwaddr_t page_translate(lnaddr_t addr){
+	uint32_t dir = (addr >> 21) & 0x3ff;
+	uint32_t page = (addr >> 11) & 0x3ff;
+	uint32_t offset = addr & 0xfff;
+
+	Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
+	Assert(page<NR_PTE, "page (0x%x) out of range ",page);
+
+	uint32_t page_directory_addr = cr3.page_directory_base<<12;
+	PDE page_directory;
+	(& page_directory) = page_directory_addr;
+
+	
+	uint32_t page_table_addr = page_directory[dir].page_frame<<12;
+	PTE page_table;
+	& page_table = page_table_addr;
+
+	Assert(page_table[page].present, "present = %x" page_table[page].present);
+
+	uint32_t physical_addr = offset + (page_table[page].page_frame<<12);
+	return physical_addr;
+}
+
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 	return cache_read(addr, len) & (~0u >> ((4 - len) << 3));
@@ -38,12 +61,23 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	assert(len==1 || len==2 || len==4);
-	
-	return hwaddr_read(addr, len);
+
+	if((addr&0xfff) + len > 0xfff){
+		Assert(0, "Data cross the page boundary!");
+	}else{
+		hwaddr_t hwaddr = page_translate(addr);
+		return hwaddr_read(hwaddr, len);
+	}
 }
 
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
-	hwaddr_write(addr, len, data);
+	if((addr&0xfff) + len > 0xfff){
+		Assert(0, "Data cross the page boundary!");
+	}else{
+		hwaddr_t hwaddr = page_translate(addr);
+		hwaddr_write(hwaddr, len, data);
+		return hwaddr_read(hwaddr, len);
+	}
 }
 
 uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
