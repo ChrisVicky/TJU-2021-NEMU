@@ -27,15 +27,12 @@ hwaddr_t page_translate(lnaddr_t addr){
 	Assert(page<NR_PTE, "page (0x%x) out of range ",page);
 
 	uint32_t page_directory_addr = cr3.page_directory_base<<12;
-	PDE page_directory;
-	(& page_directory) = page_directory_addr;
-
+	PDE * page_directory = (void *) (long) page_directory_addr;
 	
 	uint32_t page_table_addr = page_directory[dir].page_frame<<12;
-	PTE page_table;
-	& page_table = page_table_addr;
+	PTE * page_table = (void *) (long) page_table_addr;
 
-	Assert(page_table[page].present, "present = %x" page_table[page].present);
+//	Assert(page_table[page].present, "present = %x" page_table[page].present);
 
 	uint32_t physical_addr = offset + (page_table[page].page_frame<<12);
 	return physical_addr;
@@ -76,7 +73,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	}else{
 		hwaddr_t hwaddr = page_translate(addr);
 		hwaddr_write(hwaddr, len, data);
-		return hwaddr_read(hwaddr, len);
+		return ;
 	}
 }
 
