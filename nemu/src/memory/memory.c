@@ -24,12 +24,12 @@ hwaddr_t page_translate(lnaddr_t addr){
 	uint32_t page = (addr >> 11) & 0x7ff;
 	uint32_t offset = addr & 0xfff;
 
-	Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
-	Assert(page<NR_PTE, "page (0x%x) out of range ",page);
+	// Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
+	// Assert(page<NR_PTE, "page (0x%x) out of range ",page);
 
 	uint32_t page_directory_addr = cr3.page_directory_base<<12;
 	PDE * page_directory = (void *) (long) page_directory_addr;
-	
+	Log("page_directory_addr  = %x" ,page_directory_addr);
 	uint32_t page_table_addr = page_directory[dir].page_frame<<12;
 	PTE * page_table = (void *) (long) page_table_addr;
 
