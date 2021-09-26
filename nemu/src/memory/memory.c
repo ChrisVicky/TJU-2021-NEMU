@@ -46,7 +46,7 @@ hwaddr_t page_translate(lnaddr_t addr){
 	page.val = 0;
 	hwaddr_t hwaddr;
 	if(!cr0.paging||!cr0.protect_enable){
-		Log("Not paging");
+		//Log("Not paging");
 		return addr;
 	} 
 	dir.val = hwaddr_read((cr3.page_directory_base<<12)+((addr>>22)<<2), 4);
