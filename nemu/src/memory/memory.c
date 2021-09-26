@@ -49,7 +49,7 @@ hwaddr_t page_translate(lnaddr_t addr){
 		//Log("Not paging");
 		return addr;
 	} 
-	Log("Not Paging");
+	Log("Paging");
 	dir.val = hwaddr_read((cr3.page_directory_base<<12)+((addr>>22)<<2), 4);
 	Assert(dir.present, "page_value %x, eip: %x" ,dir.val, cpu.eip);
 	page.val = hwaddr_read((page.page_frame<<12)+(((addr>>12)&0x3ff)<<2), 4);
