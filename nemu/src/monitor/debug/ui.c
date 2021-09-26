@@ -18,6 +18,7 @@ void ui_mainloop()
 		// PRINT("eflag: %x\t%x\t%x\t%x\t%x\t%x\n" ,cpu.eflags.DF ,cpu.eflags.AF ,cpu.eflags.CF ,cpu.eflags.IF ,cpu.eflags.OF ,cpu.eflags.ZF);
 		SUCCESS("paging %x\n" ,cr0.paging);
 		SUCCESS("cr0val %x\n" ,cr0.val);
+		SUCCESS("cr3 %x" ,cr3.val);
 		int i;
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
