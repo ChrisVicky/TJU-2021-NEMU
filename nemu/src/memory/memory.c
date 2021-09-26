@@ -39,13 +39,16 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 hwaddr_t page_translate(lnaddr_t addr){
-	Log("page_translate: addr: %x\n" ,addr);
+	// Log("page_translate: addr: %x\n" ,addr);
 	PTE dir;
 	PDE page;
 	dir.val = 0;
 	page.val = 0;
 	hwaddr_t hwaddr;
-	if(!cr0.paging||!cr0.protect_enable) return addr;
+	if(!cr0.paging||!cr0.protect_enable){
+		Log("Not paging");
+		return addr;
+	} 
 	dir.val = hwaddr_read((cr3.page_directory_base<<12)+((addr>>22)<<2), 4);
 	Assert(dir.present, "page_value %x, eip: %x" ,dir.val, cpu.eip);
 	page.val = hwaddr_read((page.page_frame<<12)+(((addr>>12)&0x3ff)<<2), 4);
