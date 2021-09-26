@@ -39,6 +39,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 hwaddr_t page_translate(lnaddr_t addr){
+	Log("page_translate: addr: %x\n" ,addr);
 	PTE dir;
 	PDE page;
 	dir.val = 0;
