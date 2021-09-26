@@ -92,7 +92,7 @@ static void init_eflags(){
 }
 
 static void init_CR0(){
-	cpu.CR0.val = 0;
+	cr0.val = 0;
 	/* 0: Real Mode */
 }
 static void init_cs(){

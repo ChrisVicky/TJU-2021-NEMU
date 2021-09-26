@@ -39,7 +39,7 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 #if DATA_BYTE == 2
 	src = src & 0xfff;
 #endif
-	cpu.CR0.val = src;
+	cr0.val = src;
 	print_asm(str(instr) " %%%s, %%rc0" ,REG_NAME(m.R_M));
 	return 2;
 }
@@ -47,7 +47,7 @@ make_helper(concat(mov_r2cr_, SUFFIX)){
 make_helper(concat(mov_cr2r_, SUFFIX)){
 	ModR_M m;
 	m.val = instr_fetch(eip+1, 1);
-	REG(m.R_M) = cpu.CR0.val;
+	REG(m.R_M) = cr0.val;
 	print_asm(str(instr) " %%rc0, %%%s" ,REG_NAME(m.R_M));
 	return 2;
 }

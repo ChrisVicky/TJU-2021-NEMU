@@ -10,7 +10,7 @@ extern int nemu_state;
 /* Memory accessing interfaces */
 
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
-	if(!cpu.CR0.protect_enable) return addr;
+	if(!cr0.protect_enable) return addr;
 	//Log("addr: %x\tlen: %x\tsreg: %x" ,addr,(int) len ,sreg);
 	//Log("limit: %x" ,cpu.sreg[sreg].invisible.cache.limit);
 	Assert(addr+len < cpu.sreg[sreg].invisible.cache.limit, "Segmentation Fault.");
@@ -37,6 +37,8 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
+	assert(len==1 || len==2 || len==4);
+	
 	return hwaddr_read(addr, len);
 }
 
