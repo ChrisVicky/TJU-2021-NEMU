@@ -53,7 +53,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 		}
 		//Assert(dir.present, "Invalid Page!");
 		page.val = hwaddr_read((dir.page_frame << 12) + (page_offset << 2), 4);
-		Assert(page.present, "Invalid Page!");
+		Assert(page.present, "Invalid Page!	eip: %x	lnaddr: %x\n" ,cpu.eip ,addr);
 		writeTLB(addr & 0xfffff000, page.page_frame);
 		return (page.page_frame << 12)+offset;
 	} else {
