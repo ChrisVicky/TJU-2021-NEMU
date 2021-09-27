@@ -2,7 +2,7 @@
 
 // #define ENTRY_START 0x100000
 // #define ENTRY_START 0x800000
-#define ENTRY_START 0xc0100000
+#define ENTRY_START 0x100000
 
 extern uint8_t entry [];
 extern uint32_t entry_len;
