@@ -52,7 +52,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 		writeTLB(addr & 0xfffff000, page.page_frame);
 		addr = (page.page_frame << 12)+offset;
 	}
-	Log("addr: %x" ,addr);
+	//Log("addr: %x" ,addr);
 	return addr;
 }
 
