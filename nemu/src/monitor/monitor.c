@@ -94,7 +94,7 @@ static void init_eflags(){
 
 static void init_CR0(){
 	cr0.val = 0;
-	cr0.paging = 1;
+//	cr0.paging = 1;
 	/* 0: Real Mode */
 }
 static void init_cs(){
