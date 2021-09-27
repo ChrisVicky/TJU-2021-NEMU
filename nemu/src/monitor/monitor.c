@@ -92,11 +92,11 @@ static void init_eflags(){
 	cpu.eflags.val = 2;
 }
 
-static void init_CR0(){
-	cr0.val = 0;
-//	cr0.paging = 1;
-	/* 0: Real Mode */
-}
+// static void init_CR0(){
+// 	cr0.val = 0;
+// //	cr0.paging = 1;
+// 	/* 0: Real Mode */
+// }
 static void init_cs(){
 	cpu.sreg[R_CS].visible.val = 0;
 	cpu.sreg[R_CS].invisible.value = 0;
@@ -117,7 +117,7 @@ void restart() {
 	init_eflags();
 
 	/* init CR0 -> control register 0 */
-	init_CR0();
+	// init_CR0();
 
 	init_cs();
 
