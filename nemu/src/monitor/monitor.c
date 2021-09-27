@@ -1,7 +1,8 @@
 #include "nemu.h"
 
-#define ENTRY_START 0x100000
+// #define ENTRY_START 0x100000
 // #define ENTRY_START 0x800000
+#define ENTRY_START 0xc0100000
 
 extern uint8_t entry [];
 extern uint32_t entry_len;
@@ -93,6 +94,7 @@ static void init_eflags(){
 
 static void init_CR0(){
 	cr0.val = 0;
+	cr0.paging = 1;
 	/* 0: Real Mode */
 }
 static void init_cs(){
