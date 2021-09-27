@@ -11,11 +11,8 @@ extern int nemu_state;
 
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 	if(!cr0.protect_enable) return addr;
-	//Log("addr: %x\tlen: %x\tsreg: %x" ,addr,(int) len ,sreg);
-	//Log("limit: %x" ,cpu.sreg[sreg].invisible.cache.limit);
 	Assert(addr+len < cpu.sreg[sreg].invisible.cache.limit, "Segmentation Fault.");
 	return cpu.sreg[sreg].invisible.cache.base + addr;
-//	return addr + t
 }
 
 
@@ -51,7 +48,10 @@ hwaddr_t page_translate(lnaddr_t addr) {
 		uint32_t page_offset = ((addr>>12) & 0x3ff);
 		uint32_t offset = addr & 0xfff;
 		dir.val = hwaddr_read((cr3.page_directory_base << 12) + (dir_offset << 2), 4);
-		Assert(dir.present, "Invalid Page!");
+		if(!dir.present){
+			Log("dir %x" ,dir.val);
+		}
+		//Assert(dir.present, "Invalid Page!");
 		page.val = hwaddr_read((dir.page_frame << 12) + (page_offset << 2), 4);
 		Assert(page.present, "Invalid Page!");
 		writeTLB(addr & 0xfffff000, page.page_frame);
