@@ -6,7 +6,6 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 void cache_write(int, int, int);
 int cache_read(int, int);
 
-extern int nemu_state;
 /* Memory accessing interfaces */
 
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
@@ -38,65 +37,25 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 hwaddr_t page_translate(lnaddr_t addr) {
 	if(cr0.protect_enable && cr0.paging) {
 		hwaddr_t tmpaddr;
-		if ((tmpaddr = readTLB(addr & 0xfffff000)) != -1)
-		{
+		if ((tmpaddr = readTLB(addr & 0xfffff000)) != -1){
 			return (tmpaddr << 12) + (addr & 0xfff);
 		}
-		
-		PDE dir, page;
-		uint32_t dir_offset = addr>>22;
+		PTE dir;
+		PDE page;
+		uint32_t dir_offset = ((addr>>22) & 0x3ff);
 		uint32_t page_offset = ((addr>>12) & 0x3ff);
 		uint32_t offset = addr & 0xfff;
 		dir.val = hwaddr_read((cr3.page_directory_base << 12) + (dir_offset << 2), 4);
-		if(!dir.present){
-			Log("dir %x" ,dir.val);
-		}
 		Assert(dir.present, "Invalid Page!	eip: %x	lnaddr: %x\n" ,cpu.eip ,addr);
-		//Assert(dir.present, "Invalid Page!");
 		page.val = hwaddr_read((dir.page_frame << 12) + (page_offset << 2), 4);
 		Assert(page.present, "Invalid Page!	eip: %x	lnaddr: %x\n" ,cpu.eip ,addr);
 		writeTLB(addr & 0xfffff000, page.page_frame);
-		return (page.page_frame << 12)+offset;
-	} else {
-		return addr;
+		addr = (page.page_frame << 12)+offset;
 	}
+	Log("addr: %x" ,addr);
+	return addr;
 }
 
-// hwaddr_t page_translate(lnaddr_t addr){
-// 	// Log("page_translate: addr: %x\n" ,addr);
-// 	PTE dir;
-// 	PDE page;
-// 	dir.val = 0;
-// 	page.val = 0;
-// 	hwaddr_t hwaddr;
-// 	if(!cr0.paging||!cr0.protect_enable){
-// 		//Log("Not paging");
-// 		return addr;
-// 	} 
-// 	Log("Paging");
-// 	dir.val = hwaddr_read((cr3.page_directory_base<<12)+((addr>>22)<<2), 4);
-// 	Assert(dir.present, "page_value %x, eip: %x" ,dir.val, cpu.eip);
-// 	page.val = hwaddr_read((page.page_frame<<12)+(((addr>>12)&0x3ff)<<2), 4);
-// 	hwaddr = (page.page_frame << 12) + (addr & 0x3ff);
-// 	return hwaddr;
-// 	// uint32_t dir = (addr >> 21) & 0x7ff;
-// 	// uint32_t page = (addr >> 11) & 0x7ff;
-// 	// uint32_t offset = addr & 0xfff;
-
-// 	// // Assert(dir<NR_PDE, "dir (0x%x) out of range " ,dir);
-// 	// // Assert(page<NR_PTE, "page (0x%x) out of range ",page);
-
-// 	// uint32_t page_directory_addr = cr3.page_directory_base<<12;
-// 	// PDE * page_directory = (void *) (long) page_directory_addr;
-// 	// Log("page_directory_addr  = %x" ,page_directory_addr);
-// 	// uint32_t page_table_addr = page_directory[dir].page_frame<<12;
-// 	// PTE * page_table = (void *) (long) page_table_addr;
-
-// //	Assert(page_table[page].present, "present = %x" page_table[page].present);
-
-// 	// uint32_t physical_addr = offset + (page_table[page].page_frame<<12);
-// 	// return physical_addr;
-// }
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	assert(len==1 || len==2 || len==4);
 	size_t max_len = ((~addr) & 0xfff) + 1;
