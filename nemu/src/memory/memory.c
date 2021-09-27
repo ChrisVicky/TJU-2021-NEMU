@@ -22,6 +22,7 @@ lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
+	Log("addr : 0x%x " ,addr);
 	return cache_read(addr, len) & (~0u >> ((4 - len) << 3));
 	
 	//return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
