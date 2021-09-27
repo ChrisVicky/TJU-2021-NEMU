@@ -51,6 +51,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 		if(!dir.present){
 			Log("dir %x" ,dir.val);
 		}
+		Assert(dir.present, "Invalid Page!	eip: %x	lnaddr: %x\n" ,cpu.eip ,addr);
 		//Assert(dir.present, "Invalid Page!");
 		page.val = hwaddr_read((dir.page_frame << 12) + (page_offset << 2), 4);
 		Assert(page.present, "Invalid Page!	eip: %x	lnaddr: %x\n" ,cpu.eip ,addr);
