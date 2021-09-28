@@ -11,7 +11,7 @@ make_helper(rep) {
 		len = 0;
 	}
 	else {
-		Log("eip: %x	ecx: %x" ,cpu.eip, cpu.ecx);
+// /		Log("eip: %x	ecx: %x" ,cpu.eip, cpu.ecx);
 		while(cpu.ecx) {
 			exec(eip + 1);
 			count ++;
