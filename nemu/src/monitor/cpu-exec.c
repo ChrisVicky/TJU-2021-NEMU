@@ -11,6 +11,9 @@
  * You can modify this value as you want.
  */
 #define MAX_INSTR_TO_PRINT 10/*0xffffffff*/
+
+/* ENTRY : 0xc0101280 */
+/*  */
 // #define MAX_INSTR_TO_PRINT 0xffffffff
 
 int nemu_state = STOP;
@@ -66,7 +69,7 @@ void cpu_exec(volatile uint32_t n) {
 		
 		int instr_len = exec(cpu.eip);
 		cpu.eip += instr_len;
-		if((cpu.eip & 0xf0000000) == 0xc){
+		if(cpu.eip == 0xc0101485){
 			Log("eip: %x " ,cpu.eip);
 			nemu_state = STOP;
 		}
