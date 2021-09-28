@@ -159,6 +159,7 @@ static int cmd_info(char *args)
 		{
 			printf("\033[1;31mInvalid register '%s'\33[0m\n", temp_cmd);
 		}
+		SUCCESS("eflag: %x ",cpu.eflags.val);
 	}
 	else if (strcmp("w", temp_args) == 0)
 	{
