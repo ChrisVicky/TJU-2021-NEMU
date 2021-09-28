@@ -5,6 +5,8 @@
 #include "monitor/breakpoint.h"
 #include <setjmp.h>
 
+#define SUCCESS(format, ...) printf("\33[1;33m" format "\33[0m",## __VA_ARGS__)
+#define ERROR(format, ...) printf("\33[1;31m" format "\33[0m", ## __VA_ARGS__)
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -70,6 +72,7 @@ void cpu_exec(volatile uint32_t n) {
 		int instr_len = exec(cpu.eip);
 		cpu.eip += instr_len;
 		if(cpu.eip == 0xc0101485){
+			ERROR("NOW");
 			Log("eip: %x " ,cpu.eip);
 			nemu_state = STOP;
 		}
