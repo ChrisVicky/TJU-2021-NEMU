@@ -13,11 +13,6 @@ void ui_mainloop()
 	SUCCESS("DEBUG\n");
 	while (1)
 	{
-		
-		// SUCCESS("eflags: DF\tAF\tCF\tIF\tOF\tZF\n");
-		// PRINT("eflag: %x\t%x\t%x\t%x\t%x\t%x\n" ,cpu.eflags.DF ,cpu.eflags.AF ,cpu.eflags.CF ,cpu.eflags.IF ,cpu.eflags.OF ,cpu.eflags.ZF);
-		// SUCCESS("cr0_val %x\n" ,cr0.val);
-		// SUCCESS("cr3_val %x\n" ,cr3.val);
 		int i;
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);

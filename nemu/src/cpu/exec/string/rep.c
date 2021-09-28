@@ -11,7 +11,6 @@ make_helper(rep) {
 		len = 0;
 	}
 	else {
-// /		Log("eip: %x	ecx: %x" ,cpu.eip, cpu.ecx);
 		while(cpu.ecx) {
 			exec(eip + 1);
 			count ++;
@@ -37,7 +36,6 @@ make_helper(rep) {
 		}
 		len = 1;
 	}
-//	Log("count: %x" ,count);
 #ifdef DEBUG
 	char temp[80];
 	sprintf(temp, "rep %s", assembly);
