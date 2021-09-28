@@ -13,7 +13,7 @@
 #define MAX_INSTR_TO_PRINT 10/*0xffffffff*/
 
 /* ENTRY : 0xc0101280 */
-/*  */
+/* LOADER: 0xc0101370 */
 // #define MAX_INSTR_TO_PRINT 0xffffffff
 
 int nemu_state = STOP;
