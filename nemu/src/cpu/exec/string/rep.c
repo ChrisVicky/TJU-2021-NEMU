@@ -62,6 +62,7 @@ make_helper(repnz) {
 		}
 
 	}
+	Log("count: %x" ,count);
 
 #ifdef DEBUG
 	char temp[80];
