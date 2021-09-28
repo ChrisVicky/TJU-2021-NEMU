@@ -19,6 +19,7 @@
 // #define MAX_INSTR_TO_PRINT 0xffffffff
 
 int nemu_state = STOP;
+int cnt = 0;
 
 int exec(swaddr_t);
 
@@ -73,7 +74,8 @@ void cpu_exec(volatile uint32_t n) {
 		cpu.eip += instr_len;
 		if(cpu.eip == 0xc0101485){
 			ERROR("NOW\n");
-			Log("eip: %x " ,cpu.eip);
+			cnt++;
+			Log("eip: %x	cnt: %x" ,cpu.eip ,cnt);
 			nemu_state = STOP;
 		}
 #ifdef DEBUG
