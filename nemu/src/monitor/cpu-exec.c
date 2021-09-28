@@ -72,7 +72,7 @@ void cpu_exec(volatile uint32_t n) {
 		int instr_len = exec(cpu.eip);
 		cpu.eip += instr_len;
 		if(cpu.eip == 0xc0101485){
-			ERROR("NOW");
+			ERROR("NOW\n");
 			Log("eip: %x " ,cpu.eip);
 			nemu_state = STOP;
 		}
