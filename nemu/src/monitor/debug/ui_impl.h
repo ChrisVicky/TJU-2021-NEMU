@@ -422,24 +422,11 @@ static int cmd_demo(char * args){
 		ERROR("Arguments required\n");
 		return 0;
 	}
-	const int N = 0x900000;
-	char test[N];
-	memset(test, 0, sizeof(test));
 	int i,temp;
 	Log("START");
-	for(i=0x804000;i<N;i++){
+	for(i=0x0;i<0x90000000;i++){
 		temp = page_translate(i);
-		if(temp >= N){
-			Log("Out of range %x" ,i);
-			return 0;
-		}
-		if(test[temp]){
-			Log("SAME POSITION: %x = test[%x]" ,i, temp);
-		}else{
-			test[temp] = 1;
-		}
-
-			Log("%x --> %x" ,i, temp);
+		Log("%x --> %x" ,i, temp);
 	}
 	SUCCESS("END demo\n");
 	return 0;	
