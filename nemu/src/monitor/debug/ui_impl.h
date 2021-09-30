@@ -437,6 +437,8 @@ static int cmd_demo(char * args){
 		}else{
 			test[temp] = 1;
 		}
+
+			Log("%x --> %x" ,i, temp);
 	}
 	SUCCESS("END demo\n");
 	return 0;	
