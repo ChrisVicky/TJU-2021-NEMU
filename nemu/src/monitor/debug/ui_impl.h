@@ -409,6 +409,6 @@ static int cmd_page(char * args){
 		return 0;
 	}
 	ans = page_translate(ans);
-	PRINT("Page Translate: %d	(\033[1;32m0x%08x\33[0m)\n", ans, ans);
+	PRINT("Page Translate: \33[1;32m0x%08x\33[0m\n", ans);
 	return 0;	
 }
