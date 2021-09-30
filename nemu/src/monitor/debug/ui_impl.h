@@ -427,7 +427,7 @@ static int cmd_demo(char * args){
 	memset(test, 0, sizeof(test));
 	int i,temp;
 	Log("START");
-	for(i=0x8040000;i<N;i++){
+	for(i=0x804000;i<N;i++){
 		temp = page_translate(i);
 		if(temp >= N){
 			Log("Out of range %x" ,i);
