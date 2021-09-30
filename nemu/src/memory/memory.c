@@ -57,6 +57,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
+	//Log("lnaddr_len: %x" ,len);
 	assert(len==1 || len==2 || len==4);
 	size_t max_len = ((~addr) & 0xfff) + 1;
 	if(len>max_len){

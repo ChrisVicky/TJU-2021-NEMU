@@ -6,7 +6,7 @@ void do_execute() {
     if (op_src->size == 2)
     {
         cpu.GDTR.Limit = lnaddr_read(op_src->addr, 2); // 16 bits
-        cpu.GDTR.Base = lnaddr_read(op_src->addr + 2, 3); // 24 bits
+        cpu.GDTR.Base = lnaddr_read(op_src->addr + 2, 4) & 0x00ffffff; // 24 bits
     } else if(op_src->size == 4)
     {
         cpu.GDTR.Limit = lnaddr_read(op_src->addr, 2); // 16 bits
