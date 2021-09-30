@@ -408,7 +408,8 @@ static int cmd_page(char * args){
 		// Log("Expression Error");
 		return 0;
 	}
+	int temp = ans;
 	ans = page_translate(ans);
-	PRINT("Page Translate: \33[1;32m0x%08x\33[0m\n", ans);
+	PRINT("Page Translate: %x --> \33[1;32m0x%08x\33[0m\n" ,temp ,ans);
 	return 0;	
 }
