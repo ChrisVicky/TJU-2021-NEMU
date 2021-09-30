@@ -29,7 +29,7 @@ void init() {
 	Log("HERE");
 
 	/* After paging is enabled, transform %esp to virtual address. */
-	asm volatile("addl %0, %%esp" : : "i"(KOFFSET));
+//	asm volatile("addl %0, %%esp" : : "i"(KOFFSET));
 #endif
 
 	/* Jump to init_cond() to continue initialization. */
