@@ -424,7 +424,7 @@ static int cmd_demo(char * args){
 	}
 	int i,temp;
 	Log("START");
-	for(i=0x0;i<0x90000000;i++){
+	for(i=0x10000;i<0x90000000;i++){
 		temp = page_translate(i);
 		Log("%x --> %x" ,i, temp);
 	}
