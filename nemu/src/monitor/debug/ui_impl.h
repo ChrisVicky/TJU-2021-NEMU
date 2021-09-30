@@ -25,6 +25,7 @@ static int cmd_w(char *args);
 static int cmd_b(char *args);
 static int cmd_d(char *args);
 static int cmd_bt(char *args);
+static int cmd_page(char *args);
 char * get_func_name_by_address(int, int*, int *);
 
 static struct
@@ -45,6 +46,7 @@ static struct
 	{"b", "Make breakpoints", cmd_b},
 	{"d", "Delete points", cmd_d},
 	{"bt", "Print Stack" , cmd_bt},
+	{"page", "Check page translation", cmd_page},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -391,4 +393,22 @@ static int cmd_bt(char * args){
 		}
 	}
 	return 0;
+}
+
+static int cmd_page(char * args){
+	bool flag = true;
+	if (args == NULL)
+	{
+		ERROR("Arguments required\n");
+		return 0;
+	}
+	int ans = expr(args, &flag);
+	if (!flag)
+	{
+		// Log("Expression Error");
+		return 0;
+	}
+	ans = page_translate(ans);
+	PRINT("Page Translate: %d	(\033[1;32m0x%08x\33[0m)\n", ans, ans);
+	return 0;	
 }
