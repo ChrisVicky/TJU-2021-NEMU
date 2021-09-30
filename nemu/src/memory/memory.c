@@ -58,11 +58,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
-	if(len == 3){
-		Log("eip: %x " ,cpu.eip);
-		nemu_state = 0;
-	}
-	// assert(len==1 || len==2 || len==4);
+	assert(len==1 || len==2 || len==4);
 	size_t max_len = ((~addr) & 0xfff) + 1;
 	if(len>max_len){
 		uint32_t low = lnaddr_read(addr, max_len);
