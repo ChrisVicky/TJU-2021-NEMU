@@ -422,7 +422,7 @@ static int cmd_demo(char * args){
 		ERROR("Arguments required\n");
 		return 0;
 	}
-	const int N = 0x9000000;
+	const int N = 0x900000;
 	char test[N];
 	memset(test, 0, sizeof(test));
 	int i,temp;
