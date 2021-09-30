@@ -57,8 +57,10 @@ hwaddr_t page_translate(lnaddr_t addr) {
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
-	Log("lnaddr_len: %x" ,(int)len);
-	assert(len==1 || len==2 || len==4);
+	if(len == 3){
+		Log("eip: %x " ,cpu.eip);
+	}
+	// assert(len==1 || len==2 || len==4);
 	size_t max_len = ((~addr) & 0xfff) + 1;
 	if(len>max_len){
 		uint32_t low = lnaddr_read(addr, max_len);
@@ -68,6 +70,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 		hwaddr_t hwaddr = page_translate(addr);
 		return hwaddr_read(hwaddr, len);
 	}
+
 }
 
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
@@ -87,7 +90,7 @@ uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 	assert(len == 1 || len == 2 || len == 4);
 #endif
 	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
-	//Log("lnaddr: %x" ,lnaddr);
+
 	return lnaddr_read(lnaddr, len);
 }
 
