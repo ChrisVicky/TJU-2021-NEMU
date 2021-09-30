@@ -26,6 +26,7 @@ static int cmd_b(char *args);
 static int cmd_d(char *args);
 static int cmd_bt(char *args);
 static int cmd_page(char *args);
+static int cmd_demo(char * args);
 char * get_func_name_by_address(int, int*, int *);
 
 static struct
@@ -47,6 +48,7 @@ static struct
 	{"d", "Delete points", cmd_d},
 	{"bt", "Print Stack" , cmd_bt},
 	{"page", "Check page translation", cmd_page},
+	{"demo", "CHECK TRANSLATION", cmd_demo},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -411,5 +413,31 @@ static int cmd_page(char * args){
 	int temp = ans;
 	ans = page_translate(ans);
 	PRINT("Page Translate: %x --> \33[1;32m0x%08x\33[0m\n" ,temp ,ans);
+	return 0;	
+}
+
+static int cmd_demo(char * args){
+	if (args == NULL)
+	{
+		ERROR("Arguments required\n");
+		return 0;
+	}
+	const int N = 0x9000000;
+	char test[N];
+	memset(test, 0, sizeof(test));
+	int i,temp;
+	for(i=0;i<N;i++){
+		temp = page_translate(i);
+		if(temp >= N){
+			Log("Out of range %x" ,i);
+			return 0;
+		}
+		if(test[temp]){
+			Log("SAME POSITION: %x = test[%x]" ,i, temp);
+		}else{
+			test[temp] = 1;
+		}
+	}
+	SUCCESS("END demo\n");
 	return 0;	
 }
