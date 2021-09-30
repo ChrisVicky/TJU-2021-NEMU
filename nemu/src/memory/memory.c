@@ -5,6 +5,7 @@ uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 void cache_write(int, int, int);
 int cache_read(int, int);
+extern int nemu_state;
 
 /* Memory accessing interfaces */
 
@@ -59,6 +60,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	if(len == 3){
 		Log("eip: %x " ,cpu.eip);
+		nemu_state = 0;
 	}
 	// assert(len==1 || len==2 || len==4);
 	size_t max_len = ((~addr) & 0xfff) + 1;
